@@ -5,62 +5,50 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreGuidanceRequest;
 use App\Http\Requests\UpdateGuidanceRequest;
 use App\Models\Guidance;
+use App\Services\GuidanceService;
+use Illuminate\Support\Facades\Auth;
 
 class GuidanceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $service;
+
+    public function __construct(GuidanceService $service)
+    {
+        // $this->middleware('auth');
+        $this->service = $service;
+    }
+
     public function index()
     {
-        //
+        $guidances = $this->service->getAll();
+        return view('dummyviews.guidances.index', compact('guidances'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('dummyviews.guidances.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreGuidanceRequest $request)
     {
-        //
+        $this->service->create($request->validated());
+        return redirect()->route('guidances.index')->with('success', 'Guidance created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Guidance $guidance)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Guidance $guidance)
     {
-        //
+        return view('dummyviews.guidances.edit', compact('guidance'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateGuidanceRequest $request, Guidance $guidance)
     {
-        //
+        $this->service->update($guidance, $request->validated());
+        return redirect()->route('guidances.index')->with('success', 'Guidance updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Guidance $guidance)
     {
-        //
+        $this->service->delete($guidance);
+        return redirect()->route('guidances.index')->with('success', 'Guidance deleted successfully.');
     }
 }
