@@ -31,12 +31,18 @@
     <div class="sidebar">
         <h3>📋 Menu</h3>
         <a href="{{ route('guidances.index') }}">Guidances</a>
-        <a href="#">Users</a>
-        <a href="#">Reports</a>
-        <a href="#">Settings</a>
-        <a href="#">Notifications</a>
-        <a href="#">Analytics</a>
-        <a href="#">Support</a>
+        <a href="#">News</a>
+        <a href="#">Category</a>
+        <a href="#">Data & Program</a>
+        <a href="#">Works & Internship</a>
+        <a href="#">Application</a>
+        <a href="#">Complaints=</a>
+        <form method="POST" action="{{ route('logout') }}" style="margin-top: 20px;">
+            @csrf
+            <button type="submit" style="font-size:25px;background:none;border:none;padding:0;color:#333;cursor:pointer;text-align:left;">
+                Logout
+            </button>
+        </form>
     </div>
     <div class="content">
         @yield('content')

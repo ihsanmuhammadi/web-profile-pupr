@@ -11,7 +11,7 @@ class UpdateGuidanceRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,8 @@ class UpdateGuidanceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'link' => 'required|url|max:255|starts_with:https://',
+            'kategori' => 'nullable|string|max:100|regex:/^[a-zA-Z0-9\s\-]+$/'
         ];
     }
 }

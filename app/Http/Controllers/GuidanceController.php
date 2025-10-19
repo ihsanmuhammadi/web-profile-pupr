@@ -14,7 +14,6 @@ class GuidanceController extends Controller
 
     public function __construct(GuidanceService $service)
     {
-        // $this->middleware('auth');
         $this->service = $service;
     }
 
