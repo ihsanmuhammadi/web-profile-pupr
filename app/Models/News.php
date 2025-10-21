@@ -2,11 +2,25 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 use Illuminate\Database\Eloquent\Model;
 
 class News extends Model
 {
-    /** @use HasFactory<\Database\Factories\NewsFactory> */
-    use HasFactory;
+    use SoftDeletes;
+
+    protected $table = 'news';
+    protected $keyType = 'string';
+    public $incrementing = false;
+
+    protected $fillable = ['judul', 'gambar'];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->id = (string) Str::uuid();
+        });
+    }
 }

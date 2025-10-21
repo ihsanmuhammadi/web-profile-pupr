@@ -2,65 +2,49 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreNewsRequest;
-use App\Http\Requests\UpdateNewsRequest;
+use App\Http\Requests\NewsRequest;
 use App\Models\News;
 
 class NewsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $service;
+
+    public function __construct(NewsService $service)
+    {
+        $this->service = $service;
+    }
+
     public function index()
     {
-        //
+        $news = $this->service->getAll();
+        return view('dummyviews.news.index', compact('news'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('dummyviews.news.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreNewsRequest $request)
+    public function store(NewsRequest $request)
     {
-        //
+        $this->service->create($request->validated());
+        return redirect()->route('news.index')->with('success', 'News created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(News $news)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(News $news)
     {
-        //
+        return view('dummyviews.news.edit', compact('news'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateNewsRequest $request, News $news)
+    public function update(NewsRequest $request, News $news)
     {
-        //
+        $this->service->update($news, $request->validated());
+        return redirect()->route('news.index')->with('success', 'News updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(News $news)
     {
-        //
+        $this->service->delete($news);
+        return redirect()->route('news.index')->with('success', 'News deleted successfully.');
     }
 }

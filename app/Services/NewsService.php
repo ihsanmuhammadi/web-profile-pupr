@@ -1,66 +1,40 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Services;
 
-use App\Http\Requests\StoreNewsRequest;
-use App\Http\Requests\UpdateNewsRequest;
 use App\Models\News;
 
-class NewsController extends Controller
+class NewsService
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function getAll()
     {
-        //
+        return News::latest()->get();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function find($id)
     {
-        //
+        return News::findOrFail($id);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreNewsRequest $request)
+    public function create(array $data)
     {
-        //
+        if (request()->hasFile('gambar')) {
+            $data['gambar'] = request()->file('gambar')->store('news_images', 'public');
+        }
+        return News::create($data);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(News $news)
+    public function update(News $news, array $data)
     {
-        //
+        if (request()->hasFile('gambar')) {
+            $data['gambar'] = request()->file('gambar')->store('news_images', 'public');
+        }
+        $news->update($data);
+        return $news;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(News $news)
+    public function delete(News $news)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateNewsRequest $request, News $news)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(News $news)
-    {
-        //
+        $news->delete();
     }
 }

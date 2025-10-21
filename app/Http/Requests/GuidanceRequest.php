@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateGuidanceRequest extends FormRequest
+class GuidanceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,7 @@ class UpdateGuidanceRequest extends FormRequest
     {
         return [
             'link' => 'required|url|max:255|starts_with:https://',
-            'kategori' => 'nullable|string|max:100|regex:/^[a-zA-Z0-9\s\-]+$/'
+            'kategori' => 'nullable|string|max:100|regex:/^[a-zA-Z0-9\s\-]+$/',
         ];
     }
 }

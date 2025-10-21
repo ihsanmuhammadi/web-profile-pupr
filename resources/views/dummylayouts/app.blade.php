@@ -36,7 +36,7 @@
         <a href="#">Data & Program</a>
         <a href="#">Works & Internship</a>
         <a href="#">Application</a>
-        <a href="#">Complaints=</a>
+        <a href="#">Complaints</a>
         <form method="POST" action="{{ route('logout') }}" style="margin-top: 20px;">
             @csrf
             <button type="submit" style="font-size:25px;background:none;border:none;padding:0;color:#333;cursor:pointer;text-align:left;">

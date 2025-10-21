@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreGuidanceRequest;
-use App\Http\Requests\UpdateGuidanceRequest;
+use App\Http\Requests\GuidanceRequest;
 use App\Models\Guidance;
 use App\Services\GuidanceService;
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +27,7 @@ class GuidanceController extends Controller
         return view('dummyviews.guidances.create');
     }
 
-    public function store(StoreGuidanceRequest $request)
+    public function store(GuidanceRequest $request)
     {
         $this->service->create($request->validated());
         return redirect()->route('guidances.index')->with('success', 'Guidance created successfully.');
@@ -39,7 +38,7 @@ class GuidanceController extends Controller
         return view('dummyviews.guidances.edit', compact('guidance'));
     }
 
-    public function update(UpdateGuidanceRequest $request, Guidance $guidance)
+    public function update(GuidanceRequest $request, Guidance $guidance)
     {
         $this->service->update($guidance, $request->validated());
         return redirect()->route('guidances.index')->with('success', 'Guidance updated successfully.');

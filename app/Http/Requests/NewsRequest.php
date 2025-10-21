@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreGuidanceRequest extends FormRequest
+class NewsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,8 @@ class StoreGuidanceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'link' => 'required|url|max:255|starts_with:https://',
-            'kategori' => 'nullable|string|max:100|regex:/^[a-zA-Z0-9\s\-]+$/',
+            'judul' => 'required|string|max:255',
+            'gambar' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ];
     }
 }
