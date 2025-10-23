@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\NewsRequest;
 use App\Models\News;
+use App\Services\NewsService;
 
 class NewsController extends Controller
 {
