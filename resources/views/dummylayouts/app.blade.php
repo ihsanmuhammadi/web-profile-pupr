@@ -31,7 +31,7 @@
     <div class="sidebar">
         <h3>📋 Menu</h3>
         <a href="{{ route('guidances.index') }}">Guidances</a>
-        <a href="#">News</a>
+        <a href="{{ route('news.index') }}">News</a>
         <a href="#">Category</a>
         <a href="#">Data & Program</a>
         <a href="#">Works & Internship</a>
