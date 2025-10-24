@@ -1,66 +1,34 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Services;
 
-use App\Http\Requests\StoreCategoryRequest;
-use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 
-class CategoryController extends Controller
+class CategoryService
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function getAll()
     {
-        //
+        return Category::latest()->get();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function find($id)
     {
-        //
+        return Category::findOrFail($id);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreCategoryRequest $request)
+    public function create(array $data)
     {
-        //
+        return Category::create($data);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Category $category)
+    public function update(Category $category, array $data)
     {
-        //
+        $category->update($data);
+        return $category;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Category $category)
+    public function delete(Category $category)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateCategoryRequest $request, Category $category)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Category $category)
-    {
-        //
+        $category->delete();
     }
 }

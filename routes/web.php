@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GuidanceController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\CategoryController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -19,6 +20,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('guidances', GuidanceController::class);
     Route::resource('news', NewsController::class);
+    Route::resource('categories', CategoryController::class);
 });
 
 require __DIR__.'/auth.php';
