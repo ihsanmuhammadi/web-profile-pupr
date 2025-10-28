@@ -1,66 +1,40 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Services;
 
-use App\Http\Requests\StoreDataProgramRequest;
-use App\Http\Requests\UpdateDataProgramRequest;
 use App\Models\DataProgram;
+use App\Models\Category;
 
-class DataProgramController extends Controller
+class DataProgramService
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function getAll()
     {
-        //
+        return DataProgram::latest()->get();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function find($id)
     {
-        //
+        return DataProgram::findOrFail($id);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreDataProgramRequest $request)
+    public function create(array $data)
     {
-        //
+        return DataProgram::create($data);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(DataProgram $dataProgram)
+    public function update(DataProgram $dataProgram, array $data)
     {
-        //
+        $dataProgram->update($data);
+        return $dataProgram;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(DataProgram $dataProgram)
+    public function delete(DataProgram $dataProgram)
     {
-        //
+        $dataProgram->delete();
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateDataProgramRequest $request, DataProgram $dataProgram)
+    public function getCategories()
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(DataProgram $dataProgram)
-    {
-        //
+        return Category::select('id', 'name')->get();
     }
 }

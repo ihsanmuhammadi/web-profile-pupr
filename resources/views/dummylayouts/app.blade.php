@@ -33,7 +33,7 @@
         <a href="{{ route('guidances.index') }}">Guidances</a>
         <a href="{{ route('news.index') }}">News</a>
         <a href="{{ route('categories.index') }}">Category</a>
-        <a href="#">Data & Program</a>
+        <a href="{{ route('data-programs.index') }}">Data & Program</a>
         <a href="#">Works & Internship</a>
         <a href="#">Application</a>
         <a href="#">Complaints</a>

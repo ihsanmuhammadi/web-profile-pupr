@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GuidanceController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DataProgramController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,6 +22,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('guidances', GuidanceController::class);
     Route::resource('news', NewsController::class);
     Route::resource('categories', CategoryController::class);
+    Route::resource('data-programs', DataProgramController::class);
 });
 
 require __DIR__.'/auth.php';
