@@ -12,8 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('works', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->string('posisi');
+            $table->string('jenis');
+            $table->string('tipe');
+            $table->string('lokasi');
+            $table->integer('gaji');
+            $table->text('deskripsi');
+            $table->text('kualifikasi');
+            $table->uuid('data_program_id');
+            $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('data_program_id')->references('id')->on('data_programs');
         });
     }
 

@@ -14,18 +14,18 @@ return new class extends Migration
         Schema::create('data_programs', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('judul');
-            $table->string('sub_judul')->nullable();
-            $table->text('deskripsi')->nullable();
-            $table->date('waktu_pelaksanaan')->nullable();
-            $table->integer('tahun_anggaran')->nullable();
-            $table->string('lokasi')->nullable();
-            $table->string('status_proyek')->nullable();
-            $table->json('dokumentasi')->nullable();
-            $table->uuid('kategori_id')->unique();
+            $table->string('sub_judul');
+            $table->text('deskripsi');
+            $table->date('waktu_pelaksanaan');
+            $table->integer('tahun_anggaran');
+            $table->string('lokasi');
+            $table->string('status_proyek');
+            $table->json('dokumentasi');
+            $table->uuid('kategori_id');
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('kategori_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreign('kategori_id')->references('id')->on('categories');
         });
 
     }

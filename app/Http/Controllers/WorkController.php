@@ -2,65 +2,54 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreWorkRequest;
-use App\Http\Requests\UpdateWorkRequest;
+use App\Http\Requests\WorkRequest;
 use App\Models\Work;
+use App\Services\WorkService;
 
 class WorkController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $service;
+
+    public function __construct(WorkService $service)
+    {
+        $this->service = $service;
+    }
+
     public function index()
     {
-        //
+        $works = $this->service->getAll();
+        return view('dummyviews.works.index', compact('works'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $dataProgram = $this->service->getDataProgram();
+        return view('dummyviews.works.create', compact('dataProgram'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreWorkRequest $request)
+    public function store(WorkRequest $request)
     {
-        //
+        $validated = $request->validated();
+        $this->service->create($validated);
+
+        return redirect()->route('works.index')->with('success', 'Work created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Work $work)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Work $work)
     {
-        //
+        $dataProgram = $this->service->getDataProgram();
+        return view('dummyviews.works.edit', compact('works', 'dataPrograms'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateWorkRequest $request, Work $work)
+    public function update(WorkRequest $request, Work $work)
     {
-        //
+        $this->service->update($work, $request->validated());
+        return redirect()->route('works.index')->with('success', 'Work updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Work $work)
     {
-        //
+        $this->service->delete($work);
+        return redirect()->route('works.index')->with('success', 'Work deleted successfully.');
     }
 }

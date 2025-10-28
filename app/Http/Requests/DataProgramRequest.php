@@ -23,13 +23,13 @@ class DataProgramRequest extends FormRequest
     {
         return [
             'judul' => 'required|string|max:255',
-            'sub_judul' => 'nullable|string|max:255',
-            'deskripsi' => 'nullable|string',
-            'waktu_pelaksanaan' => 'nullable|date',
-            'tahun_anggaran' => 'nullable|integer|min:2000|max:' . date('Y') + 5,
-            'lokasi' => 'nullable|string|max:255',
-            'status_proyek' => 'nullable|string|max:100',
-            'dokumentasi' => 'nullable|array',
+            'sub_judul' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+            'waktu_pelaksanaan' => 'required|date',
+            'tahun_anggaran' => 'required|integer|min:2000|max:' . date('Y') + 5,
+            'lokasi' => 'required|string|max:255',
+            'status_proyek' => 'required|string|max:100',
+            'dokumentasi' => 'required|array',
             'kategori_id' => 'required|uuid|exists:categories,id',
         ];
     }

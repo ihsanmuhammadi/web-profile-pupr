@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DataProgramRequest;
 use App\Models\DataProgram;
 use App\Services\DataProgramService;
-use Illuminate\Support\Facades\Auth;
 
 class DataProgramController extends Controller
 {

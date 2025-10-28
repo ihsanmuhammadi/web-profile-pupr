@@ -1,66 +1,40 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Services;
 
-use App\Http\Requests\StoreWorkRequest;
-use App\Http\Requests\UpdateWorkRequest;
+use App\Models\DataProgram;
 use App\Models\Work;
 
-class WorkController extends Controller
+class WorkService
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function getAll()
     {
-        //
+        return Work::latest()->get();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function find($id)
     {
-        //
+        return Work::findOrFail($id);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreWorkRequest $request)
+    public function create(array $data)
     {
-        //
+        return Work::create($data);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Work $work)
+    public function update(Work $work, array $data)
     {
-        //
+        $work->update($data);
+        return $work;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Work $work)
+    public function delete(Work $work)
     {
-        //
+        $work->delete();
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateWorkRequest $request, Work $work)
+    public function getDataProgram()
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Work $work)
-    {
-        //
+        return DataProgram::select('id', 'judul')->get();
     }
 }
