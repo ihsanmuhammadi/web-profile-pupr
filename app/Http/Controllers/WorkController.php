@@ -38,7 +38,7 @@ class WorkController extends Controller
     public function edit(Work $work)
     {
         $dataProgram = $this->service->getDataProgram();
-        return view('dummyviews.works.edit', compact('works', 'dataPrograms'));
+        return view('dummyviews.works.edit', compact('work', 'dataProgram'));
     }
 
     public function update(WorkRequest $request, Work $work)

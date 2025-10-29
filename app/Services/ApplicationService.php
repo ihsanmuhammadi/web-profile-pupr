@@ -2,35 +2,39 @@
 
 namespace App\Services;
 
-use App\Models\Guidance;
+use App\Models\Work;
+use App\Models\Application;
 
-class GuidanceService
+class ApplicationService
 {
     public function getAll()
     {
-        return Guidance::latest()->get();
+        return Application::latest()->get();
     }
 
     public function find($id)
     {
-        return Guidance::findOrFail($id);
+        return Application::findOrFail($id);
     }
 
     public function create(array $data)
     {
-        $data['link'] = filter_var($data['link'], FILTER_SANITIZE_URL);
-        return Guidance::create($data);
+        return Application::create($data);
     }
 
-    public function update(Guidance $guidance, array $data)
+    public function update(Application $application, array $data)
     {
-        $data['link'] = filter_var($data['link'], FILTER_SANITIZE_URL);
-        $guidance->update($data);
-        return $guidance;
+        $application->update($data);
+        return $application;
     }
 
-    public function delete(Guidance $guidance)
+    public function delete(Application $application)
     {
-        $guidance->delete();
+        $application->delete();
+    }
+
+    public function getWork()
+    {
+        return Work::select('id', 'judul')->get();
     }
 }

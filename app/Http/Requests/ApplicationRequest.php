@@ -22,7 +22,15 @@ class ApplicationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'nama' => 'required|string|max:255',
+            'nomor_telepon' => 'required|string|max:255',
+            'email' => 'required|string|max:255',
+            'lokasi' => 'required|string|max:255',
+            'pendidikan' => 'required|string|max:255',
+            'jurusan' => 'required|string|max:255',
+            'cv' => 'required|file|mimes:pdf|max:5120',
+            'portofolio' => 'required|string|max:255',
+            'work_id' => 'required|uuid|exists:works,id',
         ];
     }
 }
