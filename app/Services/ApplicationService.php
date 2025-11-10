@@ -35,6 +35,6 @@ class ApplicationService
 
     public function getWork()
     {
-        return Work::select('id', 'judul')->get();
+        return Work::select('id', 'posisi')->get();
     }
 }

@@ -1,66 +1,39 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Services;
 
-use App\Http\Requests\StoreComplaintRequest;
-use App\Http\Requests\UpdateComplaintRequest;
 use App\Models\Complaint;
 
-class ComplaintController extends Controller
+class ComplaintService
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function getAll()
     {
-        //
+        return Complaint::latest()->get();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function find($id)
     {
-        //
+        return Complaint::findOrFail($id);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreComplaintRequest $request)
+    public function create(array $data)
     {
-        //
+        return Complaint::create($data);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Complaint $complaint)
+    public function update(Complaint $complaint, array $data)
     {
-        //
+        $complaint->update($data);
+        return $complaint;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Complaint $complaint)
+    public function delete(Complaint $complaint)
     {
-        //
+        $complaint->delete();
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateComplaintRequest $request, Complaint $complaint)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Complaint $complaint)
-    {
-        //
-    }
+    // public function getWork()
+    // {
+    //     return Work::select('id', 'posisi')->get();
+    // }
 }

@@ -23,8 +23,8 @@ class ApplicationController extends Controller
 
     public function create()
     {
-        $work = $this->service->getWork();
-        return view('dummyviews.applications.create', compact('work'));
+        $works = $this->service->getWork();
+        return view('dummyviews.applications.create', compact('works'));
     }
 
     public function store(ApplicationRequest $request)

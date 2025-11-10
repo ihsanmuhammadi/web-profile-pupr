@@ -2,65 +2,52 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreComplaintRequest;
-use App\Http\Requests\UpdateComplaintRequest;
+use App\Http\Requests\ComplaintRequest;
 use App\Models\Complaint;
+use App\Services\ComplaintService;
 
 class ComplaintController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $service;
+
+    public function __construct(ComplaintService $service)
+    {
+        $this->service = $service;
+    }
+
     public function index()
     {
-        //
+        $complaints = $this->service->getAll();
+        return view('dummyviews.complaints.index', compact('complaints'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('dummyviews.complaints.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreComplaintRequest $request)
+    public function store(ComplaintRequest $request)
     {
-        //
+        $validated = $request->validated();
+        $this->service->create($validated);
+
+        return redirect()->route('complaints.index')->with('success', 'Complaint created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Complaint $complaint)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Complaint $complaint)
     {
-        //
+        return view('dummyviews.complaints.edit', compact('complaint'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateComplaintRequest $request, Complaint $complaint)
+    public function update(ComplaintRequest $request, Complaint $complaint)
     {
-        //
+        $this->service->update($complaint, $request->validated());
+        return redirect()->route('complaints.index')->with('success', 'Complaint updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Complaint $complaint)
     {
-        //
+        $this->service->delete($complaint);
+        return redirect()->route('complaints.index')->with('success', 'Complaint deleted successfully.');
     }
 }

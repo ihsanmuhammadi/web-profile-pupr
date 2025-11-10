@@ -9,6 +9,8 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DataProgramController;
 use App\Http\Controllers\WorkController;
+use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\ComplaintController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -47,6 +49,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('data-programs', DataProgramController::class);
     Route::resource('works', WorkController::class);
+    Route::resource('applications', ApplicationController::class);
+    Route::resource('complaints', ComplaintController::class);
 });
 
 require __DIR__.'/auth.php';

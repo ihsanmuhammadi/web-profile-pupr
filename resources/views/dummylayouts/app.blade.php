@@ -35,8 +35,8 @@
         <a href="{{ route('categories.index') }}">Category</a>
         <a href="{{ route('data-programs.index') }}">Data & Program</a>
         <a href="{{ route('works.index') }}">Works & Internship</a>
-        <a href="#">Application</a>
-        <a href="#">Complaints</a>
+        <a href="{{ route('applications.index') }}">Application</a>
+        <a href="{{ route('complaints.index') }}">Complaints</a>
         <form method="POST" action="{{ route('logout') }}" style="margin-top: 20px;">
             @csrf
             <button type="submit" style="font-size:25px;background:none;border:none;padding:0;color:#333;cursor:pointer;text-align:left;">

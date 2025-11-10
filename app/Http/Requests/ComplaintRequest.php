@@ -11,7 +11,7 @@ class ComplaintRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class ComplaintRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'nama'  => 'required|string|max:255',
+            'email' => 'nullable|string|email|max:255',
+            'pesan' => 'nullable|string|max:1000',
         ];
     }
 }
