@@ -34,8 +34,8 @@
                 <td>{{ e($application->jurusan) }}</td>
                 <td>{{ e(Str::limit($application->portofolio, 50)) }}</td>
                 <td>
-                    @if($application->cv_path ?? false)
-                        <a href="{{ asset('storage/' . $application->cv_path) }}" target="_blank">📄 Lihat CV</a>
+                    @if($application->cv)
+                        <a href="{{ asset('storage/' . $application->cv) }}" target="_blank">📄 Lihat CV</a>
                     @else
                         -
                     @endif

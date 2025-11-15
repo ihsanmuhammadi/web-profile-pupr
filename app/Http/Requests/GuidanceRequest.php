@@ -22,8 +22,9 @@ class GuidanceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'link' => 'required|url|max:255|starts_with:https://',
-            'kategori' => 'nullable|string|max:100|regex:/^[a-zA-Z0-9\s\-]+$/',
+            'nama' => 'required|string|max:255',
+            'email' => 'nullable|string|max:255',
+            'pesan' => 'required|string|max:255',
         ];
     }
 }

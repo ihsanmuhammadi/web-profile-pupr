@@ -31,18 +31,14 @@ class DataProgramController extends Controller
     {
         $validated = $request->validated();
 
-        // Handle dokumentasi uploads
-        if ($request->hasFile('dokumentasi')) {
-            $paths = [];
-            foreach ($request->file('dokumentasi') as $file) {
-                $paths[] = $file->store('dokumentasi', 'public'); // saves to storage/app/public/dokumentasi
-            }
-            $validated['dokumentasi'] = $paths;
-        }
-
         $this->service->create($validated);
 
         return redirect()->route('data-programs.index')->with('success', 'Data Program created successfully.');
+    }
+
+    public function show(DataProgram $dataProgram)
+    {
+        return view('dummyviews.dataPrograms.show', compact('dataProgram'));
     }
 
     public function edit(DataProgram $dataProgram)

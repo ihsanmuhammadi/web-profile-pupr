@@ -14,12 +14,24 @@
             <th>Judul</th>
             <th>Sub Judul</th>
             <th>Deskripsi</th>
-            <th>Waktu Pelaksanaan</th>
+            <th>Waktu Mulai</th>
+            <th>Waktu Selesai</th>
             <th>Tahun Anggaran</th>
+            <th>Kecamatan</th>
             <th>Lokasi</th>
             <th>Status Proyek</th>
             <th>Kategori</th>
             <th>Dokumentasi</th>
+            <th>Tenaga Kerja 1</th>
+            <th>Posisi 1</th>
+            <th>Tenaga Kerja 2</th>
+            <th>Posisi 2</th>
+            <th>Tenaga Kerja 3</th>
+            <th>Posisi 3</th>
+            <th>Tenaga Kerja 4</th>
+            <th>Posisi 4</th>
+            <th>Tenaga Kerja 5</th>
+            <th>Posisi 5</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -29,34 +41,24 @@
                 <td>{{ e($d->judul) }}</td>
                 <td>{{ e($d->sub_judul ?? '-') }}</td>
                 <td>{{ e(Str::limit($d->deskripsi, 100) ?? '-') }}</td>
-                <td>{{ e($d->waktu_pelaksanaan ? \Carbon\Carbon::parse($d->waktu_pelaksanaan)->format('d M Y') : '-') }}</td>
+                <td>{{ e($d->waktu_mulai ? \Carbon\Carbon::parse($d->waktu_mulai)->format('d M Y') : '-') }}</td>
+                <td>{{ e($d->waktu_selesai ? \Carbon\Carbon::parse($d->waktu_selesai)->format('d M Y') : '-') }}</td>
                 <td>{{ e($d->tahun_anggaran ?? '-') }}</td>
+                <td>{{ e($d->kecamatan ?? '-') }}</td>
                 <td>{{ e($d->lokasi ?? '-') }}</td>
                 <td>{{ e($d->status_proyek ?? '-') }}</td>
                 <td>{{ e(optional($d->kategori)->name ?? '-') }}</td>
-                <td>
-                    @php
-                        $docs = is_array($d->dokumentasi) ? $d->dokumentasi : json_decode($d->dokumentasi ?? '[]', true);
-                    @endphp
-
-                    @if(is_array($docs) && count($docs))
-                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                            @foreach ($docs as $doc)
-                                @php
-                                    $path = is_string($doc) ? $doc : (is_array($doc) && isset($doc['path']) ? $doc['path'] : null);
-                                @endphp
-
-                                @if($path)
-                                    <a href="{{ asset('storage/' . $path) }}" target="_blank">
-                                        <img src="{{ asset('storage/' . $path) }}" alt="Dokumentasi" style="max-width: 100px; max-height: 100px; object-fit: cover; border: 1px solid #ccc; border-radius: 4px;">
-                                    </a>
-                                @endif
-                            @endforeach
-                        </div>
-                    @else
-                        <em>-</em>
-                    @endif
-                </td>
+                <td>{{ e($d->dokumentasi ?? '-') }}</td>
+                <td>{{ e($d->tenaga_kerja_1 ?? '-') }}</td>
+                <td>{{ e($d->posisi_1 ?? '-') }}</td>
+                <td>{{ e($d->tenaga_kerja_2 ?? '-') }}</td>
+                <td>{{ e($d->posisi_2 ?? '-') }}</td>
+                <td>{{ e($d->tenaga_kerja_3 ?? '-') }}</td>
+                <td>{{ e($d->posisi_3 ?? '-') }}</td>
+                <td>{{ e($d->tenaga_kerja_4 ?? '-') }}</td>
+                <td>{{ e($d->posisi_4 ?? '-') }}</td>
+                <td>{{ e($d->tenaga_kerja_5 ?? '-') }}</td>
+                <td>{{ e($d->posisi_5 ?? '-') }}</td>
                 <td>
                     <a href="{{ route('data-programs.edit', $d->id) }}" style="margin-right: 10px;">✏️ Edit</a>
                     <form action="{{ route('data-programs.destroy', $d->id) }}" method="POST" style="display:inline">
@@ -67,7 +69,7 @@
             </tr>
         @empty
             <tr>
-                <td colspan="10">No data program entries found.</td>
+                <td colspan="22">No data program entries found.</td>
             </tr>
         @endforelse
     </tbody>

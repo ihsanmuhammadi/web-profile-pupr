@@ -31,9 +31,4 @@ class ComplaintService
     {
         $complaint->delete();
     }
-
-    // public function getWork()
-    // {
-    //     return Work::select('id', 'posisi')->get();
-    // }
 }

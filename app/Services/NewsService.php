@@ -27,6 +27,11 @@ class NewsService
     public function update(News $news, array $data)
     {
         if (request()->hasFile('gambar')) {
+            // Delete old image if exists
+            if ($news->gambar && Storage::disk('public')->exists($news->gambar)) {
+                Storage::disk('public')->delete($news->gambar);
+            }
+
             $data['gambar'] = request()->file('gambar')->store('news_images', 'public');
         }
         $news->update($data);
@@ -35,6 +40,9 @@ class NewsService
 
     public function delete(News $news)
     {
+        if ($news->gambar && Storage::disk('public')->exists($news->gambar)) {
+            Storage::disk('public')->delete($news->gambar);
+        }
         $news->delete();
     }
 }

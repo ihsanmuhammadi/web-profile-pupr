@@ -11,7 +11,7 @@ class ApplicationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -32,5 +32,12 @@ class ApplicationRequest extends FormRequest
             'portofolio' => 'required|string|max:255',
             'work_id' => 'required|uuid|exists:works,id',
         ];
+
+        // Make CV required only on create
+        if ($this->isMethod('POST')) {
+            $rules['cv'] = 'required|file|mimes:pdf|max:5120';
+        }
+
+        return $rules;
     }
 }

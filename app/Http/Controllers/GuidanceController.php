@@ -33,6 +33,11 @@ class GuidanceController extends Controller
         return redirect()->route('guidances.index')->with('success', 'Guidance created successfully.');
     }
 
+    public function show(Guidance $guidance)
+    {
+        return view('dummyviews.guidances.show', compact('guidance'));
+    }
+
     public function edit(Guidance $guidance)
     {
         return view('dummyviews.guidances.edit', compact('guidance'));

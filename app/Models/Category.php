@@ -15,7 +15,7 @@ class Category extends Model
     protected $keyType = 'string';
     public $incrementing = false;
 
-    protected $fillable = ['name', 'description', 'tujuan', 'contoh_program'];
+    protected $fillable = ['name', 'description', 'tujuan', 'contoh_program_1', 'contoh_program_2', 'contoh_program_3'];
 
     protected static function boot()
     {

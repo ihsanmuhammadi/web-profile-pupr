@@ -14,7 +14,9 @@
             <th>Nama</th>
             <th>Deskripsi</th>
             <th>Tujuan</th>
-            <th>Contoh Program</th>
+            <th>Contoh Program 1</th>
+            <th>Contoh Program 2</th>
+            <th>Contoh Program 3</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -24,7 +26,9 @@
                 <td>{{ e($c->name) }}</td>
                 <td>{{ e($c->description ?? '-') }}</td>
                 <td>{{ e($c->tujuan ?? '-') }}</td>
-                <td>{{ e($c->contoh_program ?? '-') }}</td>
+                <td>{{ e($c->contoh_program_1 ?? '-') }}</td>
+                <td>{{ e($c->contoh_program_2 ?? '-') }}</td>
+                <td>{{ e($c->contoh_program_3 ?? '-') }}</td>
                 <td>
                     <a href="{{ route('categories.edit', $c->id) }}" style="margin-right: 10px;">✏️ Edit</a>
                     <form action="{{ route('categories.destroy', $c->id) }}" method="POST" style="display:inline">
@@ -35,7 +39,7 @@
             </tr>
         @empty
             <tr>
-                <td colspan="5">No category entries found.</td>
+                <td colspan="7">No category entries found.</td>
             </tr>
         @endforelse
     </tbody>

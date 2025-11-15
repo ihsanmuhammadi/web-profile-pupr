@@ -17,8 +17,9 @@ class ApplicationController extends Controller
 
     public function index()
     {
+        $works = $this->service->getWork();
         $applications = $this->service->getAll();
-        return view('dummyviews.applications.index', compact('applications'));
+        return view('dummyviews.applications.index', compact('applications', 'works'));
     }
 
     public function create()
@@ -33,6 +34,12 @@ class ApplicationController extends Controller
         $this->service->create($validated);
 
         return redirect()->route('applications.index')->with('success', 'Application created successfully.');
+    }
+
+    public function show(Application $application)
+    {
+        $work = $this->service->getWork();
+        return view('dummyviews.applications.show', compact('application', 'work'));
     }
 
     public function edit(Application $application)

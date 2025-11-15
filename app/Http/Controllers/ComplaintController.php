@@ -34,6 +34,11 @@ class ComplaintController extends Controller
         return redirect()->route('complaints.index')->with('success', 'Complaint created successfully.');
     }
 
+    public function show(Complaint $complaint)
+    {
+        return view('dummyviews.complaints.show', compact('complaint'));
+    }
+
     public function edit(Complaint $complaint)
     {
         return view('dummyviews.complaints.edit', compact('complaint'));

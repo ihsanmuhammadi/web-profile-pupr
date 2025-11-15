@@ -35,8 +35,8 @@ class Application extends Model
         });
     }
 
-    public function dataProgram()
+    public function work()
     {
-        return $this->belongsTo(DataProgram::class, 'data_program_id');
+        return $this->belongsTo(Work::class, 'work_id');
     }
 }

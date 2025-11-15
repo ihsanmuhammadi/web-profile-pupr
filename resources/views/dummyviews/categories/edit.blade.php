@@ -36,9 +36,21 @@
     </div>
 
     <div style="margin-bottom: 15px;">
-        <label for="contoh_program" style="display: block; font-weight: bold;">Contoh Program:</label>
-        <textarea name="contoh_program" id="contoh_program"
-                  style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">{{ old('contoh_program', $category->contoh_program) }}</textarea>
+        <label for="contoh_program_1" style="display: block; font-weight: bold;">Contoh Program 1:</label>
+        <textarea name="contoh_program_1" id="contoh_program_1"
+                  style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">{{ old('contoh_program_1', $category->contoh_program_1) }}</textarea>
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        <label for="contoh_program_2" style="display: block; font-weight: bold;">Contoh Program 2:</label>
+        <textarea name="contoh_program_2" id="contoh_program_2"
+                  style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">{{ old('contoh_program_2', $category->contoh_program_2) }}</textarea>
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        <label for="contoh_program_3" style="display: block; font-weight: bold;">Contoh Program 3:</label>
+        <textarea name="contoh_program_3" id="contoh_program_3"
+                style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">{{ old('contoh_program_3', $category->contoh_program_3) }}</textarea>
     </div>
 
     <button type="submit"

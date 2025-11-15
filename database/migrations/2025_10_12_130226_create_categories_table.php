@@ -16,7 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('description')->nullable();
             $table->string('tujuan')->nullable();
-            $table->string('contoh_program')->nullable();
+            $table->string('contoh_program_1')->nullable();
+            $table->string('contoh_program_2')->nullable();
+            $table->string('contoh_program_3')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

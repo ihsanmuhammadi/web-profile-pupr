@@ -35,10 +35,16 @@ class WorkController extends Controller
         return redirect()->route('works.index')->with('success', 'Work created successfully.');
     }
 
+    public function show(Work $work)
+    {
+        $dataPrograms = $this->service->getDataProgram();
+        return view('dummyviews.works.show', compact('work', 'dataPrograms'));
+    }
+
     public function edit(Work $work)
     {
-        $dataProgram = $this->service->getDataProgram();
-        return view('dummyviews.works.edit', compact('work', 'dataProgram'));
+        $dataPrograms = $this->service->getDataProgram();
+        return view('dummyviews.works.edit', compact('work', 'dataPrograms'));
     }
 
     public function update(WorkRequest $request, Work $work)
