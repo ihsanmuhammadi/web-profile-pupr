@@ -19,7 +19,7 @@ class ApplicationController extends Controller
     {
         $works = $this->service->getWork();
         $applications = $this->service->getAll();
-        return view('dummyviews.applications.index', compact('applications', 'works'));
+        return view('pages.admin.admin_lamaran', compact('applications', 'works'));
     }
 
     public function create()

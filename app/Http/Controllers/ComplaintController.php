@@ -18,7 +18,7 @@ class ComplaintController extends Controller
     public function index()
     {
         $complaints = $this->service->getAll();
-        return view('dummyviews.complaints.index', compact('complaints'));
+        return view('pages.admin.admin_aduan', compact('complaints'));
     }
 
     public function create()

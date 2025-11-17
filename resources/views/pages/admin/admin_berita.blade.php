@@ -50,9 +50,12 @@
                     </tr>
                 </thead>
                 <tbody class="border-top-0">
+                    {{-- step pertama -> ambil data. Referensi nama dari controller -> NewsController --}}
                     @forelse ($news as $n)
                         <tr>
+                            {{-- step kedua -> tambah iterasi untuk nomor --}}
                             <td>{{ $loop->iteration }}</td>
+                            {{-- step ketoga -> mengubah data statis menjadi dinamis. Referensi nama kolom di model -> News --}}
                             <td class="text-truncate" style="max-width:400px;">{{ e($n->judul) }}</td>
                             <td class="text-center">
                                 @if ($n->gambar)
@@ -61,6 +64,7 @@
                                     <em>No image</em>
                                 @endif
                             </td>
+                            {{-- step keempat -> tambah route untuk button --}}
                             <td class="text-center">
                                 <button class="btn btn-sm btn-see btn-primary rounded-2 me-1" data-id="{{ $n->id }}">
                                     <i class="bi bi-eye"></i>

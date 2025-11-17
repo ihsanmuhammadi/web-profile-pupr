@@ -18,7 +18,7 @@ class WorkController extends Controller
     public function index()
     {
         $works = $this->service->getAll();
-        return view('dummyviews.works.index', compact('works'));
+        return view('pages.admin.admin_peluang_kerja', compact('works'));
     }
 
     public function create()

@@ -19,7 +19,7 @@ class GuidanceController extends Controller
     public function index()
     {
         $guidances = $this->service->getAll();
-        return view('dummyviews.guidances.index', compact('guidances'));
+        return view('pages.admin.admin_pedoman', compact('guidances'));
     }
 
     public function create()

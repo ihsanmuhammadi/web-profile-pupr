@@ -18,7 +18,7 @@ class DataProgramController extends Controller
     public function index()
     {
         $dataPrograms = $this->service->getAll();
-        return view('dummyviews.dataPrograms.index', compact('dataPrograms'));
+        return view('pages.admin.admin_dataprogram', compact('dataPrograms'));
     }
 
     public function create()

@@ -19,7 +19,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = $this->service->getAll();
-        return view('dummyviews.categories.index', compact('categories'));
+        return view('pages.admin.admin_kategori', compact('categories'));
     }
 
     public function create()
