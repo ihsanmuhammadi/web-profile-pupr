@@ -3,9 +3,9 @@ body {
 }
 
 :root {
-    --sidebar-bg-color: #497aa9;
+    --sidebar-bg-color: #49769B;
     --active-bg-color: #fff;
-    --active-text-color: #000;
+    --active-text-color: #49769B;
     --text-color: #fff;
     --collapsed-width: 80px;
     --expanded-width: 280px;
@@ -13,7 +13,7 @@ body {
 
 #sidebar {
     width: var(--expanded-width);
-    height: 100vh;
+    height: 100%;
     position: fixed;
     top: 0;
     left: 0;
@@ -52,10 +52,9 @@ body {
 }
 
 .sidebar-menu-title {
-    font-size: 0.8rem;
-    text-transform: uppercase;
+    font-size: 1rem;
     padding: 10px 20px 5px 20px;
-    color: rgba(255, 255, 255, 0.7);
+    color: white
 }
 
 .sidebar-link {
@@ -91,6 +90,7 @@ li.active > .sidebar-link {
 .sidebar-text {
     overflow: hidden;
     transition: opacity 0.3s;
+    font-size: 14px;
 }
 
 .sidebar-footer {
@@ -100,7 +100,7 @@ li.active > .sidebar-link {
     align-items: center;
     justify-content: space-between;
     cursor: pointer;
-    background-color: #386289;
+    background-color: #49769B;
 }
 
 .user-profile {
@@ -246,3 +246,133 @@ table td {
     border-collapse: separate;
     border-spacing: 0 0.5rem;
 }
+
+.btn-outline-custom {
+  --bs-btn-color: #49769B !important;
+  --bs-btn-border-color: #49769B !important;
+
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #49769B;
+  --bs-btn-hover-border-color: #49769B;
+}
+
+.table td,
+.table th {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+}
+
+.modal-body {
+  overflow-y: auto;
+  max-height: calc(95vh - 120px);
+  padding-right: 8px;
+}
+
+/* LOGIN */
+.login-bg {
+    background: url('../images/bg-feedback.jpg') center/cover no-repeat;
+    position: relative;
+    min-height: 100vh;
+}
+
+.login-bg::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(73, 118, 155, 0.70);
+}
+
+.login-wrapper {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.top-brand {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    gap: 12px;
+}
+
+.top-brand img {
+    width: 45px;
+    height: auto;
+}
+
+.top-brand-title {
+    color: #ffffff;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.login-card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 38px 45px;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0px 5px 20px rgba(0,0,0,0.15);
+}
+
+.form-control-login {
+    background: #F2F2F2 !important;
+    border: 1px solid #e0e0e0;
+    font-size: 15px;
+    color: #000 !important;
+}
+
+.form-control-login::placeholder {
+    color: #7A7A7A !important;
+    font-size: 13px;
+}
+
+.password-wrapper {
+    position: relative;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #7A7A7A;
+    font-size: 18px;
+}
+
+.login-card .btn-login {
+    background: #49769B;
+    color: #fff;
+    padding: 8px;
+    border-radius: 30px;
+    width: 100%;
+}
+
+.login-card .btn-login:hover {
+    background: rgb(34, 68, 96);
+    color: #fff;
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+    .login-card {
+        padding: 30px 25px;
+    }
+    .top-brand-title {
+        font-size: 22px;
+    }
+}
+
+
+
+

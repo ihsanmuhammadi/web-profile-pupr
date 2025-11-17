@@ -17,7 +17,7 @@
             </p>
         </div>
 
-        <div class="mb-4 d-flex align-items-center flex-wrap">
+        <div class="mb-4 d-flex align-items-center flex-wrap info-program">
             <div class="me-5">
                 <p class="h4 text-success mb-0">Jumlah Pekerjaan</p>
                 <p class="h2 text-success mb-0">3</p>
