@@ -18,7 +18,7 @@ class NewsController extends Controller
     public function index()
     {
         $news = $this->service->getAll();
-        return view('dummyviews.news.index', compact('news'));
+        return view('pages.admin.admin_berita', compact('news'));
     }
 
     public function create()
@@ -34,12 +34,15 @@ class NewsController extends Controller
 
     public function show(News $news)
     {
-        return view('dummyviews.news.show', compact('news'));
-    }
+        $news = News::findOrFail($news->id);
 
-    public function edit(News $news)
-    {
-        return view('dummyviews.news.edit', compact('news'));
+        return response()->json([
+
+            'judul' => $news->judul,
+            'gambar' => $news->gambar ? asset('storage/' . $news->gambar) : null,
+            'created_at' => $news->created_at->format('d M Y H:i'),
+            'updated_at' => $news->updated_at->format('d M Y H:i'),
+        ]);
     }
 
     public function update(NewsRequest $request, News $news)

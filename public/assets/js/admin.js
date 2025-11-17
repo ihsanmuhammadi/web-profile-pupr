@@ -107,8 +107,20 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".btn-see").forEach(button => {
         button.addEventListener("click", function () {
-            const modal = new bootstrap.Modal(document.getElementById("detailModal"));
-            modal.show();
+            const id = this.getAttribute("data-id");
+
+            fetch(`/news/${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("detailImage").src = data.gambar ?? "/assets/images/no-image.png";
+                    document.getElementById("detailImageName").textContent = data.gambar ? data.gambar.split('/').pop() : "No image";
+                    document.getElementById("detailJudul").value = data.judul;
+                    document.getElementById("detailCreatedAt").value = data.created_at;
+                    document.getElementById("detailUpdatedAt").value = data.updated_at;
+
+                    const modal = new bootstrap.Modal(document.getElementById("detailModal"));
+                    modal.show();
+                });
         });
     });
 });
@@ -137,11 +149,22 @@ document.addEventListener("DOMContentLoaded", function () {
             const modal = new bootstrap.Modal(document.getElementById("editModal"));
             modal.show();
 
-            const editJudul = document.getElementById("editJudul");
-            if (editJudul) editJudul.value = "Judul banner lama contoh";
+            const id = this.dataset.id;
+            const judul = this.dataset.judul;
+            const gambar = this.dataset.gambar;
 
-            if (editFileName) editFileName.textContent = "banner_lama.jpg";
-            if (editFileText) editFileText.textContent = "File saat ini:";
+            document.getElementById("editJudul").value = judul;
+
+            if (gambar) {
+                editFileName.textContent = gambar.split('/').pop();
+                editFileText.textContent = "File saat ini:";
+            } else {
+                editFileName.textContent = "";
+                editFileText.textContent = "Tidak ada file";
+            }
+
+            const form = document.getElementById("editBannerForm");
+            form.action = `/news/${id}`;
         });
     });
 

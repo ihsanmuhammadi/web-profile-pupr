@@ -33,7 +33,8 @@ Route::get('/feedback', [PageController::class, 'feedback'])->name('feedback');
 Route::get('/kerja-magang', [PageController::class, 'kerjaMagang'])->name('kerja.magang');
 
 // ADMIN
-Route::get('/admin/admin-berita', [AdminController::class, 'adminBerita'])->name('admin.berita');
+// Route::get('/admin/admin-berita', [AdminController::class, 'adminBerita'])->name('admin.berita');
+Route::get('/admin/admin-berita', [NewsController::class, 'index'])->name('admin.berita');
 Route::get('/admin/admin-aduan', [AdminController::class, 'adminAduan'])->name('admin.aduan');
 Route::get('/admin/admin-dataprogram', [AdminController::class, 'adminDataprogram'])->name('admin.dataprogram');
 Route::get('/admin/admin-kategori', [AdminController::class, 'adminKategori'])->name('admin.kategori');

@@ -50,22 +50,38 @@
                     </tr>
                 </thead>
                 <tbody class="border-top-0">
-                    @for($i = 1; $i <= 60; $i++)
-                    <tr>
-                        <td>{{ $i }}</td>
-                        <td class="text-truncate" style="max-width:400px;">
-                            Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum orem ipsum lorem ipsum lorem ipsum lorem ipsum
-                        </td>
-                        <td class="text-center">
-                            <i class="bi bi-image text-secondary fs-5"></i>
-                        </td>
-                        <td class="text-center">
-                            <button class="btn btn-sm btn-see btn-primary rounded-2 me-1"><i class="bi bi-eye"></i></button>
-                            <button class="btn btn-sm btn-edit-banner btn-warning rounded-2 me-1"><i class="bi bi-pencil text-white"></i></button>
-                            <button class="btn btn-sm btn-delete btn-danger rounded-2"><i class="bi bi-trash"></i></button>
-                        </td>
-                    </tr>
-                    @endfor
+                    @forelse ($news as $n)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td class="text-truncate" style="max-width:400px;">{{ e($n->judul) }}</td>
+                            <td class="text-center">
+                                @if ($n->gambar)
+                                    <img src="{{ asset('storage/' . $n->gambar) }}" alt="News Image" style="max-width: 100px;">
+                                @else
+                                    <em>No image</em>
+                                @endif
+                            </td>
+                            <td class="text-center">
+                                <button class="btn btn-sm btn-see btn-primary rounded-2 me-1" data-id="{{ $n->id }}">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                                <button class="btn btn-sm btn-edit-banner btn-warning rounded-2 me-1" data-id="{{ $n->id }}" data-judul="{{ $n->judul }}" data-gambar="{{ $n->gambar }}">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <form action="{{ route('news.destroy', $n->id) }}" method="POST" style="display: inline-block;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-delete btn-danger rounded-2" onclick="return confirm('Are you sure?')">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4">No news entries found.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
@@ -95,21 +111,27 @@
             </div>
 
             <div class="modal-body p-4">
-                <form>
+                <form action="{{ route('news.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+
+                    {{-- Judul Banner --}}
                     <div class="mb-3">
-                        <label class="form-label fw-semibold small text-dark">Judul Banner</label>
-                        <input type="text" class="form-control rounded-3" placeholder="Masukkan Judul Banner...">
+                        <label for="judul" class="form-label fw-semibold small text-dark">Judul Banner</label>
+                        <input type="text" name="judul" id="judul"
+                               class="form-control rounded-3"
+                               value="{{ old('judul') }}"
+                               placeholder="Masukkan Judul Banner...">
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label fw-semibold small text-dark">Gambar Banner</label>
+                        <label for="gambar" class="form-label fw-semibold small text-dark">Gambar Banner</label>
                         <div id="dropArea"
                              class="border rounded-4 d-flex flex-column align-items-center justify-content-center py-5 position-relative"
                              style="border: 1px solid #ccc; background-color: #fafafa;">
                             <i class="bi bi-plus fs-3 text-muted mb-2"></i>
                             <p class="text-muted small mb-1" id="fileText">Tambahkan atau seret dan lepas gambar</p>
                             <p class="text-secondary small fw-semibold mb-0" id="fileName"></p>
-                            <input id="fileInput" type="file" accept="image/*"
+                            <input id="fileInput" type="file" name="gambar" accept="image/*"
                                    class="position-absolute top-0 start-0 w-100 h-100"
                                    style="cursor: pointer; opacity: 0;">
                         </div>
@@ -184,10 +206,12 @@
             </div>
 
             <div class="modal-body p-4">
-                <form id="editBannerForm">
+                <form id="editBannerForm" action="" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Judul Banner</label>
-                        <input type="text" id="editJudul" class="form-control rounded-3" placeholder="Masukkan Judul Banner...">
+                        <input type="text" name="judul" id="editJudul" class="form-control rounded-3" placeholder="Masukkan Judul Banner...">
                     </div>
 
                     <div class="mb-3">
@@ -198,7 +222,7 @@
                             <i class="bi bi-plus fs-3 text-muted mb-2"></i>
                             <p class="text-muted small mb-1" id="editFileText">Tambahkan atau seret dan lepas gambar</p>
                             <p class="text-secondary small fw-semibold mb-0" id="editFileName"></p> {{-- Nama file --}}
-                            <input id="editFileInput" type="file" accept="image/*"
+                            <input id="editFileInput" name="gambar" type="file" accept="image/*"
                                    class="position-absolute top-0 start-0 w-100 h-100"
                                    style="cursor: pointer; opacity: 0;">
                         </div>

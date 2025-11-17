@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\News;
+use Illuminate\Support\Facades\Storage;
 
 class NewsService
 {
