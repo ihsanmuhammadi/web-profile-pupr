@@ -28,71 +28,71 @@
         <div class="col-lg-12 col-md-11 px-5">
             <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
 
-            <div class="dropdown flex-fill" style="min-width: 150px;">
-                <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">
-                Level
-                </button>
-                <ul class="dropdown-menu p-2 mt-3 ps-3" style="width: 180px;">
-                <label class="form-label fw-bold ms-2 text-dark">Level</label>
-                <li><div class="form-check"><input class="form-check-input" type="checkbox" id=""><label class="form-check-label" for="">SMA/SMK</label></div></li>
-                <li><div class="form-check"><input class="form-check-input" type="checkbox" id=""><label class="form-check-label" for="">D3</label></div></li>
-                <li><div class="form-check"><input class="form-check-input" type="checkbox" id=""><label class="form-check-label" for="">S1</label></div></li>
-                <li><div class="form-check"><input class="form-check-input" type="checkbox" id=""><label class="form-check-label" for="">S2</label></div></li>
-                </ul>
-            </div>
-
-            <div class="dropdown flex-fill" style="min-width: 150px;">
-                <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">
-                Jenis
-                </button>
-                <ul class="dropdown-menu p-2 mt-3 ps-3" style="width: 180px;">
-                <label class="form-label fw-bold ms-2 text-dark">Jenis</label>
-                <li><div class="form-check"><input class="form-check-input" type="checkbox" id=""><label class="form-check-label" for="">Full Time</label></div></li>
-                <li><div class="form-check"><input class="form-check-input" type="checkbox" id=""><label class="form-check-label" for="">Part Time</label></div></li>
-                <li><div class="form-check"><input class="form-check-input" type="checkbox" id=""><label class="form-check-label" for="">Kontrak</label></div></li>
-                <li><div class="form-check"><input class="form-check-input" type="checkbox" id=""><label class="form-check-label" for="">Magang</label></div></li>
-                </ul>
-            </div>
-
-            <div class="dropdown flex-fill" style="min-width: 150px;">
-                <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">
-                Tipe
-                </button>
-                <ul class="dropdown-menu p-2 mt-3 ps-3" style="width: 180px;">
-                <label class="form-label fw-bold ms-2 text-dark">Tipe</label>
-                <li><div class="form-check"><input class="form-check-input" type="checkbox" id=""><label class="form-check-label" for="">WFO</label></div></li>
-                <li><div class="form-check"><input class="form-check-input" type="checkbox" id=""><label class="form-check-label" for="">WFH</label></div></li>
-                <li><div class="form-check"><input class="form-check-input" type="checkbox" id=""><label class="form-check-label" for="">Remote</label></div></li>
-                </ul>
-            </div>
-
-            <div class="dropdown flex-fill" style="min-width: 150px;">
-                <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">
-                Lokasi
-                </button>
-                <ul class="dropdown-menu p-2 mt-3 ps-3" style="width: 180px;">
-                <label class="form-label fw-bold ms-2 text-dark">Lokasi</label>
-                <li><input type="search" class="form-control form-control-sm mb-2" style="max-width: 150px;" placeholder="Cari lokasi"></li>
-                <li><div class="form-check"><input class="form-check-input" type="checkbox" id=""><label class="form-check-label" for="">Kota A</label></div></li>
-                <li><div class="form-check"><input class="form-check-input" type="checkbox" id=""><label class="form-check-label" for="">Kota B</label></div></li>
-                <li><div class="form-check"><input class="form-check-input" type="checkbox" id=""><label class="form-check-label" for="">Kota C</label></div></li>
-                </ul>
-            </div>
-
-            <div class="d-flex align-items-center flex-fill" style="min-width: 200px;">
-                <label for="sortFilter" class="form-label mb-0 me-2 small text-muted">Urut Berdasarkan:</label>
-                <div class="dropdown flex-grow-1">
-                <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">
-                    Urut Berdasarkan
-                </button>
-                <ul class="dropdown-menu p-2 mt-3" style="width: 210px;">
-                    <label class="form-label fw-bold ms-2 text-dark">Urutkan</label>
-                    <li><button class="dropdown-item small">Paling Relevan</button></li>
-                    <li><button class="dropdown-item small">Terbaru</button></li>
-                    <li><button class="dropdown-item small">Terlama</button></li>
-                </ul>
+                <div class="dropdown flex-fill" style="min-width: 150px;">
+                    <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">
+                    Level
+                    </button>
+                    <ul class="dropdown-menu p-2 mt-3 ps-3" style="width: 180px;">
+                    <label class="form-label fw-bold ms-2 text-dark">Level</label>
+                    <li><div class="form-check"><input class="form-check-input" type="checkbox" id=""><label class="form-check-label" for="">SMA/SMK</label></div></li>
+                    <li><div class="form-check"><input class="form-check-input" type="checkbox" id=""><label class="form-check-label" for="">D3</label></div></li>
+                    <li><div class="form-check"><input class="form-check-input" type="checkbox" id=""><label class="form-check-label" for="">S1</label></div></li>
+                    <li><div class="form-check"><input class="form-check-input" type="checkbox" id=""><label class="form-check-label" for="">S2</label></div></li>
+                    </ul>
                 </div>
-            </div>
+
+                <div class="dropdown flex-fill" style="min-width: 150px;">
+                    <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">
+                    Jenis
+                    </button>
+                    <ul class="dropdown-menu p-2 mt-3 ps-3" style="width: 180px;">
+                    <label class="form-label fw-bold ms-2 text-dark">Jenis</label>
+                    <li><div class="form-check"><input class="form-check-input" type="checkbox" id=""><label class="form-check-label" for="">Full Time</label></div></li>
+                    <li><div class="form-check"><input class="form-check-input" type="checkbox" id=""><label class="form-check-label" for="">Part Time</label></div></li>
+                    <li><div class="form-check"><input class="form-check-input" type="checkbox" id=""><label class="form-check-label" for="">Kontrak</label></div></li>
+                    <li><div class="form-check"><input class="form-check-input" type="checkbox" id=""><label class="form-check-label" for="">Magang</label></div></li>
+                    </ul>
+                </div>
+
+                <div class="dropdown flex-fill" style="min-width: 150px;">
+                    <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">
+                    Tipe
+                    </button>
+                    <ul class="dropdown-menu p-2 mt-3 ps-3" style="width: 180px;">
+                    <label class="form-label fw-bold ms-2 text-dark">Tipe</label>
+                    <li><div class="form-check"><input class="form-check-input" type="checkbox" id=""><label class="form-check-label" for="">WFO</label></div></li>
+                    <li><div class="form-check"><input class="form-check-input" type="checkbox" id=""><label class="form-check-label" for="">WFH</label></div></li>
+                    <li><div class="form-check"><input class="form-check-input" type="checkbox" id=""><label class="form-check-label" for="">Remote</label></div></li>
+                    </ul>
+                </div>
+
+                <div class="dropdown flex-fill" style="min-width: 150px;">
+                    <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">
+                    Lokasi
+                    </button>
+                    <ul class="dropdown-menu p-2 mt-3 ps-3" style="width: 180px;">
+                    <label class="form-label fw-bold ms-2 text-dark">Lokasi</label>
+                    <li><input type="search" class="form-control form-control-sm mb-2" style="max-width: 150px;" placeholder="Cari lokasi"></li>
+                    <li><div class="form-check"><input class="form-check-input" type="checkbox" id=""><label class="form-check-label" for="">Kota A</label></div></li>
+                    <li><div class="form-check"><input class="form-check-input" type="checkbox" id=""><label class="form-check-label" for="">Kota B</label></div></li>
+                    <li><div class="form-check"><input class="form-check-input" type="checkbox" id=""><label class="form-check-label" for="">Kota C</label></div></li>
+                    </ul>
+                </div>
+
+                <div class="d-flex align-items-center flex-fill" style="min-width: 200px;">
+                    <label for="sortFilter" class="form-label mb-0 me-2 small text-muted">Urut Berdasarkan:</label>
+                    <div class="dropdown flex-grow-1">
+                    <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">
+                        Urut Berdasarkan
+                    </button>
+                    <ul class="dropdown-menu p-2 mt-3" style="width: 210px;">
+                        <label class="form-label fw-bold ms-2 text-dark">Urutkan</label>
+                        <li><button class="dropdown-item small">Paling Relevan</button></li>
+                        <li><button class="dropdown-item small">Terbaru</button></li>
+                        <li><button class="dropdown-item small">Terlama</button></li>
+                    </ul>
+                    </div>
+                </div>
 
             </div>
         </div>

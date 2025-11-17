@@ -2,6 +2,10 @@ body {
   font-family: 'Poppins', sans-serif !important;
 }
 
+html, body {
+    overflow-x: hidden !important;
+}
+
 .hero {
   position: relative;
 }
@@ -16,6 +20,7 @@ body {
 .navbar {
   transition: all 0.3s ease;
   z-index: 1050;
+  width: 100%;
 }
 
 .navbar-nav a {
@@ -326,7 +331,7 @@ body {
 /* STRUKTUR ORGANISASI */
 .struktur-header {
   position: relative;
-  height: 90vh;
+  /* height: 90vh; */
   overflow: hidden;
 }
 .header-text-struktur h1{
@@ -688,6 +693,34 @@ form .form-control::placeholder {
     height: 45px;
   }
 
+  .hero h1{
+    font-size: 1.5rem;
+  }
+
+  .visi-misi-header{
+    margin-top: 15%;
+  }
+
+  .visi-misi-header .header-text h1 {
+    font-size: 1.2rem;
+  }
+
+  .struktur-header {
+    margin-top: 15%;
+  }
+  .header-text-struktur h1{
+    font-size: 1.4rem;
+  }
+
+  .info-program p{
+    font-size: 1.2rem;
+  }
+  .info-program .me-5,
+  .info-program .ms-5 {
+    margin-left: 0.7rem !important;
+    margin-right: 0.7rem !important;
+  }
+
   .data-program .border {
     padding: 20px;
   }
@@ -729,6 +762,52 @@ form .form-control::placeholder {
     border-top-left-radius: var(--bs-card-inner-border-radius);
     border-bottom-left-radius: var(--bs-card-inner-border-radius);
     border-top-right-radius: 0;
+  }
+
+   .breadcrumb-custom {
+        font-size: 0.8rem !important;
+    }
+
+  .info-bar {
+        flex-direction: column !important;
+    }
+
+    .info-bar div,
+    .info-bar span {
+        font-size: 0.9rem !important;
+    }
+    .container-detail-program {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .container-detail-program h2.h3 {
+        font-size: 1.2rem !important;
+    }
+
+    .container-detail-program p,
+    .container-detail-program .fs-5 {
+        font-size: 0.95rem !important;
+        line-height: 1.6 !important;
+    }
+    .action-box {
+        text-align: center !important;
+        width: 100%;
+        margin-top: 2rem;
+    }
+
+    .action-box a {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .action-box p {
+        text-align: center !important;
+        margin-left: 0 !important;
+    }
+
+  .footer-header .footer-title {
+    font-size: 1rem;
   }
 
 }

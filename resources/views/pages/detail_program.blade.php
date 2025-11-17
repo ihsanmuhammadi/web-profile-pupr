@@ -8,21 +8,20 @@
 
         {{-- navigasi breadcrumb --}}
         <nav aria-label="breadcrumb" class="mb-4">
-        <ol class="breadcrumb small mb-0" style="background: none; padding: 0;">
-            <li class="breadcrumb-item">
-            <a id="breadcrumbPrev" href="/jalan-lingkungan" class="text-decoration-none text-muted">
-                Jalan Lingkungan
-            </a>
-            </li>
-            <span class="breadcrumb-separator material-symbols-outlined mx-1">
-            arrow_forward_ios
-            </span>
-            <li class="breadcrumb-item active fw-bold text-dark" aria-current="page">Detail</li>
-        </ol>
+            <ol class="breadcrumb small mb-0 breadcrumb-custom" style="background: none; padding: 0;">
+                <li class="breadcrumb-item">
+                <a id="breadcrumbPrev" href="/jalan-lingkungan" class="text-decoration-none text-muted">
+                    Jalan Lingkungan
+                </a>
+                </li>
+                <span class="breadcrumb-separator material-symbols-outlined mx-1">
+                arrow_forward_ios
+                </span>
+                <li class="breadcrumb-item active fw-bold text-dark" aria-current="page">Detail</li>
+            </ol>
         </nav>
 
-
-        <div class="text-center mb-5">
+        <div class="title-program text-center mb-5">
             <span class="badge program-category-badge rounded-1 px-3 py-2 fw-normal text-white mb-4" style="font-size: 1rem">
                 Jalan Lingkungan
             </span>
@@ -90,7 +89,7 @@
             </div>
 
             <div class="col-lg-4 d-flex justify-content-lg-end">
-                <div class="mb-4 text-end">
+                <div class="mb-4 text-end action-box">
                     <a href="{{ route('kerja.magang') }}" class="btn btn-outline-success rounded-pill px-4 py-2 fw-medium text-nowrap">
                         Lihat Peluang Pekerjaan dan Magang
                     </a>
