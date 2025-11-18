@@ -35,12 +35,12 @@ Route::get('/kerja-magang', [PageController::class, 'kerjaMagang'])->name('kerja
 // ADMIN
 // Route::get('/admin/admin-berita', [AdminController::class, 'adminBerita'])->name('admin.berita');
 Route::get('/admin/admin-berita', [NewsController::class, 'index'])->name('admin.berita');
-Route::get('/admin/admin-aduan', [AdminController::class, 'adminAduan'])->name('admin.aduan');
-Route::get('/admin/admin-dataprogram', [AdminController::class, 'adminDataprogram'])->name('admin.dataprogram');
-Route::get('/admin/admin-kategori', [AdminController::class, 'adminKategori'])->name('admin.kategori');
-Route::get('/admin/admin-lamaran', [AdminController::class, 'adminLamaran'])->name('admin.lamaran');
-Route::get('/admin/admin-pedoman', [AdminController::class, 'adminPedoman'])->name('admin.pedoman');
-Route::get('/admin/admin-peluang-kerja', [AdminController::class, 'adminPeluangKerja'])->name('admin.peluang.kerja');
+Route::get('/admin/admin-aduan', [ComplaintController::class, 'index'])->name('admin.aduan');
+Route::get('/admin/admin-dataprogram', [DataProgramController::class, 'index'])->name('admin.dataprogram');
+Route::get('/admin/admin-kategori', [CategoryController::class, 'index'])->name('admin.kategori');
+Route::get('/admin/admin-lamaran', [ApplicationController::class, 'index'])->name('admin.lamaran');
+Route::get('/admin/admin-pedoman', [GuidanceController::class, 'index'])->name('admin.pedoman');
+Route::get('/admin/admin-peluang-kerja', [WorkController::class, 'index'])->name('admin.peluang.kerja');
 
 Route::get('/admin/admin-login', [AdminController::class, 'adminLogin'])->name('admin.login');
 

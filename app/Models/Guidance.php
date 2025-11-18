@@ -15,7 +15,7 @@ class Guidance extends Model
     protected $keyType = 'string';
     public $incrementing = false;
 
-    protected $fillable = ['nama', 'email', 'pesan'];
+    protected $fillable = ['link', 'kategori'];
 
     protected static function boot()
     {
