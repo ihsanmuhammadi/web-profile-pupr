@@ -14,13 +14,15 @@
             </p>
         </div>
 
-        <form action="#" method="POST">
-
+        <form action="{{ route('complaints.store') }}" method="POST">
+            @csrf
+            
             <div class="mb-4">
-                <label for="nama_lengkap" class="form-label fw-medium text-dark fs-5">Nama Lengkap</label>
+                <label for="nama" class="form-label fw-medium text-dark fs-5">Nama Lengkap</label>
                 <input type="text"
+                       name="nama"
                        class="form-control form-control-lg custom-input-field"
-                       id="nama_lengkap"
+                       id="nama"
                        placeholder="Masukkan Nama Lengkap Anda"
                        required>
             </div>
@@ -28,6 +30,7 @@
             <div class="mb-4">
                 <label for="email" class="form-label fw-medium text-dark fs-5">Email</label>
                 <input type="email"
+                       name="email"
                        class="form-control form-control-lg custom-input-field"
                        id="email"
                        placeholder="Masukkan Email Anda"
@@ -37,6 +40,7 @@
             <div class="mb-5">
                 <label for="pesan" class="form-label fw-medium text-dark fs-5">Pesan</label>
                 <textarea class="form-control custom-textarea-field"
+                          name="pesan"
                           id="pesan"
                           rows="8"
                           placeholder="Masukkan Pesan yang Akan Anda Kirim..."

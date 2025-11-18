@@ -15,9 +15,10 @@ class ComplaintController extends Controller
         $this->service = $service;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $complaints = $this->service->getAll();
+        $perPage = $request->input('per_page', 10);
+        $complaints = $this->service->getAll($perPage);
         return view('pages.admin.admin_aduan', compact('complaints'));
     }
 
@@ -31,7 +32,7 @@ class ComplaintController extends Controller
         $validated = $request->validated();
         $this->service->create($validated);
 
-        return redirect()->route('complaints.index')->with('success', 'Complaint created successfully.');
+        return redirect()->route('aduan')->with('success', 'Complaint created successfully.');
     }
 
     public function show(Complaint $complaint)

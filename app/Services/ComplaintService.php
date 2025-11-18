@@ -6,9 +6,10 @@ use App\Models\Complaint;
 
 class ComplaintService
 {
-    public function getAll()
+    public function getAll($perPage = 10)
     {
-        return Complaint::latest()->get();
+        $perPage = in_array($perPage, [10, 25, 50]) ? $perPage : 10;
+        return Complaint::latest()->paginate($perPage);
     }
 
     public function find($id)

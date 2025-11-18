@@ -50,23 +50,23 @@
     <div class="border rounded-4 p-4 shadow-sm mx-auto" style="max-width: 95%;" data-aos="zoom-in">
       <div class="row justify-content-center">
         <div class="col-6 col-md-2 mb-4 mb-md-0">
-          <h3 class="fw-bold data-number">3</h3>
+          <h3 class="fw-bold data-number">{{ $total_jalan_lingkungan }}</h3>
           <p class="fw-semibold mb-0">Jalan Lingkungan</p>
         </div>
         <div class="col-6 col-md-2 mb-4 mb-md-0">
-          <h3 class="fw-bold data-number">5</h3>
+          <h3 class="fw-bold data-number">{{ $total_drainase_lingkungan }}</h3>
           <p class="fw-semibold mb-0">Drainase Lingkungan</p>
         </div>
         <div class="col-6 col-md-2 mb-4 mb-md-0">
-          <h3 class="fw-bold data-number">4</h3>
+          <h3 class="fw-bold data-number">{{ $total_jembatan_lingkungan }}</h3>
           <p class="fw-semibold mb-0">Jembatan Lingkungan</p>
         </div>
         <div class="col-6 col-md-2 mb-4 mb-md-0">
-          <h3 class="fw-bold data-number">500</h3>
+          <h3 class="fw-bold data-number">{{ $total_perumahan }}</h3>
           <p class="fw-semibold mb-0">Perumahan</p>
         </div>
         <div class="col-6 col-md-2">
-          <h3 class="fw-bold data-number">200</h3>
+          <h3 class="fw-bold data-number">{{ $total_rumah_tidak_layak }}</h3>
           <p class="fw-semibold mb-0">Rumah Tidak Layak Huni</p>
         </div>
       </div>
@@ -84,7 +84,7 @@
           Tujuannya untuk meningkatkan aksesibilitas antar rumah, fasilitas umum, dan jalan utama, sehingga mobilitas warga menjadi lebih lancar serta kualitas lingkungan permukiman semakin baik.
         </p>
         <div class="d-flex align-items-center mt-3">
-          <h4 class="fw-bold angka mb-0 me-4">3</h4>
+          <h4 class="fw-bold angka mb-0 me-4">{{ $total_jalan_lingkungan }}</h4>
           <div>
             <p class="text-muted mb-1">Total pekerjaan yang terdaftar</p>
             <a href="{{ route('jalan.lingkungan') }}" class="fw-bold text-dark text-decoration-none">Selengkapnya →</a>
@@ -106,7 +106,7 @@
           untuk mengalirkan air hujan maupun limbah agar tidak terjadi genangan dan banjir.
         </p>
         <div class="d-flex align-items-center mt-3">
-          <h4 class="fw-bold angka mb-0 me-4">5</h4>
+          <h4 class="fw-bold angka mb-0 me-4">{{ $total_drainase_lingkungan }}</h4>
           <div>
             <p class="text-muted mb-1">Total pekerjaan yang terdaftar</p>
             <a href="{{ route('drainase.lingkungan') }}" class="fw-bold text-dark text-decoration-none">Selengkapnya →</a>
@@ -128,7 +128,7 @@
           dalam satu kawasan permukiman untuk memperlancar mobilitas warga dan akses ke fasilitas umum.
         </p>
         <div class="d-flex align-items-center mt-3">
-          <h4 class="fw-bold angka mb-0 me-4">4</h4>
+          <h4 class="fw-bold angka mb-0 me-4">{{ $total_jembatan_lingkungan }}</h4>
           <div>
             <p class="text-muted mb-1">Total pekerjaan yang terdaftar</p>
             <a href="{{ route('jembatan.lingkungan') }}" class="fw-bold text-dark text-decoration-none">Selengkapnya →</a>
@@ -151,11 +151,11 @@
         </p>
         <div class="d-flex gap-4">
           <div>
-            <h4 class="fw-bold angka">200</h4>
+            <h4 class="fw-bold angka">{{ $total_rumah_tidak_layak }}</h4>
             <p class="text-muted mb-0">Total Rumah Tidak Layak Huni</p>
           </div>
           <div style="margin-left: 100px">
-            <h4 class="fw-bold angka">25</h4>
+            <h4 class="fw-bold angka">{{ $avg_rumah_tidak_layak_per_kecamatan }}</h4>
             <p class="text-muted mb-0">Rata-rata per Kecamatan</p>
           </div>
         </div>
@@ -177,11 +177,11 @@
         </p>
         <div class="d-flex gap-4">
           <div>
-            <h4 class="fw-bold angka">500</h4>
+            <h4 class="fw-bold angka">{{ $total_perumahan }}</h4>
             <p class="text-muted mb-0">Total Perumahan</p>
           </div>
           <div style="margin-left: 100px">
-            <h4 class="fw-bold angka">40</h4>
+            <h4 class="fw-bold angka">{{ $avg_perumahan_per_kecamatan }}</h4>
             <p class="text-muted mb-0">Rata-rata per Kecamatan</p>
           </div>
         </div>
@@ -205,46 +205,21 @@
   </div>
 
   <div id="carouselBerita" class="carousel slide" data-bs-ride="carousel">
-    <!-- Indicators -->
-    {{-- <div class="carousel-indicators">
-      <button type="button" data-bs-target="#carouselBerita" data-bs-slide-to="0" class="active"></button>
-      <button type="button" data-bs-target="#carouselBerita" data-bs-slide-to="1"></button>
-      <button type="button" data-bs-target="#carouselBerita" data-bs-slide-to="2"></button>
-    </div> --}}
-
     <div class="carousel-inner">
-      <div class="carousel-item active">
-        <div class="carousel-card">
-          <img src="{{ asset('assets/images/jalan.png') }}" class="w-100 rounded-5" alt="Berita 1">
-          <div class="carousel-overlay d-flex justify-content-center align-items-end">
-            <div class="text-center text-white carousel-text">
-              <h2 class="fw-bold mb-2">Peresmian Pembangunan Jalan Baru</h2>
+       @foreach($news as $index => $item)
+            <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
+                <div class="carousel-card">
+                    <img src="{{ asset('storage/' . $item->gambar) }}"
+                         class="w-100 rounded-5"
+                         alt="{{ $item->judul }}">
+                    <div class="carousel-overlay d-flex justify-content-center align-items-end">
+                        <div class="text-center text-white carousel-text">
+                            <h2 class="fw-bold mb-2">{{ $item->judul }}</h2>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="carousel-item">
-        <div class="carousel-card">
-          <img src="{{ asset('assets/images/jalan.png') }}" class="w-100 rounded-5" alt="Berita 2">
-          <div class="carousel-overlay d-flex justify-content-center align-items-end">
-            <div class="text-center text-white carousel-text">
-              <h2 class="fw-bold mb-2">Program Drainase Lingkungan 2025</h3>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="carousel-item">
-        <div class="carousel-card">
-          <img src="{{ asset('assets/images/jalan.png') }}" class="w-100 rounded-5" alt="Berita 3">
-          <div class="carousel-overlay d-flex justify-content-center align-items-end">
-            <div class="text-center text-white carousel-text">
-              <h2 class="fw-bold mb-2">Peningkatan Rumah Tidak Layak Huni</h2>
-            </div>
-          </div>
-        </div>
-      </div>
+        @endforeach
     </div>
 
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselBerita" data-bs-slide="prev">

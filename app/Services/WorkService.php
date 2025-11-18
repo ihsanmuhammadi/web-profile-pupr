@@ -7,9 +7,10 @@ use App\Models\Work;
 
 class WorkService
 {
-    public function getAll()
+    public function getAll($perPage = 10)
     {
-        return Work::latest()->get();
+        $perPage = in_array($perPage, [10, 25, 50]) ? $perPage : 10;
+        return Work::latest()->paginate($perPage);
     }
 
     public function find($id)

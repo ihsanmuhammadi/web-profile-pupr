@@ -7,9 +7,10 @@ use App\Models\Category;
 
 class DataProgramService
 {
-    public function getAll()
+    public function getAll($perPage = 10)
     {
-        return DataProgram::latest()->get();
+        $perPage = in_array($perPage, [10, 25, 50]) ? $perPage : 10;
+        return DataProgram::latest()->paginate($perPage);
     }
 
     public function find($id)

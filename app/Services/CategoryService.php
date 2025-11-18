@@ -6,9 +6,10 @@ use App\Models\Category;
 
 class CategoryService
 {
-    public function getAll()
+    public function getAll($perPage = 10)
     {
-        return Category::latest()->get();
+        $perPage = in_array($perPage, [10, 25, 50]) ? $perPage : 10;
+        return Category::latest()->paginate($perPage);
     }
 
     public function find($id)

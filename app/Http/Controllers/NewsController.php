@@ -15,9 +15,10 @@ class NewsController extends Controller
         $this->service = $service;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $news = $this->service->getAll();
+        $perPage = $request->input('per_page', 10);
+        $news = $this->service->getAll($perPage);
         return view('pages.admin.admin_berita', compact('news'));
     }
 

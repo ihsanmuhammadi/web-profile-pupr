@@ -6,9 +6,10 @@ use App\Models\Guidance;
 
 class GuidanceService
 {
-    public function getAll()
+    public function getAll($perPage = 10)
     {
-        return Guidance::latest()->get();
+        $perPage = in_array($perPage, [10, 25, 50]) ? $perPage : 10;
+        return Guidance::latest()->paginate($perPage);
     }
 
     public function find($id)

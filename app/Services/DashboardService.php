@@ -7,7 +7,7 @@ use App\Models\Application;
 use App\Models\DataProgram;
 // use Illuminate\Support\Facades\Storage;
 
-class ApplicationService
+class DashboardService
 {
     public function getAllDataProgram(array $filters = [])
     {
@@ -46,7 +46,7 @@ class ApplicationService
         $sortBy = $filters['sort_by'] ?? 'created_at';
         $sortOrder = $filters['sort_order'] ?? 'desc';
 
-        return $query->orderBy($sortBy, $sortOrder)->get();
+        return $query->orderBy($sortBy, $sortOrder)->paginate(5);
     }
 
     public function getAllWorks(array $filters = [])
@@ -95,6 +95,6 @@ class ApplicationService
         $sortBy = $filters['sort_by'] ?? 'created_at';
         $sortOrder = $filters['sort_order'] ?? 'desc';
 
-        return $query->orderBy($sortBy, $sortOrder)->get();
+        return $query->orderBy($sortBy, $sortOrder)->paginate(9);
     }
 }

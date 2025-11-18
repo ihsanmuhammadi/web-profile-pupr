@@ -16,9 +16,10 @@ class CategoryController extends Controller
         $this->service = $service;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $categories = $this->service->getAll();
+        $perPage = $request->input('per_page', 10);
+        $categories = $this->service->getAll($perPage);
         return view('pages.admin.admin_kategori', compact('categories'));
     }
 

@@ -15,9 +15,10 @@ class DataProgramController extends Controller
         $this->service = $service;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $dataPrograms = $this->service->getAll();
+        $perPage = $request->input('per_page', 10);
+        $dataPrograms = $this->service->getAll($perPage);
         return view('pages.admin.admin_dataprogram', compact('dataPrograms'));
     }
 

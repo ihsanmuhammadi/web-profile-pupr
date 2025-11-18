@@ -15,10 +15,11 @@ class ApplicationController extends Controller
         $this->service = $service;
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $perPage = $request->input('per_page', 10);
         $works = $this->service->getWork();
-        $applications = $this->service->getAll();
+        $applications = $this->service->getAll($perPage);
         return view('pages.admin.admin_lamaran', compact('applications', 'works'));
     }
 

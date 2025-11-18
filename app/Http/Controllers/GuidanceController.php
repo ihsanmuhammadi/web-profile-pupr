@@ -16,9 +16,10 @@ class GuidanceController extends Controller
         $this->service = $service;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $guidances = $this->service->getAll();
+        $perPage = $request->input('per_page', 10);
+        $guidances = $this->service->getAll($perPage);
         return view('pages.admin.admin_pedoman', compact('guidances'));
     }
 

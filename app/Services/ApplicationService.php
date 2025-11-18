@@ -8,11 +8,12 @@ use Illuminate\Support\Facades\Storage;
 
 class ApplicationService
 {
-    public function getAll()
+    public function getAll($perPage = 10)
     {
-        return Application::latest()->get();
+        $perPage = in_array($perPage, [10, 25, 50]) ? $perPage : 10;
+        return Application::latest()->paginate($perPage);
     }
-
+    
     public function find($id)
     {
         return Application::findOrFail($id);

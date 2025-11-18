@@ -116,43 +116,136 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-// DETAIL PEKERJAAN
 document.addEventListener('DOMContentLoaded', () => {
-    const overlay = document.getElementById('jobOverlay');
-    const closeBtn = document.getElementById('closeSidebar');
+    let currentWorkId = null;
+
+    // DETAIL PEKERJAAN
+    const jobOverlay = document.getElementById('jobOverlay');
+    const closeSidebarBtn = document.getElementById('closeSidebar');
     const jobCards = document.querySelectorAll('.job-card');
 
     jobCards.forEach(card => {
-      card.addEventListener('click', () => {
-        overlay.classList.add('show');
-        document.body.style.overflow = 'hidden';
-      });
+        card.addEventListener('click', () => {
+            // Get data from card
+            currentWorkId = card.dataset.id;
+            const posisi = card.dataset.posisi;
+            const program = card.dataset.program;
+            const kualifikasi = card.dataset.kualifikasi;
+            const jenis = card.dataset.jenis;
+            const bidang = card.dataset.bidang;
+            const tipe = card.dataset.tipe;
+            const lokasi = card.dataset.lokasi;
+            const gaji = card.dataset.gaji;
+            const tenggat = card.dataset.tenggat;
+            const deskripsi = card.dataset.deskripsi;
+            const kualifikasiDetail = card.dataset.kualifikasiDetail;
+            const logo = card.dataset.logo;
+
+            // Update overlay detail content
+            document.getElementById('detailLogo').src = logo;
+            document.getElementById('detailPosisi').textContent = posisi;
+            document.getElementById('detailProgram').textContent = program;
+            document.getElementById('detailTenggat').textContent = tenggat;
+            document.getElementById('detailKualifikasi').textContent = kualifikasi;
+            document.getElementById('detailJenis').textContent = jenis;
+            document.getElementById('detailBidang').textContent = bidang || '-';
+            document.getElementById('detailTipe').textContent = tipe;
+            document.getElementById('detailLokasi').textContent = lokasi;
+            document.getElementById('detailGaji').textContent = gaji;
+
+            // Parse deskripsi
+            if (deskripsi) {
+                const deskList = deskripsi.split('\n').filter(item => item.trim() !== '');
+                const deskHTML = '<ul class="small mb-3">' +
+                    deskList.map(item => `<li>${item}</li>`).join('') +
+                    '</ul>';
+                document.getElementById('detailDeskripsi').innerHTML = deskHTML;
+            }
+
+            // Parse kualifikasi detail
+            if (kualifikasiDetail) {
+                const kualList = kualifikasiDetail.split('\n').filter(item => item.trim() !== '');
+                const kualHTML = '<ul class="small mb-0">' +
+                    kualList.map(item => `<li>${item}</li>`).join('') +
+                    '</ul>';
+                document.getElementById('detailKualifikasiDetail').innerHTML = kualHTML;
+            }
+
+            // Show overlay
+            jobOverlay.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        });
     });
 
-    closeBtn.addEventListener('click', () => {
-      overlay.classList.remove('show');
-      document.body.style.overflow = 'auto';
-    });
-
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) {
-        overlay.classList.remove('show');
+    closeSidebarBtn.addEventListener('click', () => {
+        jobOverlay.classList.remove('show');
         document.body.style.overflow = 'auto';
-      }
     });
-  });
 
-// FORM LAMAR
-document.addEventListener('DOMContentLoaded', () => {
-  const openBtn = document.getElementById('openApplyForm');
-  const overlay = document.getElementById('applyOverlay');
-  const cancelBtn = document.getElementById('cancelApply');
+    jobOverlay.addEventListener('click', (e) => {
+        if (e.target === jobOverlay) {
+            jobOverlay.classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+    });
 
-  openBtn.addEventListener('click', () => overlay.classList.remove('d-none'));
-  cancelBtn.addEventListener('click', () => overlay.classList.add('d-none'));
-  overlay.addEventListener('click', (e) => {
-    if (e.target === overlay) overlay.classList.add('d-none');
-  });
+    // FORM LAMAR
+    const openApplyBtn = document.getElementById('openApplyForm');
+    const applyOverlay = document.getElementById('applyOverlay');
+    const cancelApplyBtn = document.getElementById('cancelApply');
+    const clearPortofolioBtn = document.getElementById('clearPortofolio');
+    const applyForm = document.getElementById('applyForm');
+    const successOverlay = document.getElementById('successOverlay');
+    const closeSuccessBtn = document.getElementById('closeSuccess');
+
+    openApplyBtn.addEventListener('click', () => {
+        // Get current job data
+        const posisi = document.getElementById('detailPosisi').textContent;
+        const program = document.getElementById('detailProgram').textContent;
+
+        // Update form header
+        document.getElementById('applyPosisi').textContent = 'Lamar ' + posisi;
+        document.getElementById('applyProgram').textContent = program;
+        document.getElementById('applyWorkId').value = currentWorkId;
+
+        // Show apply form
+        applyOverlay.classList.remove('d-none');
+    });
+
+    cancelApplyBtn.addEventListener('click', () => {
+        applyOverlay.classList.add('d-none');
+        applyForm.reset();
+    });
+
+    applyOverlay.addEventListener('click', (e) => {
+        if (e.target === applyOverlay) {
+            applyOverlay.classList.add('d-none');
+            applyForm.reset();
+        }
+    });
+
+    clearPortofolioBtn.addEventListener('click', () => {
+        document.querySelector('input[name="portofolio"]').value = '';
+    });
+
+    // Show loading on form submit
+    applyForm.addEventListener('submit', (e) => {
+        const submitBtn = applyForm.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Mengirim...';
+    });
+
+    // Close success overlay
+    closeSuccessBtn.addEventListener('click', () => {
+        successOverlay.classList.add('d-none');
+        document.body.style.overflow = 'auto';
+    });
+
+    // Show success overlay if redirected with success message
+    // @if(session('success'))
+    //     successOverlay.classList.remove('d-none');
+    //     document.body.style.overflow = 'hidden';
+    // @endif
 });
 
 // Nav breadcrumb + program category badge

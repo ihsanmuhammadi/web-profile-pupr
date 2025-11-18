@@ -7,9 +7,10 @@ use Illuminate\Support\Facades\Storage;
 
 class NewsService
 {
-    public function getAll()
+    public function getAll($perPage = 10)
     {
-        return News::latest()->get();
+        $perPage = in_array($perPage, [10, 25, 50]) ? $perPage : 10;
+        return News::latest()->paginate($perPage);
     }
 
     public function find($id)

@@ -15,9 +15,10 @@ class WorkController extends Controller
         $this->service = $service;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $works = $this->service->getAll();
+        $perPage = $request->input('per_page', 10);
+        $works = $this->service->getAll($perPage);
         return view('pages.admin.admin_peluang_kerja', compact('works'));
     }
 

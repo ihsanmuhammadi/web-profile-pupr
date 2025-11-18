@@ -11,12 +11,13 @@ use App\Http\Controllers\DataProgramController;
 use App\Http\Controllers\WorkController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\ComplaintController;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/', [PageController::class, 'home'])->name('home');
+Route::get('/', [DashboardController::class, 'getHomepageData'])->name('home');
 Route::get('/visi-misi', [PageController::class, 'visiMisi'])->name('visi.misi');
 Route::get('/struktur-dinas', [PageController::class, 'strukturDinas'])->name('struktur.dinas');
 Route::get('/struktur-bidang', [PageController::class, 'strukturBidang'])->name('struktur.bidang');
@@ -30,7 +31,7 @@ Route::get('/perumahan', [PageController::class, 'perumahan'])->name('perumahan'
 Route::get('/program/detail', [PageController::class, 'detailProgram'])->name('program.detail');
 Route::get('/aduan', [PageController::class, 'aduan'])->name('aduan');
 Route::get('/feedback', [PageController::class, 'feedback'])->name('feedback');
-Route::get('/kerja-magang', [PageController::class, 'kerjaMagang'])->name('kerja.magang');
+Route::get('/kerja-magang', [DashboardController::class, 'getAllWorks'])->name('kerja.magang');
 
 // ADMIN
 // Route::get('/admin/admin-berita', [AdminController::class, 'adminBerita'])->name('admin.berita');
