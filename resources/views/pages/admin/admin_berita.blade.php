@@ -43,7 +43,7 @@
             <table class="table align-middle" id="dataTable">
                 <thead class="table-white border-bottom">
                     <tr class="text-muted">
-                        <th style="width:50px;">No</th>
+                        <th class="text-center">No</th>
                         <th>Judul Banner Berita</th>
                         <th class="text-center" style="width:120px;">Gambar</th>
                         <th class="text-center" style="width:150px;">Action</th>
@@ -54,7 +54,7 @@
                     @forelse ($news as $n)
                         <tr>
                             {{-- step kedua -> tambah iterasi untuk nomor --}}
-                            <td>{{ $loop->iteration }}</td>
+                            <td class="text-center">{{ $loop->iteration }}</td>
                             {{-- step ketoga -> mengubah data statis menjadi dinamis. Referensi nama kolom di model -> News --}}
                             <td class="text-truncate" style="max-width:400px;">{{ e($n->judul) }}</td>
                             <td class="text-center">

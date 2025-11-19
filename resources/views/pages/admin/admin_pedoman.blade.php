@@ -51,25 +51,39 @@
                     </tr>
                 </thead>
                 <tbody class="border-top-0">
-                    @for($i = 1; $i <= 15; $i++)
-                    <tr>
-                        <td class="text-center">{{ $i }}</td>
-                        <td class="text-truncate" style="max-width:300px;">
-                            https://www.youtube.com/watch?v=contoh
-                        </td>
-                        <td style="max-width:250px;">
-                            Pedoman Spesifikasi Daerah dummy bxciewcewbc eic ewbciew bcehw
-                        </td>
-                        <td style="max-width:180px;">
-                            10-10-2025 dummy
-                        </td>
-                        <td class="text-center">
-                            <button class="btn btn-sm btn-see btn-primary rounded-2 me-1"><i class="bi bi-eye"></i></button>
-                            <button class="btn btn-sm btn-edit-pedoman btn-warning rounded-2 me-1"><i class="bi bi-pencil text-white"></i></button>
-                            <button class="btn btn-sm btn-delete btn-danger rounded-2"><i class="bi bi-trash"></i></button>
-                        </td>
-                    </tr>
-                    @endfor
+                    @forelse ($guidances as $g)
+                        <tr>
+                            <td class="text-center">{{ $loop->iteration }}</td>
+                            <td class="text-truncate" style="max-width:300px;">
+                                {{ e($g->link) }}
+                            </td>
+                            <td style="max-width:250px;">
+                                {{ e($g->kategori) }}
+                            </td>
+                            <td style="max-width:180px;">
+                                {{ e($g->created_at) }}
+                            </td>
+                            <td class="text-center">
+                                <button class="btn btn-sm btn-see btn-primary rounded-2 me-1" data-id="{{ $g->id }}">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                                <button class="btn btn-sm btn-edit-pedoman btn-warning rounded-2 me-1" data-id="{{ $g->id }}" data-link="{{ $g->link }}" data-kategori="{{ $g->kategori }}">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <form action="{{ route('guidances.destroy', $g->id) }}" method="POST" style="display: inline-block;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-delete btn-danger rounded-2" onclick="return confirm('Are you sure?')">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5">No guidance entries found.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

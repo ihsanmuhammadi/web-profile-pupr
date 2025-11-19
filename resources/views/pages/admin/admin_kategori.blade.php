@@ -51,25 +51,39 @@
                     </tr>
                 </thead>
                 <tbody class="border-top-0">
-                    @for($i = 1; $i <= 15; $i++)
-                    <tr>
-                        <td class="text-center">{{ $i }}</td>
-                        <td class="text-truncate" style="max-width:300px;">
-                            Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem
-                        </td>
-                        <td style="max-width:250px;">
-                            Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem
-                        </td>
-                        <td style="max-width:250px;">
-                            Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem
-                        </td>
-                        <td class="text-center">
-                            <button class="btn btn-sm btn-see btn-primary rounded-2 me-1"><i class="bi bi-eye"></i></button>
-                            <button class="btn btn-sm btn-edit-pedoman btn-warning rounded-2 me-1"><i class="bi bi-pencil text-white"></i></button>
-                            <button class="btn btn-sm btn-delete btn-danger rounded-2"><i class="bi bi-trash"></i></button>
-                        </td>
-                    </tr>
-                    @endfor
+                    @forelse ($categories as $c)
+                        <tr>
+                            <td class="text-center">{{ $loop->iteration }}</td>
+                            <td class="text-truncate" style="max-width:300px;">
+                                {{ e($c->name) }}
+                            </td>
+                            <td style="max-width:250px;">
+                                {{ e($c->description) }}
+                            </td>
+                            <td style="max-width:250px;">
+                                {{ e($c->tujuan) }}
+                            </td>
+                            <td class="text-center">
+                                <button class="btn btn-sm btn-see btn-primary rounded-2 me-1" data-id="{{ $c->id }}">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                                <button class="btn btn-sm btn-edit-pedoman btn-warning rounded-2 me-1" data-id="{{ $c->id }}" data-name="{{ $c->name }}" data-description="{{ $c->description }}" data-tujuan="{{ $c->tujuan }}">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <form action="{{ route('categories.destroy', $c->id) }}" method="POST" style="display: inline-block;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-delete btn-danger rounded-2" onclick="return confirm('Are you sure?')">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5">No categories entries found.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

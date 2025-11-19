@@ -52,28 +52,42 @@
                     </tr>
                 </thead>
                 <tbody class="border-top-0">
-                    @for($i = 1; $i <= 15; $i++)
-                    <tr>
-                        <td class="text-center">{{ $i }}</td>
-                        <td class="text-truncate" style="max-width:250px;">
-                            Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem
-                        </td>
-                        <td style="max-width:150px;">
-                            Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem
-                        </td>
-                        <td style="max-width:150px;">
-                            Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem
-                        </td>
-                        <td style="max-width:250px;">
-                            Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem
-                        </td>
-                        <td class="text-center">
-                            <button class="btn btn-sm btn-see btn-primary rounded-2 me-1"><i class="bi bi-eye"></i></button>
-                            <button class="btn btn-sm btn-edit-pedoman btn-warning rounded-2 me-1"><i class="bi bi-pencil text-white"></i></button>
-                            <button class="btn btn-sm btn-delete btn-danger rounded-2"><i class="bi bi-trash"></i></button>
-                        </td>
-                    </tr>
-                    @endfor
+                    @forelse ($dataPrograms as $d)
+                        <tr>
+                            <td class="text-center">{{ $loop->iteration }}</td>
+                            <td class="text-truncate" style="max-width:250px;">
+                                {{ e($d->judul) }}
+                            </td>
+                            <td style="max-width:150px;">
+                                {{ e($d->kategori_id) }}
+                            </td>
+                            <td style="max-width:150px;">
+                                {{ e($d->status_proyek) }}
+                            </td>
+                            <td style="max-width:250px;">
+                                {{ e($d->lokasi) }}
+                            </td>
+                            <td class="text-center">
+                                <button class="btn btn-sm btn-see btn-primary rounded-2 me-1" data-id="{{ $d->id }}">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                                <button class="btn btn-sm btn-edit-pedoman btn-warning rounded-2 me-1" data-id="{{ $d->id }}" data-judul="{{ $d->judul }}" data-kategori_id="{{ $d->kategori_id }}" data-status_proyek="{{ $d->status_proyek }}" data-lokasi="{{ $d->lokasi }}">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <form action="{{ route('data-programs.destroy', $d->id) }}" method="POST" style="display: inline-block;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-delete btn-danger rounded-2" onclick="return confirm('Are you sure?')">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="6">No data & program entries found.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
