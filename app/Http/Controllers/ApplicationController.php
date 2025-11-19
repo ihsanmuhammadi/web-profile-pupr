@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Requests\ApplicationRequest;
 use App\Models\Application;
 use App\Services\ApplicationService;
@@ -18,8 +19,10 @@ class ApplicationController extends Controller
     public function index(Request $request)
     {
         $perPage = $request->input('per_page', 10);
+        $search  = $request->input('search');
+
         $works = $this->service->getWork();
-        $applications = $this->service->getAll($perPage);
+        $applications = $this->service->getAll($perPage, $search);
         return view('pages.admin.admin_lamaran', compact('applications', 'works'));
     }
 

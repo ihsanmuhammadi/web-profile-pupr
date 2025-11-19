@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Requests\ComplaintRequest;
 use App\Models\Complaint;
 use App\Services\ComplaintService;
@@ -18,6 +19,8 @@ class ComplaintController extends Controller
     public function index(Request $request)
     {
         $perPage = $request->input('per_page', 10);
+        $search  = $request->input('search');
+
         $complaints = $this->service->getAll($perPage);
         return view('pages.admin.admin_aduan', compact('complaints'));
     }

@@ -8,12 +8,25 @@ use Illuminate\Support\Facades\Storage;
 
 class ApplicationService
 {
-    public function getAll($perPage = 10)
+    public function getAll($perPage = 10, $search = null)
     {
         $perPage = in_array($perPage, [10, 25, 50]) ? $perPage : 10;
-        return Application::latest()->paginate($perPage);
+
+        $query = Application::query();
+
+        if ($search) {
+            $query->where('nama', 'ILIKE', "%$search%");
+        }
+
+        return $query
+        ->orderBy('created_at', 'asc')
+        ->paginate($perPage)
+        ->appends([
+            'search' => $search,
+            'per_page' => $perPage,
+        ]);
     }
-    
+
     public function find($id)
     {
         return Application::findOrFail($id);

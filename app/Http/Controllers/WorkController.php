@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Requests\WorkRequest;
 use App\Models\Work;
 use App\Services\WorkService;
@@ -18,7 +19,9 @@ class WorkController extends Controller
     public function index(Request $request)
     {
         $perPage = $request->input('per_page', 10);
-        $works = $this->service->getAll($perPage);
+        $search  = $request->input('search');
+
+        $works = $this->service->getAll($perPage, $search);
         return view('pages.admin.admin_peluang_kerja', compact('works'));
     }
 

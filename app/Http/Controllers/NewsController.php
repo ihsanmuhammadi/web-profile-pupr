@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Requests\NewsRequest;
 use App\Models\News;
 use App\Services\NewsService;
@@ -18,7 +19,9 @@ class NewsController extends Controller
     public function index(Request $request)
     {
         $perPage = $request->input('per_page', 10);
-        $news = $this->service->getAll($perPage);
+        $search  = $request->input('search');
+
+        $news = $this->service->getAll($perPage, $search);
         return view('pages.admin.admin_berita', compact('news'));
     }
 

@@ -7,10 +7,23 @@ use Illuminate\Support\Facades\Storage;
 
 class NewsService
 {
-    public function getAll($perPage = 10)
+    public function getAll($perPage = 10, $search = null)
     {
         $perPage = in_array($perPage, [10, 25, 50]) ? $perPage : 10;
-        return News::latest()->paginate($perPage);
+
+        $query = News::query();
+
+        if ($search) {
+            $query->where('judul', 'ILIKE', "%$search%");
+        }
+
+        return $query
+        ->orderBy('created_at', 'asc')
+        ->paginate($perPage)
+        ->appends([
+            'search' => $search,
+            'per_page' => $perPage,
+        ]);
     }
 
     public function find($id)

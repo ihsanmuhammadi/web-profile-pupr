@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use App\Services\CategoryService;
@@ -19,7 +20,9 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         $perPage = $request->input('per_page', 10);
-        $categories = $this->service->getAll($perPage);
+        $search  = $request->input('search');
+
+        $categories = $this->service->getAll($perPage, $search);
         return view('pages.admin.admin_kategori', compact('categories'));
     }
 

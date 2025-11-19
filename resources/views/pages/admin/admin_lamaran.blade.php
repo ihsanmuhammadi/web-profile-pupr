@@ -21,18 +21,20 @@
         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
             <div class="display-data d-flex align-items-center gap-2 mb-2">
                 <label class="form-label mb-0 text-muted small">Tampilkan</label>
-                <select class="form-select form-select-sm rounded-4 shadow-sm" style="width:70px;">
-                    <option>10</option>
-                    <option>25</option>
-                    <option>50</option>
+                <select class="form-select form-select-sm rounded-4 shadow-sm" style="width:70px;"
+                        onchange="window.location.href='?per_page='+this.value">
+                    <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
+                    <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
+                    <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
                 </select>
                 <span class="small text-muted">entri</span>
             </div>
 
             <div class="input-group" style="width:280px;">
-                <input type="text" class="form-control form-control-sm rounded-start-4 shadow-sm"
-                       placeholder="Cari Lamaran">
-                <button class="btn btn-light border text-light rounded-end-4" style="background-color: #49769B">
+                  <input type="text" id="searchInput" class="form-control form-control-sm rounded-start-4 shadow-sm"
+                    placeholder="Cari Banner Berita..." value="{{ request('search') }}">
+                <button class="btn btn-light border text-light rounded-end-4"
+                        id="searchBtn" style="background-color: #49769B">
                     <i class="bi bi-search"></i>
                 </button>
             </div>
@@ -55,15 +57,15 @@
                 <tbody class="border-top-0">
                     @forelse ($applications as $a)
                         <tr>
-                            <td class="text-center">{{ $loop->iteration }}</td>
+                            <td class="text-center">{{ $applications->firstItem() + $loop->index }}</td>
                             <td class="text-truncate" style="max-width:150px;">
                                 {{ e($a->nama) }}
                             </td>
                             <td style="max-width:120px;">
-                                {{ e($a->work_id) }}
+                                {{ e($a->work->posisi) }}
                             </td>
                             <td style="max-width:120px;">
-                                {{ e($a->work_id) }}
+                                {{ e($a->work->dataProgram->judul) }}
                             </td>
                             <td style="max-width:120px;">
                                 {{ e($a->email) }}
@@ -71,7 +73,7 @@
                             <td style="max-width:70px;">
                                 {{ e($a->pendidikan) }}
                             </td>
-                            
+
                             <td class="text-center">
                                 <button class="btn btn-sm btn-see btn-primary rounded-2 me-1" data-id="{{ $a->id }}">
                                     <i class="bi bi-eye"></i>
@@ -96,19 +98,31 @@
         </div>
 
         <div class="d-flex justify-content-between align-items-center mt-3 flex-wrap">
-            <p class="text-muted mb-0 info-pages"></p>
-            <nav>
-                <ul class="pagination pagination-sm mb-0">
-                    <li class="page-item disabled"><a class="page-link border-0" href="#"><i class="bi bi-chevron-left"></i></a></li>
-                    <li class="page-item active"><a class="page-link border-0 bg-transparent text-dark fw-semibold" href="#"></a></li>
-                    <li class="page-item"><a class="page-link border-0 text-secondary" href="#"></a></li>
-                    <li class="page-item"><a class="page-link border-0 text-secondary" href="#"></a></li>
-                    <li class="page-item"><a class="page-link border-0" href="#"><i class="bi bi-chevron-right"></i></a></li>
-                </ul>
-            </nav>
+             <p class="text-muted mb-0">
+                Menampilkan {{ $applications->firstItem() }} - {{ $applications->lastItem() }} dari {{ $applications->total() }} entri
+            </p>
+            <div class="mt-3">
+                {{ $applications->links('pagination.custom') }}
+            </div>
         </div>
     </div>
 </section>
+
+{{-- Search function --}}
+<form id="searchForm" method="GET" class="d-none">
+    <input type="hidden" name="search" value="{{ request('search') }}">
+    <input type="hidden" name="per_page" value="{{ request('per_page', 10) }}">
+</form>
+
+<script>
+    document.getElementById('searchBtn').addEventListener('click', function () {
+        let value = document.getElementById('searchInput').value;
+        let form = document.getElementById('searchForm');
+
+        form.querySelector('input[name="search"]').value = value;
+        form.submit();
+    });
+</script>
 
 {{-- MODAL TAMBAH BANNER --}}
 {{-- <div class="modal fade" id="tambahBannerModal" tabindex="-1" aria-labelledby="tambahBannerModalLabel" aria-hidden="true">

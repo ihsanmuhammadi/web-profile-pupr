@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\GuidanceRequest;
+use Illuminate\Http\Request;
 use App\Models\Guidance;
 use App\Services\GuidanceService;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +20,9 @@ class GuidanceController extends Controller
     public function index(Request $request)
     {
         $perPage = $request->input('per_page', 10);
-        $guidances = $this->service->getAll($perPage);
+        $search  = $request->input('search');
+
+        $guidances = $this->service->getAll($perPage, $search);
         return view('pages.admin.admin_pedoman', compact('guidances'));
     }
 

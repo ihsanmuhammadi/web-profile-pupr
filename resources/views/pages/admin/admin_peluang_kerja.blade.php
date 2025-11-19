@@ -21,18 +21,20 @@
         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
             <div class="display-data d-flex align-items-center gap-2 mb-2">
                 <label class="form-label mb-0 text-muted small">Tampilkan</label>
-                <select class="form-select form-select-sm rounded-4 shadow-sm" style="width:70px;">
-                    <option>10</option>
-                    <option>25</option>
-                    <option>50</option>
+                <select class="form-select form-select-sm rounded-4 shadow-sm" style="width:70px;"
+                        onchange="window.location.href='?per_page='+this.value">
+                    <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
+                    <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
+                    <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
                 </select>
                 <span class="small text-muted">entri</span>
             </div>
 
             <div class="input-group" style="width:280px;">
-                <input type="text" class="form-control form-control-sm rounded-start-4 shadow-sm"
-                       placeholder="Cari Peluang Kerja & Magang">
-                <button class="btn btn-light border text-light rounded-end-4" style="background-color: #49769B">
+               <input type="text" id="searchInput" class="form-control form-control-sm rounded-start-4 shadow-sm"
+                    placeholder="Cari Peluang Kerja & Magang..." value="{{ request('search') }}">
+                <button class="btn btn-light border text-light rounded-end-4"
+                        id="searchBtn" style="background-color: #49769B">
                     <i class="bi bi-search"></i>
                 </button>
             </div>
@@ -53,12 +55,12 @@
                 <tbody class="border-top-0">
                     @forelse ($works as $w)
                         <tr>
-                            <td class="text-center">{{ $loop->iteration }}</td>
+                            <td class="text-center">{{ $works->firstItem() + $loop->index }}</td>
                             <td class="text-truncate" style="max-width:250px;">
                                 {{ e($w->posisi) }}
                             </td>
                             <td style="max-width:250px;">
-                                {{ e($w->data_program_id) }}
+                                {{ e($w->dataProgram->judul) }}
                             </td>
                             <td style="max-width:250px;">
                                 {{ e($w->kualifikasi) }}
@@ -89,19 +91,31 @@
         </div>
 
         <div class="d-flex justify-content-between align-items-center mt-3 flex-wrap">
-            <p class="text-muted mb-0 info-pages"></p>
-            <nav>
-                <ul class="pagination pagination-sm mb-0">
-                    <li class="page-item disabled"><a class="page-link border-0" href="#"><i class="bi bi-chevron-left"></i></a></li>
-                    <li class="page-item active"><a class="page-link border-0 bg-transparent text-dark fw-semibold" href="#"></a></li>
-                    <li class="page-item"><a class="page-link border-0 text-secondary" href="#"></a></li>
-                    <li class="page-item"><a class="page-link border-0 text-secondary" href="#"></a></li>
-                    <li class="page-item"><a class="page-link border-0" href="#"><i class="bi bi-chevron-right"></i></a></li>
-                </ul>
-            </nav>
+            <p class="text-muted mb-0">
+                Menampilkan {{ $works->firstItem() }} - {{ $works->lastItem() }} dari {{ $works->total() }} entri
+            </p>
+            <div class="mt-3">
+                {{ $works->links('pagination.custom') }}
+            </div>
         </div>
     </div>
 </section>
+
+{{-- Search function --}}
+<form id="searchForm" method="GET" class="d-none">
+    <input type="hidden" name="search" value="{{ request('search') }}">
+    <input type="hidden" name="per_page" value="{{ request('per_page', 10) }}">
+</form>
+
+<script>
+    document.getElementById('searchBtn').addEventListener('click', function () {
+        let value = document.getElementById('searchInput').value;
+        let form = document.getElementById('searchForm');
+
+        form.querySelector('input[name="search"]').value = value;
+        form.submit();
+    });
+</script>
 
 {{-- MODAL TAMBAH BANNER --}}
 <div class="modal fade" id="tambahModal" tabindex="-1" aria-labelledby="tambahModalLabel" aria-hidden="true">

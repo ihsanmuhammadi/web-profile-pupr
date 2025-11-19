@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Requests\DataProgramRequest;
 use App\Models\DataProgram;
 use App\Services\DataProgramService;
@@ -18,7 +19,9 @@ class DataProgramController extends Controller
     public function index(Request $request)
     {
         $perPage = $request->input('per_page', 10);
-        $dataPrograms = $this->service->getAll($perPage);
+        $search  = $request->input('search');
+
+        $dataPrograms = $this->service->getAll($perPage, $search);
         return view('pages.admin.admin_dataprogram', compact('dataPrograms'));
     }
 

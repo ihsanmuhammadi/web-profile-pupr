@@ -7,10 +7,23 @@ use App\Models\Category;
 
 class DataProgramService
 {
-    public function getAll($perPage = 10)
+    public function getAll($perPage = 10, $search = null)
     {
         $perPage = in_array($perPage, [10, 25, 50]) ? $perPage : 10;
-        return DataProgram::latest()->paginate($perPage);
+
+        $query = DataProgram::query();
+
+        if ($search) {
+            $query->where('judul', 'ILIKE', "%$search%");
+        }
+
+        return $query
+        ->orderBy('created_at', 'asc')
+        ->paginate($perPage)
+        ->appends([
+            'search' => $search,
+            'per_page' => $perPage,
+        ]);
     }
 
     public function find($id)
