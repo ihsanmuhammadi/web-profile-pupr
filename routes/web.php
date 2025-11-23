@@ -49,7 +49,7 @@ Route::post('/applications/store', [ApplicationController::class, 'store'])->nam
 
 Route::post('/complaints', [ComplaintController::class, 'store'])->name('complaints.store');
 
-Route::get('/data-programs/{categoryName}/{id}', [DataProgramController::class, 'show'])
+Route::get('/data-programs/{categoryName}/{id}', [DataProgramController::class, 'showDashboard'])
     ->whereUuid('id')
     ->name('dataprograms.show');
 

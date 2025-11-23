@@ -114,4 +114,29 @@ class DataProgramController extends Controller
                 ->with('error', 'Data gagal dihapus!');
         }
     }
+
+    public function showDashboard($categoryName, $id)
+    {
+        $category = match ($categoryName) {
+            'jalan-lingkungan' => 'Jalan Lingkungan',
+            'drainase-lingkungan' => 'Drainase Lingkungan',
+            'jembatan-lingkungan' => 'Jembatan Lingkungan',
+            'perumahan' => 'Perumahan',
+            'rumah-tidak-layak-huni' => 'Rumah Tidak Layak Huni',
+            default => 'Jalan Lingkungan'
+        };
+
+        $dataProgram = DataProgram::findOrFail($id);
+
+        // Hitung total work per kategori
+        $totalWorkByKategori = Work::whereHas('dataProgram', function($query) use ($dataProgram) {
+            $query->where('judul', $dataProgram->judul);
+        })->count();
+
+        // Convert link youtube menjadi embed
+        $videoId = YouTubeHelper::extractVideoId($dataProgram->dokumentasi);
+        $embedUrl = $videoId ? "https://www.youtube.com/embed/" . $videoId : null;
+
+        return view('pages.detail_program', compact('dataProgram', 'totalWorkByKategori', 'categoryName', 'embedUrl'));
+    }
 }
