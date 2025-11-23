@@ -33,11 +33,11 @@
             Data & Program
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{{ route('jalan.lingkungan') }}">Jalan Lingkungan</a></li>
-            <li><a class="dropdown-item" href="{{ route('drainase.lingkungan') }}">Drainase Lingkungan</a></li>
-            <li><a class="dropdown-item" href="{{ route('jembatan.lingkungan') }}">Jembatan Lingkungan</a></li>
-            <li><a class="dropdown-item" href="{{ route('rumah.taklayak') }}">Rumah Tidak Layak Huni</a></li>
-            <li><a class="dropdown-item" href="{{ route('perumahan') }}">Perumahan</a></li>
+            <li><a class="dropdown-item" href="{{ route('dataprogram.category', ['categoryName' => 'jalan-lingkungan']) }}">Jalan Lingkungan</a></li>
+            <li><a class="dropdown-item" href="{{ route('dataprogram.category', ['categoryName' => 'drainase-lingkungan']) }}">Drainase Lingkungan</a></li>
+            <li><a class="dropdown-item" href="{{ route('dataprogram.category', ['categoryName' => 'jembatan-lingkungan']) }}">Jembatan Lingkungan</a></li>
+            <li><a class="dropdown-item" href="{{ route('dataprogram.category', ['categoryName' => 'rumah-tidak-layak-huni']) }}">Rumah Tidak Layak Huni</a></li>
+            <li><a class="dropdown-item" href="{{ route('dataprogram.category', ['categoryName' => 'perumahan']) }}">Perumahan</a></li>
             <li><a class="dropdown-item" href="#">Satu Peta</a></li>
           </ul>
         </li>

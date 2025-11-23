@@ -12,7 +12,7 @@
     </div>
 
     {{-- Search + Filter Form --}}
-    <form id="filterForm" method="GET" action="{{ route('works.index') }}">
+    <form id="filterForm" method="GET" action="{{ route('kerja.magang') }}">
 
         {{-- Search Bar --}}
         <div class="row justify-content-center mb-3 mt-4">
@@ -132,20 +132,10 @@
         <input type="hidden" name="sort_by" id="sortInput" value="{{ request('sort_by') ?? 'latest' }}">
     </form>
 
-    <script>
-        document.querySelectorAll(".filter-check").forEach(chk => {
-            chk.addEventListener("change", () => {
-                document.getElementById("filterForm").submit();
-            });
-        });
-
-        function applySort(value) {
-            document.getElementById("sortInput").value = value;
-            document.getElementById("filterForm").submit();
-        }
-    </script>
-
-    <p id="data-ditemukan" class="text-muted small mb-4">0 data ditemukan</p>
+    {{-- Data Count --}}
+    <p id="data-ditemukan" class="text-muted small mb-4">
+        <span id="showing-count">0</span> dari <span id="total-count">0</span> data ditemukan
+    </p>
 
     {{-- Daftar Pekerjaan --}}
     <div class="row g-4 project-list">
@@ -271,7 +261,7 @@
         </div>
     @endif
 
-    <form id="applyForm" action="{{ route('applications.store') }}" method="POST" enctype="multipart/form-data" class="text-start">
+    <form action="{{ route('applications.store') }}" method="POST" enctype="multipart/form-data" class="text-start">
       @csrf
       <input type="hidden" name="work_id" id="applyWorkId" value="{{ old('work_id') }}">
 
@@ -362,4 +352,337 @@
   </div>
 </div>
 
+@if (session('success'))
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('successOverlay').classList.remove('d-none');
+});
+
+document.getElementById('closeSuccess')?.addEventListener('click', function () {
+    document.getElementById('successOverlay').classList.add('d-none');
+});
+
+</script>
+@endif
+
 @endsection
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const itemsPerPage = 9;
+    let currentPage = 1;
+    let filteredCards = [];
+
+    // Get all job cards
+    const allCards = Array.from(document.querySelectorAll('.job-card'));
+
+    // Get filter elements
+    const searchInput = document.querySelector('input[name="search"]');
+    const lokasiInput = document.querySelector('input[name="lokasi"]');
+    const levelCheckboxes = document.querySelectorAll('input[name="level[]"]');
+    const jenisCheckboxes = document.querySelectorAll('input[name="jenis[]"]');
+    const tipeCheckboxes = document.querySelectorAll('input[name="tipe[]"]');
+    const sortButtons = document.querySelectorAll('[onclick^="applySort"]');
+
+    // Prevent form submission
+    const filterForm = document.getElementById('filterForm');
+    if (filterForm) {
+        filterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+        });
+    }
+
+    function normalizeText(text) {
+        return text.toLowerCase().trim();
+    }
+
+    function filterAndSort() {
+        // Get current filter values
+        const searchTerm = normalizeText(searchInput.value);
+        const lokasiTerm = normalizeText(lokasiInput.value);
+
+        const selectedLevels = Array.from(levelCheckboxes)
+            .filter(cb => cb.checked)
+            .map(cb => normalizeText(cb.value));
+
+        const selectedJenis = Array.from(jenisCheckboxes)
+            .filter(cb => cb.checked)
+            .map(cb => normalizeText(cb.value));
+
+        const selectedTipe = Array.from(tipeCheckboxes)
+            .filter(cb => cb.checked)
+            .map(cb => normalizeText(cb.value));
+
+        const sortBy = document.getElementById('sortInput').value;
+
+        // Filter cards
+        filteredCards = allCards.filter(card => {
+            // Search filter
+            if (searchTerm) {
+                const posisi = normalizeText(card.dataset.posisi);
+                const program = normalizeText(card.dataset.program);
+                const deskripsi = normalizeText(card.dataset.deskripsi || '');
+
+                if (!posisi.includes(searchTerm) &&
+                    !program.includes(searchTerm) &&
+                    !deskripsi.includes(searchTerm)) {
+                    return false;
+                }
+            }
+
+            // Level filter
+            if (selectedLevels.length > 0) {
+                const cardLevel = normalizeText(card.dataset.kualifikasi);
+                if (!selectedLevels.includes(cardLevel)) {
+                    return false;
+                }
+            }
+
+            // Jenis filter
+            if (selectedJenis.length > 0) {
+                const cardJenis = normalizeText(card.dataset.jenis);
+                if (!selectedJenis.includes(cardJenis)) {
+                    return false;
+                }
+            }
+
+            // Tipe filter
+            if (selectedTipe.length > 0) {
+                const cardTipe = normalizeText(card.dataset.tipe);
+                if (!selectedTipe.includes(cardTipe)) {
+                    return false;
+                }
+            }
+
+            // Lokasi filter
+            if (lokasiTerm) {
+                const cardLokasi = normalizeText(card.dataset.lokasi);
+                if (!cardLokasi.includes(lokasiTerm)) {
+                    return false;
+                }
+            }
+
+            return true;
+        });
+
+        // Sort cards
+        filteredCards.sort((a, b) => {
+            const dateA = new Date(a.dataset.tenggat);
+            const dateB = new Date(b.dataset.tenggat);
+
+            if (sortBy === 'oldest') {
+                return dateA - dateB;
+            } else {
+                return dateB - dateA;
+            }
+        });
+
+        // Reset to page 1
+        currentPage = 1;
+
+        // Update display
+        showPage(1);
+    }
+
+    function showPage(page) {
+        currentPage = page;
+        const totalItems = filteredCards.length;
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+        // Hide all cards first
+        allCards.forEach(card => {
+            card.closest('.col-md-4').style.display = 'none';
+        });
+
+        // Show "no data" message if no results
+        let noDataDiv = document.querySelector('.no-data-message');
+        if (totalItems === 0) {
+            if (!noDataDiv) {
+                noDataDiv = document.createElement('div');
+                noDataDiv.className = 'col-12 no-data-message';
+                // noDataDiv.innerHTML = '<div class="text-center text-muted py-5">Tidak ada pekerjaan ditemukan.</div>';
+                document.querySelector('.project-list').appendChild(noDataDiv);
+            }
+            noDataDiv.style.display = 'block';
+        } else {
+            if (noDataDiv) {
+                noDataDiv.style.display = 'none';
+            }
+        }
+
+        // Show cards for current page
+        const start = (page - 1) * itemsPerPage;
+        const end = Math.min(start + itemsPerPage, totalItems);
+
+        for (let i = start; i < end; i++) {
+            filteredCards[i].closest('.col-md-4').style.display = 'block';
+        }
+
+        // Update counts
+        const showingStart = totalItems > 0 ? start + 1 : 0;
+        const showingEnd = end;
+        document.getElementById('showing-count').textContent = totalItems > 0 ? `${showingStart}-${showingEnd}` : '0';
+        document.getElementById('total-count').textContent = totalItems;
+
+        // Update pagination
+        renderPagination(totalPages);
+    }
+
+    function renderPagination(totalPages) {
+        const paginationUl = document.querySelector('#pagination-nav .pagination');
+        paginationUl.innerHTML = '';
+
+        if (totalPages <= 1) {
+            document.getElementById('pagination-nav').style.display = 'none';
+            return;
+        }
+
+        document.getElementById('pagination-nav').style.display = 'flex';
+
+        // Previous button
+        const prevLi = document.createElement('li');
+        prevLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
+        prevLi.innerHTML = `<a class="page-link" href="#" data-page="${currentPage - 1}">Previous</a>`;
+        paginationUl.appendChild(prevLi);
+
+        // Page numbers with smart ellipsis
+        const maxVisiblePages = 5;
+        let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+        let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+        if (endPage - startPage < maxVisiblePages - 1) {
+            startPage = Math.max(1, endPage - maxVisiblePages + 1);
+        }
+
+        // First page + ellipsis
+        if (startPage > 1) {
+            const firstLi = document.createElement('li');
+            firstLi.className = 'page-item';
+            firstLi.innerHTML = `<a class="page-link" href="#" data-page="1">1</a>`;
+            paginationUl.appendChild(firstLi);
+
+            if (startPage > 2) {
+                const ellipsisLi = document.createElement('li');
+                ellipsisLi.className = 'page-item disabled';
+                ellipsisLi.innerHTML = `<span class="page-link">...</span>`;
+                paginationUl.appendChild(ellipsisLi);
+            }
+        }
+
+        // Page numbers
+        for (let i = startPage; i <= endPage; i++) {
+            const li = document.createElement('li');
+            li.className = `page-item ${i === currentPage ? 'active' : ''}`;
+            li.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i}</a>`;
+            paginationUl.appendChild(li);
+        }
+
+        // Ellipsis + last page
+        if (endPage < totalPages) {
+            if (endPage < totalPages - 1) {
+                const ellipsisLi = document.createElement('li');
+                ellipsisLi.className = 'page-item disabled';
+                ellipsisLi.innerHTML = `<span class="page-link">...</span>`;
+                paginationUl.appendChild(ellipsisLi);
+            }
+
+            const lastLi = document.createElement('li');
+            lastLi.className = 'page-item';
+            lastLi.innerHTML = `<a class="page-link" href="#" data-page="${totalPages}">${totalPages}</a>`;
+            paginationUl.appendChild(lastLi);
+        }
+
+        // Next button
+        const nextLi = document.createElement('li');
+        nextLi.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
+        nextLi.innerHTML = `<a class="page-link" href="#" data-page="${currentPage + 1}">Next</a>`;
+        paginationUl.appendChild(nextLi);
+
+        // Add click handlers
+        paginationUl.querySelectorAll('a.page-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const page = parseInt(this.dataset.page);
+                if (page >= 1 && page <= totalPages) {
+                    showPage(page);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+        });
+    }
+
+    // Event listeners for real-time filtering
+
+    // Search input with debounce
+    let searchTimeout;
+    searchInput.addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            filterAndSort();
+        }, 300);
+    });
+
+    // Search on Enter
+    searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            clearTimeout(searchTimeout);
+            filterAndSort();
+        }
+    });
+
+    // Lokasi input with debounce
+    let lokasiTimeout;
+    lokasiInput.addEventListener('input', function() {
+        clearTimeout(lokasiTimeout);
+        lokasiTimeout = setTimeout(() => {
+            filterAndSort();
+        }, 300);
+    });
+
+    // Lokasi on Enter
+    lokasiInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            clearTimeout(lokasiTimeout);
+            filterAndSort();
+        }
+    });
+
+    // Checkbox filters - instant
+    [...levelCheckboxes, ...jenisCheckboxes, ...tipeCheckboxes].forEach(checkbox => {
+        checkbox.addEventListener('change', filterAndSort);
+    });
+
+    // Initialize
+    filteredCards = [...allCards];
+    showPage(1);
+});
+
+// Replace applySort function
+function applySort(value) {
+    document.getElementById('sortInput').value = value;
+
+    // Update button text
+    const sortButton = document.querySelector('[data-bs-toggle="dropdown"]');
+    const buttonParent = sortButton.closest('.d-flex.align-items-center');
+    if (buttonParent) {
+        const btn = buttonParent.querySelector('.dropdown-toggle');
+        btn.textContent = value === 'oldest' ? 'Terlama' : 'Terbaru';
+    }
+
+    // Trigger filter
+    const event = new Event('change');
+    document.getElementById('sortInput').dispatchEvent(event);
+
+    // Re-filter and sort
+    const filterEvent = new CustomEvent('filterchange');
+    document.dispatchEvent(filterEvent);
+
+    // Manual trigger
+    setTimeout(() => {
+        const searchInput = document.querySelector('input[name="search"]');
+        searchInput.dispatchEvent(new Event('input'));
+    }, 50);
+}
+</script>

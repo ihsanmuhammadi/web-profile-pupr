@@ -34,23 +34,72 @@ class PageController extends Controller
     }
     public function jalanLingkungan()
     {
-        return view('pages.jalan_lingkungan');
+        $programs = Program::where('category_id', 1)
+            ->with('category')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $pageTitle = 'Jalan Lingkungan';
+        $pageDescription = 'Deskripsi singkat lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum ipsum lorem ipsum lorem ipsum lorem ipsum ipsum lorem ipsum lorem ipsum lorem ipsum.';
+        $modalContent = '<p>Lorem ipsum lorem ipsum lorem ipsum...</p><h6 class="fw-bold mt-4 mb-2">Tujuan & Manfaat</h6><ul><li>lorem ipsum lorem ipsum lorem ipsum</li><li>lorem ipsum lorem ipsum lorem ipsum</li></ul>';
+
+        return view('pages.program_list', compact('programs', 'pageTitle', 'pageDescription', 'modalContent'));
     }
+
     public function drainaseLingkungan()
     {
-        return view('pages.drainase_lingkungan');
+        $programs = Program::where('category_id', 2)
+            ->with('category')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $pageTitle = 'Drainase Lingkungan';
+        $pageDescription = 'Deskripsi singkat program drainase lingkungan...';
+        $modalContent = '<p>Informasi lengkap tentang Drainase Lingkungan...</p>';
+
+        return view('pages.program_list', compact('programs', 'pageTitle', 'pageDescription', 'modalContent'));
     }
+
     public function jembatanLingkungan()
     {
-        return view('pages.jembatan_lingkungan');
+        $programs = Program::where('category_id', 3)
+            ->with('category')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $pageTitle = 'Jembatan Lingkungan';
+        $pageDescription = 'Deskripsi singkat program jembatan lingkungan...';
+        $modalContent = '<p>Informasi lengkap tentang Jembatan Lingkungan...</p>';
+
+        return view('pages.program_list', compact('programs', 'pageTitle', 'pageDescription', 'modalContent'));
     }
+
     public function rumahTaklayak()
     {
-        return view('pages.rumah_taklayak');
+        $programs = Program::where('category_id', 4)
+            ->with('category')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $pageTitle = 'Rumah Tak Layak Huni';
+        $pageDescription = 'Deskripsi singkat program rumah tak layak huni...';
+        $modalContent = '<p>Informasi lengkap tentang Rumah Tak Layak Huni...</p>';
+
+        return view('pages.program_list', compact('programs', 'pageTitle', 'pageDescription', 'modalContent'));
     }
+
     public function perumahan()
     {
-        return view('pages.perumahan');
+        $programs = Program::where('category_id', 5)
+            ->with('category')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $pageTitle = 'Perumahan';
+        $pageDescription = 'Deskripsi singkat program perumahan...';
+        $modalContent = '<p>Informasi lengkap tentang Perumahan...</p>';
+
+        return view('pages.program_list', compact('programs', 'pageTitle', 'pageDescription', 'modalContent'));
     }
     public function detailProgram()
     {

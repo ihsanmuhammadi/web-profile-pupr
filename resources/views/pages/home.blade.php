@@ -87,7 +87,10 @@
           <h4 class="fw-bold angka mb-0 me-4">{{ $total_jalan_lingkungan }}</h4>
           <div>
             <p class="text-muted mb-1">Total pekerjaan yang terdaftar</p>
-            <a href="{{ route('jalan.lingkungan') }}" class="fw-bold text-dark text-decoration-none">Selengkapnya →</a>
+            <a href="{{ route('dataprogram.category', ['categoryName' => 'jalan-lingkungan']) }}"
+                class="fw-bold text-dark text-decoration-none">
+                Selengkapnya →
+            </a>
           </div>
         </div>
       </div>
@@ -109,7 +112,10 @@
           <h4 class="fw-bold angka mb-0 me-4">{{ $total_drainase_lingkungan }}</h4>
           <div>
             <p class="text-muted mb-1">Total pekerjaan yang terdaftar</p>
-            <a href="{{ route('drainase.lingkungan') }}" class="fw-bold text-dark text-decoration-none">Selengkapnya →</a>
+            <a href="{{ route('dataprogram.category', ['categoryName' => 'drainase-lingkungan']) }}"
+                class="fw-bold text-dark text-decoration-none">
+                Selengkapnya →
+            </a>
           </div>
         </div>
       </div>
@@ -131,7 +137,10 @@
           <h4 class="fw-bold angka mb-0 me-4">{{ $total_jembatan_lingkungan }}</h4>
           <div>
             <p class="text-muted mb-1">Total pekerjaan yang terdaftar</p>
-            <a href="{{ route('jembatan.lingkungan') }}" class="fw-bold text-dark text-decoration-none">Selengkapnya →</a>
+            <a href="{{ route('dataprogram.category', ['categoryName' => 'jembatan-lingkungan']) }}"
+                class="fw-bold text-dark text-decoration-none">
+                Selengkapnya →
+            </a>
           </div>
         </div>
       </div>
@@ -159,7 +168,10 @@
             <p class="text-muted mb-0">Rata-rata per Kecamatan</p>
           </div>
         </div>
-        <a href="{{ route('rumah.taklayak') }}" class="fw-bold text-dark text-decoration-none mt-2 d-inline-block">Selengkapnya →</a>
+        <a href="{{ route('dataprogram.category', ['categoryName' => 'rumah-tidak-layak-huni']) }}"
+                class="fw-bold text-dark text-decoration-none">
+                Selengkapnya →
+            </a>
       </div>
       <div class="col-md-5 text-center">
         <img src="{{ asset('assets/images/jalan.png') }}" class="img-fluid rounded-4 shadow-sm" alt="RTLH">
@@ -185,7 +197,10 @@
             <p class="text-muted mb-0">Rata-rata per Kecamatan</p>
           </div>
         </div>
-        <a href="{{ route('perumahan') }}" class="fw-bold text-dark text-decoration-none mt-2 d-inline-block">Selengkapnya →</a>
+        <a href="{{ route('dataprogram.category', ['categoryName' => 'perumahan']) }}"
+                class="fw-bold text-dark text-decoration-none">
+                Selengkapnya →
+            </a>
       </div>
       <div class="col-md-5 text-center">
         <img src="{{ asset('assets/images/jalan.png') }}" class="img-fluid rounded-4 shadow-sm" alt="Perumahan">

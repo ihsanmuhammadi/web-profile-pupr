@@ -16,7 +16,7 @@
 
         <form action="{{ route('complaints.store') }}" method="POST">
             @csrf
-            
+
             <div class="mb-4">
                 <label for="nama" class="form-label fw-medium text-dark fs-5">Nama Lengkap</label>
                 <input type="text"
@@ -55,5 +55,27 @@
         </form>
     </div>
 </section>
-
 @endsection
+
+<div id="successOverlay" class="success-overlay d-none">
+  <div class="success-card bg-white rounded-4 p-5 text-center shadow-lg position-relative">
+    <button id="closeSuccess" class="btn-close position-absolute top-0 end-0 m-3" aria-label="Close"></button>
+    <p class="text-dark mb-0">Aduan berhasil disimpan! Kami menghargai partisipasi anda dan akan menindaklanjuti sesuai prosedur.</p>
+    <div class="icon-wrapper mb-3 mt-5">
+      <span class="material-symbols-outlined shine-icon text-success">star_shine</span>
+    </div>
+  </div>
+</div>
+
+@if (session('success'))
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('successOverlay').classList.remove('d-none');
+});
+
+document.getElementById('closeSuccess')?.addEventListener('click', function () {
+    document.getElementById('successOverlay').classList.add('d-none');
+});
+
+</script>
+@endif

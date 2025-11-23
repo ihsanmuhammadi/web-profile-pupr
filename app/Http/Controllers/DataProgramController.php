@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\DataProgramRequest;
 use App\Models\DataProgram;
+use App\Models\Work;
 use App\Services\DataProgramService;
+use App\Helpers\YouTubeHelper;
 
 class DataProgramController extends Controller
 {
@@ -40,9 +42,29 @@ class DataProgramController extends Controller
         return redirect()->route('data-programs.index')->with('success', 'Data Program created successfully.');
     }
 
-    public function show(DataProgram $dataProgram)
+    public function show($categoryName, $id)
     {
-        return view('dummyviews.dataPrograms.show', compact('dataProgram'));
+        $category = match ($categoryName) {
+            'jalan-lingkungan' => 'Jalan Lingkungan',
+            'drainase-lingkungan' => 'Drainase Lingkungan',
+            'jembatan-lingkungan' => 'Jembatan Lingkungan',
+            'perumahan' => 'Perumahan',
+            'rumah-tidak-layak-huni' => 'Rumah Tidak Layak Huni',
+            default => 'Jalan Lingkungan'
+        };
+
+        $dataProgram = DataProgram::findOrFail($id);
+
+        // Hitung total work per kategori
+        $totalWorkByKategori = Work::whereHas('dataProgram', function($query) use ($dataProgram) {
+            $query->where('judul', $dataProgram->judul);
+        })->count();
+
+        // Convert link youtube menjadi embed
+        $videoId = YouTubeHelper::extractVideoId($dataProgram->dokumentasi);
+        $embedUrl = $videoId ? "https://www.youtube.com/embed/" . $videoId : null;
+
+        return view('pages.detail_program', compact('dataProgram', 'totalWorkByKategori', 'categoryName', 'embedUrl'));
     }
 
     public function edit(DataProgram $dataProgram)
