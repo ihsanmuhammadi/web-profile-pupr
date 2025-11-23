@@ -247,6 +247,7 @@ class DashboardController extends Controller
         \Log::info('Filters Applied', $filters);
 
         $dataPrograms = $this->service->getAllDataProgram($filters);
+        $categoryData = $this->service->findByName($category);
 
         // Handle AJAX requests
         if ($request->ajax() || $request->wantsJson()) {
@@ -272,7 +273,7 @@ class DashboardController extends Controller
 
         \Log::info('View Selected', ['view' => $view]);
 
-        return view($view, compact('dataPrograms', 'categoryName'));
+        return view($view, compact('dataPrograms', 'categoryName', 'categoryData'));
     }
 
 

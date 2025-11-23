@@ -43,6 +43,13 @@ class CategoryService
 
     public function delete(Category $category)
     {
+        // Cek apakah kategori sedang dipakai oleh data program
+        if ($category->dataPrograms()->exists()) {
+            throw new \Exception("Kategori tidak dapat dihapus karena masih digunakan oleh data program");
+        }
+
+        // Jika lolos pengecekan, baru delete
         $category->delete();
     }
+
 }

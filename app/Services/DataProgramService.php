@@ -75,6 +75,11 @@ class DataProgramService
 
     public function delete(DataProgram $dataProgram)
     {
+         // Cek apakah kategori sedang dipakai oleh data program
+        if ($dataProgram->work()->exists()) {
+            throw new \Exception("Data Program tidak dapat dihapus karena masih digunakan oleh Peluang Kerja & Magang");
+        }
+
         $dataProgram->delete();
     }
 

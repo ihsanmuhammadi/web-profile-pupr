@@ -109,7 +109,7 @@ class CategoryController extends Controller
         } catch (Exception $e) {
 
             return redirect()->route('admin.kategori')
-                ->with('error', 'Data gagal dihapus!');
+                ->with('error', $e->getMessage());
         }
     }
 }

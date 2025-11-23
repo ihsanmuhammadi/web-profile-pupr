@@ -142,15 +142,16 @@
                         <input type="text" name="link"
                                class="form-control rounded-3"
                                value="{{ old('link') }}"
-                               placeholder="Masukkan Link Pedoman...">
+                               placeholder="Masukkan Link Pedoman..."
+                               required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Kategori</label>
-                        <select name="kategori" class="form-select rounded-3">
-                            <option selected disabled>Pilih Kategori Pedoman</option>
-                            <option value="Spesifikasi Teknis">Pedoman Spesifikasi Teknis</option>
-                            <option value="Spesifikasi Daerah">Pedoman Spesifikasi Daerah</option>
-                        </select>
+                        <select name="kategori" class="form-select rounded-3" required>
+                        <option value="" selected disabled>Pilih Kategori Pedoman</option>
+                        <option value="Spesifikasi Teknis">Pedoman Spesifikasi Teknis</option>
+                        <option value="Spesifikasi Daerah">Pedoman Spesifikasi Daerah</option>
+                    </select>
                     </div>
                     <div class="d-flex justify-content-end mt-4 gap-2">
                         <button type="button" class="btn btn-outline-danger rounded-pill px-4 fw-semibold" data-bs-dismiss="modal">Batal</button>

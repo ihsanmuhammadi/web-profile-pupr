@@ -328,13 +328,13 @@
                     {{-- POSISI --}}
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Posisi</label>
-                        <input type="text" id="editPosisi" name="posisi" class="form-control rounded-3">
+                        <input type="text" id="editPosisi" name="posisi" class="form-control rounded-3" required>
                     </div>
 
                     {{-- PROYEK --}}
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Proyek</label>
-                        <select id="editProyek" name="data_program_id" class="form-select rounded-3">
+                        <select id="editProyek" name="data_program_id" class="form-select rounded-3" required>
                             <option selected disabled>Pilih Proyek</option>
                             @foreach ($dataProgram as $p)
                                 <option value="{{ $p->id }}">{{ $p->judul }}</option>
@@ -345,7 +345,7 @@
                     {{-- JENIS --}}
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Jenis Pekerjaan</label>
-                        <select id="editJenis" name="jenis" class="form-select rounded-3">
+                        <select id="editJenis" name="jenis" class="form-select rounded-3" required>
                             <option selected disabled>Pilih Jenis</option>
                             <option value="fulltime">Full Time</option>
                             <option value="parttime">Part Time</option>
@@ -357,7 +357,7 @@
                     {{-- TIPE --}}
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Tipe Pekerjaan</label>
-                        <select id="editTipe" name="tipe" class="form-select rounded-3">
+                        <select id="editTipe" name="tipe" class="form-select rounded-3" required>
                             <option selected disabled>Pilih Tipe</option>
                             <option value="wfo">WFO</option>
                             <option value="wfh">WFH</option>
@@ -369,7 +369,7 @@
                     <div class="row g-3 mb-3 align-items-end">
                         <div class="col-md-6">
                             <label class="form-label fw-semibold small text-dark">Lokasi</label>
-                            <input type="text" id="editLokasi" name="lokasi" class="form-control rounded-3">
+                            <input type="text" id="editLokasi" name="lokasi" class="form-control rounded-3" required>
                         </div>
 
                         <div class="col-md-6">
@@ -377,7 +377,7 @@
                             <div class="input-group">
                                 <span class="input-group-text">Rp.</span>
                                 <input type="text" id="editGaji" name="gaji" class="form-control rounded-3"
-                                    placeholder="Masukkan Gaji...">
+                                    placeholder="Masukkan Gaji..." required>
                             </div>
                         </div>
 
@@ -386,13 +386,13 @@
                     {{-- DESKRIPSI --}}
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Deskripsi</label>
-                        <textarea id="editDeskripsi" name="deskripsi" class="form-control rounded-3" rows="3"></textarea>
+                        <textarea id="editDeskripsi" name="deskripsi" class="form-control rounded-3" rows="3" required></textarea>
                     </div>
 
                     {{-- KUALIFIKASI --}}
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Kualifikasi</label>
-                        <textarea id="editKualifikasi" name="kualifikasi" class="form-control rounded-3" rows="3"></textarea>
+                        <textarea id="editKualifikasi" name="kualifikasi" class="form-control rounded-3" rows="3" required></textarea>
                     </div>
 
                     {{-- BUTTON --}}

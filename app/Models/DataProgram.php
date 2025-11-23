@@ -57,4 +57,9 @@ class DataProgram extends Model
     {
         return $this->belongsTo(Category::class, 'kategori_id');
     }
+
+    public function work()
+    {
+        return $this->hasMany(Work::class, 'data_program_id');
+    }
 }

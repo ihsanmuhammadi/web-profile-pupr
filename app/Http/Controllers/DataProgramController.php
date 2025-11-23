@@ -111,7 +111,7 @@ class DataProgramController extends Controller
         } catch (Exception $e) {
 
             return redirect()->route('admin.dataprogram')
-                ->with('error', 'Data gagal dihapus!');
+                ->with('error', $e->getMessage());
         }
     }
 

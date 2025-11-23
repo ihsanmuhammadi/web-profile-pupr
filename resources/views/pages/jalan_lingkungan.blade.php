@@ -8,9 +8,9 @@
     <div class="container col-lg-9 mx-auto">
 
         <div class="my-5">
-            <h1 class="fw-bold">{{ $dataPrograms->first()->kategori->name ?? '' }}</h1>
+            <h1 class="fw-bold">{{ $categoryData->name }}</h1>
             <p class="text-muted">
-                {{ $dataPrograms->first()->kategori->description ?? '' }}
+                {{ $categoryData->description ?? '' }}
                 <a href="#" class="text-success text-decoration-underline fw-medium" data-bs-toggle="modal" data-bs-target="#modalInfo">
                     <br>Pelajari selengkapnya.
                 </a>
@@ -217,15 +217,15 @@
                 <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-4">
-                <h5 class="fw-bold mb-2">{{ $dataPrograms->first()->kategori->name ?? '' }}</h5>
-                <p>{{ $dataPrograms->first()->kategori->description ?? '' }}</p>
+                <h5 class="fw-bold mb-2">{{ $categoryData->name ?? '' }}</h5>
+                <p>{{ $categoryData->description ?? '' }}</p>
                 <h6 class="fw-bold mt-4 mb-2">Tujuan & Manfaat</h6>
-                <h7 class="mt-4 mb-2">{{ $dataPrograms->first()->kategori->tujuan ?? '' }}</h6>
+                <h7 class="mt-4 mb-2">{{ $categoryData->tujuan ?? '' }}</h6>
                 <h6 class="fw-bold mt-4 mb-2">Contoh Program</h6>
                 <ul>
-                    <li>{{ $dataPrograms->first()->kategori->contoh_program_1 ?? '' }}</li>
-                    <li>{{ $dataPrograms->first()->kategori->contoh_program_2 ?? '' }}</li>
-                    <li>{{ $dataPrograms->first()->kategori->contoh_program_3 ?? '' }}</li>
+                    <li>{{ $categoryData->contoh_program_1 ?? '' }}</li>
+                    <li>{{ $categoryData->contoh_program_2 ?? '' }}</li>
+                    <li>{{ $categoryData->contoh_program_3 ?? '' }}</li>
                 </ul>
             </div>
         </div>
