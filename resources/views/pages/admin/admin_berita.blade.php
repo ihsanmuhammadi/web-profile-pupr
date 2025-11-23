@@ -135,7 +135,7 @@
             </div>
 
             <div class="modal-body p-4">
-                <form action="{{ route('news.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('news.store') }}" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
                     @csrf
 
                     {{-- Judul Banner --}}
@@ -144,7 +144,8 @@
                         <input type="text" name="judul" id="judul"
                                class="form-control rounded-3"
                                value="{{ old('judul') }}"
-                               placeholder="Masukkan Judul Banner...">
+                               placeholder="Masukkan Judul Banner..."
+                               required>
                     </div>
 
                     <div class="mb-3">
@@ -157,8 +158,11 @@
                             <p class="text-secondary small fw-semibold mb-0" id="fileName"></p>
                             <input id="fileInput" type="file" name="gambar" accept="image/*"
                                    class="position-absolute top-0 start-0 w-100 h-100"
-                                   style="cursor: pointer; opacity: 0;">
+                                   style="cursor: pointer; opacity: 0;"
+                                   onchange="checkFileSize(this)"
+                                   required>
                         </div>
+                        <small id="fileSizeError" class="text-danger" style="display: none;">⚠️ Ukuran file terlalu besar! Maksimal 10MB</small>
                     </div>
 
                     <div class="d-flex justify-content-end mt-4 gap-2">
@@ -170,6 +174,35 @@
         </div>
     </div>
 </div>
+
+<script>
+function checkFileSize(input) {
+    const maxSize = 5 * 1024 * 1024; // 10MB in bytes
+    const errorMsg = document.getElementById('fileSizeError');
+
+    if (input.files[0]) {
+        if (input.files[0].size > maxSize) {
+            errorMsg.style.display = 'block';
+            input.value = ''; // Clear the file
+            document.getElementById('fileName').textContent = '';
+        } else {
+            errorMsg.style.display = 'none';
+            document.getElementById('fileName').textContent = input.files[0].name;
+        }
+    }
+}
+
+function validateForm() {
+    const fileInput = document.getElementById('fileInput');
+    const maxSize = 5 * 1024 * 1024; // 10MB
+
+    if (fileInput.files[0] && fileInput.files[0].size > maxSize) {
+        alert('Ukuran file terlalu besar! Maksimal 5MB');
+        return false; // Prevent form submission
+    }
+    return true; // Allow form submission
+}
+</script>
 
 {{--MODAL DETAIL BANNER--}}
 <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
@@ -235,7 +268,7 @@
                     @method('PUT')
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Judul Banner</label>
-                        <input type="text" name="judul" id="editJudul" class="form-control rounded-3" placeholder="Masukkan Judul Banner...">
+                        <input type="text" name="judul" id="editJudul" class="form-control rounded-3" placeholder="Masukkan Judul Banner..." required>
                     </div>
 
                     <div class="mb-3">
@@ -248,7 +281,8 @@
                             <p class="text-secondary small fw-semibold mb-0" id="editFileName"></p> {{-- Nama file --}}
                             <input id="editFileInput" name="gambar" type="file" accept="image/*"
                                    class="position-absolute top-0 start-0 w-100 h-100"
-                                   style="cursor: pointer; opacity: 0;">
+                                   style="cursor: pointer; opacity: 0;"
+                                   required>
                         </div>
                     </div>
 

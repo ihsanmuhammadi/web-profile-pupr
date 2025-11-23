@@ -24,4 +24,10 @@ class Category extends Model
             $model->id = (string) Str::uuid();
         });
     }
+
+    public function dataPrograms()
+    {
+        return $this->hasMany(DataProgram::class, 'kategori_id');
+    }
+
 }

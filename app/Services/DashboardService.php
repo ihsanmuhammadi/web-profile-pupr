@@ -6,6 +6,7 @@ use App\Models\Work;
 use App\Models\Application;
 use App\Models\DataProgram;
 use App\Models\Guidance;
+use App\Models\Category;
 // use Illuminate\Support\Facades\Storage;
 
 class DashboardService
@@ -148,4 +149,8 @@ class DashboardService
         return $query->orderBy('created_at', 'desc')->get();
     }
 
+    public function findByName(string $name)
+    {
+        return Category::where('name', $name)->firstOrFail();
+    }
 }

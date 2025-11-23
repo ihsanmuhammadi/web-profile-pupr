@@ -149,17 +149,17 @@
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Judul Kategori Program</label>
-                        <input type="text" name="name" class="form-control rounded-3" placeholder="Masukkan Judul Kategori Program...">
+                        <input type="text" name="name" class="form-control rounded-3" placeholder="Masukkan Judul Kategori Program..." required>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Deskripsi Kategori Program</label>
-                        <textarea name="description" class="form-control rounded-3" placeholder="Masukkan Deskripsi Kategori Program..."></textarea>
+                        <textarea name="description" class="form-control rounded-3" placeholder="Masukkan Deskripsi Kategori Program..." required></textarea>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Tujuan dan Manfaat Kategori Program</label>
-                        <textarea name="tujuan" class="form-control rounded-3" placeholder="Masukkan Tujuan dan Manfaat Kategori Program..."></textarea>
+                        <textarea name="tujuan" class="form-control rounded-3" placeholder="Masukkan Tujuan dan Manfaat Kategori Program..." required></textarea>
                     </div>
 
                     <div class="mb-3">
@@ -168,7 +168,7 @@
                         <div class="program-container">
 
                             <div class="input-group mb-2 program-item">
-                                <input type="text" name="contoh_program_1" class="form-control rounded-3" placeholder="Masukkan Contoh Program Kategori Program...">
+                                <input type="text" name="contoh_program_1" class="form-control rounded-3" placeholder="Masukkan Contoh Program Kategori Program..." required>
                                 <button type="button" class="btn btn-outline-secondary rounded-3 ms-2 remove-program-btn d-none">
                                     <i class="bi bi-x"></i>
                                 </button>
@@ -257,17 +257,17 @@ Lorem ipsum lorem ipsum lorem ipsum Lorem ipsum lorem ipsum lorem ipsum lorem ip
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold small">Judul Kategori Program</label>
-                        <input type="text" name="name" id="editName" class="form-control rounded-3">
+                        <input type="text" name="name" id="editName" class="form-control rounded-3" required>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold small">Deskripsi Kategori Program</label>
-                        <textarea name="description" id="editDescription" class="form-control rounded-3"></textarea>
+                        <textarea name="description" id="editDescription" class="form-control rounded-3" required></textarea>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold small">Tujuan dan Manfaat Kategori Program</label>
-                        <textarea name="tujuan" id="editTujuan" class="form-control rounded-3"></textarea>
+                        <textarea name="tujuan" id="editTujuan" class="form-control rounded-3" required></textarea>
                     </div>
 
                     <div class="mb-3">

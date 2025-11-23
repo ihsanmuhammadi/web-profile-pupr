@@ -95,6 +95,30 @@
     </style>
 </head>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const wrapper = document.getElementById("wrapper");
+    const toggleBtn = document.getElementById("toggleSidebar");
+
+    // === Restore state on page load ===
+    const savedState = localStorage.getItem("sidebar-collapsed");
+    if (savedState === "true") {
+        wrapper.classList.add("toggled");
+    }
+
+    // === Toggle state on click ===
+    if (toggleBtn) {
+        toggleBtn.addEventListener("click", function () {
+            wrapper.classList.toggle("toggled");
+
+            // Simpan state ke localStorage
+            const isCollapsed = wrapper.classList.contains("toggled");
+            localStorage.setItem("sidebar-collapsed", isCollapsed);
+        });
+    }
+});
+</script>
+
 <body>
     <div id="wrapper" class="d-flex">
         {{-- Sidebar --}}
