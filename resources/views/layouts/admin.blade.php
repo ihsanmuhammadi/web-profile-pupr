@@ -16,82 +16,74 @@
 
     <style>
         .toast-notif {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-   gap: 20px;
-    padding: 15px 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    border-left-width: 6px;
-    border-left-style: solid;
-    min-width: 420px;
-}
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 50px;
+            padding: 10px 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border-left-width: 6px;
+            border-left-style: solid;
+            min-width: 420px;
+        }
 
-/* SUCCESS STYLE (mirip toast-sukses.png) */
-.toast-success {
-    background-color: #e7f4ec;
-    border-left-color: #4CAF50;
-    color: #2c5e37;
-}
+        .toast-success {
+            background-color: #EFFDF6 !important;
+            border-left-color: #42946C;
+            color: #42946C;
+        }
 
-/* ERROR STYLE (mirip toast-gagal.png) */
-.toast-error {
-    background-color: #f9e8e7;
-    border-left-color: #d9534f;
-    color: #8a2e2c;
-}
+        .toast-error {
+            background-color: #FCF3F3 !important;
+            border-left-color: #C33E33;
+            color: #C33E33;
+        }
 
-/* ICON BULAT */
-.toast-icon {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-}
+        .toast-icon {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            margin-right: 20px
+        }
 
-/* Hijau */
-.toast-icon-success {
-    background-color: #4CAF50;
-    color: white;
-}
+        .toast-icon-success {
+            background-color: #4CAF50;
+            color: white;
+        }
 
-/* Merah */
-.toast-icon-error {
-    background-color: #d9534f;
-    color: white;
-}
+        .toast-icon-error {
+            background-color: #d9534f;
+            color: white;
+        }
 
-/* TEXT AREA */
-.toast-body {
-    display: flex;
-    flex-direction: column;
-}
+        .toast-body {
+            display: flex;
+            flex-direction: column;
+        }
 
-.toast-title {
-    font-weight: 600;
-    font-size: 1rem;
-}
+        .toast-title {
+            font-weight: 600;
+            font-size: 1rem;
+        }
 
-.toast-message {
-    font-size: 0.95rem;
-    margin-top: -2px;
-}
+        .toast-message {
+            font-size: 0.95rem;
+            margin-top: -2px;
+        }
 
-/* CLOSE BUTTON */
-.toast-close {
-    cursor: pointer;
-    font-size: 20px;
-    color: inherit;
-    opacity: 0.7;
-}
+        .toast-close {
+            cursor: pointer;
+            font-size: 17px;
+            color: inherit;
+        }
 
-.toast-close:hover {
-    opacity: 1;
-}
+        .toast-close:hover {
+            opacity: 1;
+        }
     </style>
 </head>
 
@@ -117,57 +109,57 @@
     </script>
 
     <!-- Toast Container -->
-<div id="toastContainer"
-    style="position: fixed; top: 20px; right: 20px; z-index: 99999; display: flex; flex-direction: column; gap: 10px;">
-</div>
-
-<script>
-    function showToast(message, type = "success") {
-        const toast = document.createElement("div");
-        toast.className = "toast-notif " + (type === "success" ? "toast-success" : "toast-error");
-        toast.style.backgroundColor = type === "success" ? "#28a745" : "#dc3545";
-        toast.style.minWidth = "280px";
-        toast.style.opacity = "0";
-        toast.style.transform = "translateX(100%)";
-        toast.style.transition = "all .4s ease";
-
-        toast.innerHTML = `
-    <div class="d-flex align-items-center">
-        <div class="toast-icon ${type === "success" ? "toast-icon-success" : "toast-icon-error"}">
-            <i class="bi ${type === "success" ? "bi-check-lg" : "bi-x-lg"}"></i>
-        </div>
-
-        <div class="toast-body">
-            <span class="toast-title">${type === "success" ? "Sukses!" : "Gagal!"}</span>
-            <span class="toast-message">${message}</span>
-        </div>
+    <div id="toastContainer"
+        style="position: fixed; top: 50px; right: 3px; z-index: 99999;">
     </div>
 
-    <i class="bi bi-x-lg toast-close"></i>
-`;
-
-        document.getElementById("toastContainer").appendChild(toast);
-
-        setTimeout(() => {
-            toast.style.opacity = "1";
-            toast.style.transform = "translateX(0)";
-        }, 50);
-
-        setTimeout(() => {
+    <script>
+        function showToast(message, type = "success") {
+            const toast = document.createElement("div");
+            toast.className = "toast-notif " + (type === "success" ? "toast-success" : "toast-error");
+            toast.style.backgroundColor = type === "success" ? "#28a745" : "#dc3545";
+            toast.style.minWidth = "280px";
             toast.style.opacity = "0";
             toast.style.transform = "translateX(100%)";
-        }, 3000);
+            toast.style.transition = "all .4s ease";
 
-        setTimeout(() => toast.remove(), 3500);
-    }
+            toast.innerHTML = `
+        <div class="d-flex align-items-center">
+            <div class="toast-icon ${type === "success" ? "toast-icon-success" : "toast-icon-error"}">
+                <i class="bi ${type === "success" ? "bi-check-lg" : "bi-x-lg"}"></i>
+            </div>
 
-    @if(session('success'))
-        showToast("{{ session('success') }}", "success");
-    @endif
+            <div class="toast-body">
+                <span class="toast-title">${type === "success" ? "Sukses!" : "Gagal!"}</span>
+                <span class="toast-message">${message}</span>
+            </div>
+        </div>
 
-    @if(session('error'))
-        showToast("{{ session('error') }}", "error");
-    @endif
-</script>
+        <i class="bi bi-x-lg toast-close"></i>
+    `;
+
+            document.getElementById("toastContainer").appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = "1";
+                toast.style.transform = "translateX(0)";
+            }, 50);
+
+            setTimeout(() => {
+                toast.style.opacity = "0";
+                toast.style.transform = "translateX(100%)";
+            }, 7000);
+
+            setTimeout(() => toast.remove(), 7500);
+        }
+
+        @if(session('success'))
+            showToast("{{ session('success') }}", "success");
+        @endif
+
+        @if(session('error'))
+            showToast("{{ session('error') }}", "error");
+        @endif
+    </script>
 </body>
 </html>
