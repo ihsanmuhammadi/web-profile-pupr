@@ -42,7 +42,7 @@ class DataProgramRequest extends FormRequest
             'posisi_4' => 'nullable|string|max:255',
             'tenaga_kerja_5' => 'nullable|string|max:255',
             'posisi_5' => 'nullable|string|max:255',
-            'kategori_id' => 'nullable|uuid|exists:categories,id',
+            'kategori_id' => 'required|uuid|exists:categories,id',
         ];
     }
 }

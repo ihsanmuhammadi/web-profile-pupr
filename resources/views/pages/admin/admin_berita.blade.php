@@ -162,7 +162,7 @@
                                    onchange="checkFileSize(this)"
                                    required>
                         </div>
-                        <small id="fileSizeError" class="text-danger" style="display: none;">⚠️ Ukuran file terlalu besar! Maksimal 10MB</small>
+                        <small id="fileSizeError" class="text-danger" style="display: none;">⚠️ Ukuran file terlalu besar! Maksimal 5MB</small>
                     </div>
 
                     <div class="d-flex justify-content-end mt-4 gap-2">
