@@ -33,14 +33,45 @@ class DataProgramService
 
     public function create(array $data)
     {
+        // Sanitasi link dokumentasi
+        if (!empty($data['dokumentasi'])) {
+            $data['dokumentasi'] = filter_var($data['dokumentasi'], FILTER_SANITIZE_URL);
+        }
+
+        // Tambahkan tenaga kerja 1–5 meski tidak ada di request
+        for ($i = 1; $i <= 5; $i++) {
+            $data["tenaga_kerja_$i"] = $data["tenaga_kerja_$i"] ?? null;
+            $data["posisi_$i"] = $data["posisi_$i"] ?? null;
+        }
+
         return DataProgram::create($data);
     }
 
     public function update(DataProgram $dataProgram, array $data)
     {
+        // Sanitasi link dokumentasi (konsisten dengan create)
+        if (!empty($data['dokumentasi'])) {
+            $data['dokumentasi'] = filter_var($data['dokumentasi'], FILTER_SANITIZE_URL);
+        }
+
+        // Tambahkan logika HAPUS jika input tenaga kerja tidak ada pada request
+        for ($i = 1; $i <= 5; $i++) {
+            if (!array_key_exists("tenaga_kerja_$i", $data)) {
+                // Data tidak dikirim → user remove → hapus dari database
+                $data["tenaga_kerja_$i"] = null;
+            }
+
+            if (!array_key_exists("posisi_$i", $data)) {
+                $data["posisi_$i"] = null;
+            }
+        }
+
+        // Update semua field
         $dataProgram->update($data);
+
         return $dataProgram;
     }
+
 
     public function delete(DataProgram $dataProgram)
     {

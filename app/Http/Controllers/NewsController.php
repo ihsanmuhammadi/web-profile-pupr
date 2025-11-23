@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\NewsRequest;
 use App\Models\News;
 use App\Services\NewsService;
+use Exception;
 
 class NewsController extends Controller
 {
@@ -32,8 +33,14 @@ class NewsController extends Controller
 
     public function store(NewsRequest $request)
     {
-        $this->service->create($request->validated());
-        return redirect()->route('news.index')->with('success', 'News created successfully.');
+        try {
+            $this->service->create($request->validated());
+            return redirect()->route('admin.berita')
+                ->with('success', 'Data berhasil ditambahkan!');
+        } catch (Exception $e) {
+            return redirect()->route('admin.berita')
+                ->with('error', 'Data gagal ditambahkan!');
+        }
     }
 
     public function show(News $news)
@@ -51,13 +58,25 @@ class NewsController extends Controller
 
     public function update(NewsRequest $request, News $news)
     {
-        $this->service->update($news, $request->validated());
-        return redirect()->route('news.index')->with('success', 'News updated successfully.');
+        try {
+            $this->service->update($news, $request->validated());
+            return redirect()->route('admin.berita')
+                ->with('success', 'Data telah berhasil diperbarui!');
+        } catch (Exception $e) {
+            return redirect()->route('admin.berita')
+                ->with('error', 'Data gagal diperbarui!');
+        }
     }
 
     public function destroy(News $news)
     {
-        $this->service->delete($news);
-        return redirect()->route('news.index')->with('success', 'News deleted successfully.');
+        try {
+            $this->service->delete($news);
+            return redirect()->route('admin.berita')
+                ->with('success', 'Data telah berhasil dihapus!');
+        } catch (Exception $e) {
+            return redirect()->route('admin.berita')
+                ->with('error', 'Data gagal dihapus!');
+        }
     }
 }

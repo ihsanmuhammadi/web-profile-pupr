@@ -61,7 +61,7 @@
                                 {{ e($d->judul) }}
                             </td>
                             <td style="max-width:150px;">
-                                {{ e($d->kategori->name) }}
+                                {{ e($d->kategori->name ?? '-') }}
                             </td>
                             <td style="max-width:150px;">
                                 {{ e($d->status_proyek) }}
@@ -70,19 +70,49 @@
                                 {{ e($d->lokasi) }}
                             </td>
                             <td class="text-center">
-                                <button class="btn btn-sm btn-see btn-primary rounded-2 me-1" data-id="{{ $d->id }}">
+                                <button class="btn btn-sm btn-see-dataprogram btn-primary rounded-2 me-1" data-id="{{ $d->id }}">
                                     <i class="bi bi-eye"></i>
                                 </button>
-                                <button class="btn btn-sm btn-edit-pedoman btn-warning rounded-2 me-1" data-id="{{ $d->id }}" data-judul="{{ $d->judul }}" data-kategori_id="{{ $d->kategori_id }}" data-status_proyek="{{ $d->status_proyek }}" data-lokasi="{{ $d->lokasi }}">
-                                    <i class="bi bi-pencil"></i>
+                                <button class="btn btn-sm btn-edit-dataprogram btn-warning rounded-2 me-1"
+                                    data-id="{{ $d->id }}"
+                                    data-judul="{{ $d->judul }}"
+                                    data-kategori="{{ $d->kategori_id }}"
+                                    data-sub_judul="{{ $d->sub_judul }}"
+                                    data-deskripsi="{{ $d->deskripsi }}"
+                                    data-status_proyek="{{ $d->status_proyek }}"
+                                    data-waktu_mulai="{{ \Carbon\Carbon::parse($d->waktu_mulai)->format('Y-m-d') }}"
+                                    data-waktu_selesai="{{ \Carbon\Carbon::parse($d->waktu_selesai)->format('Y-m-d') }}"
+                                    data-tahun_anggaran="{{ $d->tahun_anggaran }}"
+                                    data-kecamatan="{{ $d->kecamatan }}"
+                                    data-lokasi="{{ $d->lokasi }}"
+                                    data-dokumentasi="{{ $d->dokumentasi }}"
+                                    data-tenaga_kerja_1="{{ $d->tenaga_kerja_1 }}"
+                                    data-posisi_1="{{ $d->posisi_1 }}"
+                                    data-tenaga_kerja_2="{{ $d->tenaga_kerja_2 }}"
+                                    data-posisi_2="{{ $d->posisi_2 }}"
+                                    data-tenaga_kerja_3="{{ $d->tenaga_kerja_3 }}"
+                                    data-posisi_3="{{ $d->posisi_3 }}"
+                                    data-tenaga_kerja_4="{{ $d->tenaga_kerja_4 }}"
+                                    data-posisi_4="{{ $d->posisi_4 }}"
+                                    data-tenaga_kerja_5="{{ $d->tenaga_kerja_5 }}"
+                                    data-posisi_5="{{ $d->posisi_5 }}"
+                                >
+                                <i class="bi bi-pencil"></i>
                                 </button>
-                                <form action="{{ route('data-programs.destroy', $d->id) }}" method="POST" style="display: inline-block;">
+                                <button type="button"
+                                    class="btn btn-sm btn-delete btn-danger rounded-2"
+                                    data-id="{{ $d->id }}">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+
+                                <form id="delete-form-{{ $d->id }}"
+                                    action="{{ route('data-programs.destroy', $d->id) }}"
+                                    method="POST"
+                                    style="display: none;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-delete btn-danger rounded-2" onclick="return confirm('Are you sure?')">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
                                 </form>
+
                             </td>
                         </tr>
                     @empty
@@ -121,7 +151,7 @@
     });
 </script>
 
-{{-- MODAL TAMBAH TENAGA KERJA --}}
+{{-- MODAL TAMBAH DATA PROGRAM --}}
 <div class="modal fade" id="tambahModal" tabindex="-1" aria-labelledby="tambahModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 shadow-lg">
@@ -129,73 +159,93 @@
                 <h5 class="modal-title text-white fw-semibold" id="tambahKategoriModalLabel">Tambah Data & Program</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+
             <div class="modal-body p-4">
-                <form id="formTambahKategori">
+                <form action="{{ route('data-programs.store') }}" method="POST">
+                    @csrf
+
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Judul</label>
-                        <input type="text" class="form-control rounded-3" placeholder="Masukkan Judul Data & Program...">
+                        <input type="text" name="judul" class="form-control rounded-3"
+                            placeholder="Masukkan Judul Data & Program...">
                     </div>
+
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Kategori</label>
-                        <select class="form-select rounded-3">
+                        <select name="kategori_id" class="form-select rounded-3">
                             <option selected disabled>Pilih Kategori Data & Program</option>
-                            <option value="jalan-lingkungan">Jalan Lingkungan</option>
-                            <option value="drainase-lingkungan">Drainase Lingkungan</option>
-                            <option value="jembatan-lingkungan">Jembatan Lingkungan</option>
-                            <option value="rumah-taklayak">Rumah Tidak Layak Huni</option>
-                            <option value="perumahan">Perumahan</option>
+                            @foreach ($categories as $kategori)
+                                <option value="{{ $kategori->id }}">{{ $kategori->name }}</option>
+                            @endforeach
                         </select>
                     </div>
+
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Sub Judul</label>
-                        <input type="text" class="form-control rounded-3" placeholder="Masukkan Sub Judul Data & Program...">
+                        <input type="text" name="sub_judul" class="form-control rounded-3"
+                            placeholder="Masukkan Sub Judul Data & Program...">
                     </div>
+
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Deskripsi Kategori Program</label>
-                        <textarea class="form-control rounded-3" placeholder="Masukkan Deskripsi..."></textarea>
+                        <textarea name="deskripsi" class="form-control rounded-3" placeholder="Masukkan Deskripsi..."></textarea>
                     </div>
+
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Status</label>
-                        <select class="form-select rounded-3">
+                        <select name="status_proyek" class="form-select rounded-3">
                             <option selected disabled>Pilih Status Data & Program</option>
                             <option value="tuntas">Tuntas</option>
                             <option value="berjalan">Sedang Berjalan</option>
                             <option value="dihentikan">Dihentikan</option>
+                            <option value="ditunda">Ditunda</option>
                         </select>
                     </div>
+
                     <div class="row g-3 mb-3 align-items-end">
                         <div class="col-md-4">
                             <label class="form-label fw-semibold small text-dark">Waktu Mulai</label>
-                            <input type="date" class="form-control rounded-3" id="waktuMulai">
+                            <input type="date" name="waktu_mulai" class="form-control rounded-3" id="waktuMulai">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label fw-semibold small text-dark">Waktu Selesai</label>
-                            <input type="date" class="form-control rounded-3" id="waktuSelesai">
+                            <input type="date" name="waktu_selesai" class="form-control rounded-3" id="waktuSelesai">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label fw-semibold small text-dark">Tahun Anggaran</label>
-                            <input type="text" class="form-control rounded-3" id="tahunAnggaran" placeholder="Tambah Tahun Anggaran" inputmode="numeric" pattern="[0-9]*" maxlength="4">
+                            <input type="text" name="tahun_anggaran" class="form-control rounded-3" id="tahunAnggaran"
+                                placeholder="Tambah Tahun Anggaran" inputmode="numeric" pattern="[0-9]*" maxlength="4">
                         </div>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Kecamatan</label>
-                        <input type="text" class="form-control rounded-3" placeholder="Masukkan Kecamatan Data & Program...">
+                        <input type="text" name="kecamatan" class="form-control rounded-3"
+                            placeholder="Masukkan Kecamatan Data & Program...">
                     </div>
+
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Lokasi</label>
-                        <input type="text" class="form-control rounded-3" placeholder="Masukkan Lokasi Data & Program...">
+                        <input type="text" name="lokasi" class="form-control rounded-3"
+                            placeholder="Masukkan Lokasi Data & Program...">
                     </div>
+
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Dokumentasi</label>
-                        <input type="text" class="form-control rounded-3" placeholder="Masukkan Link Dokumentasi Data & Program...">
+                        <input type="text" name="dokumentasi" class="form-control rounded-3"
+                            placeholder="Masukkan Link Dokumentasi Data & Program...">
                     </div>
+
+                    {{-- TENAGA KERJA (DINAMIS) --}}
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Tenaga Kerja</label>
+
                         <div class="tenaga-container">
                             <div class="input-group mb-2 program-item">
-                                <input type="text" class="form-control rounded-3" placeholder="Masukkan Nama...">
-                                <input type="text" class="form-control rounded-3 ms-2" placeholder="Masukkan Posisi...">
+                                <input type="text" name="tenaga_kerja_1" class="form-control rounded-3"
+                                    placeholder="Masukkan Nama...">
+                                <input type="text" name="posisi_1" class="form-control rounded-3 ms-2"
+                                    placeholder="Masukkan Posisi...">
                                 <button type="button" class="btn btn-outline-secondary rounded-3 ms-2 remove-program-btn d-none">
                                     <i class="bi bi-x"></i>
                                 </button>
@@ -216,6 +266,7 @@
         </div>
     </div>
 </div>
+
 
 {{--MODAL DETAIL BANNER--}}
 <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
@@ -251,7 +302,7 @@
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Status</label>
-                        <input type="text" class="form-control rounded-3" id="detailStatus" value="Lorem ipsum lorem ipsum lorem ipsum" readonly>
+                        <input type="text" class="form-control rounded-3" id="detailStatusProyek" value="Lorem ipsum lorem ipsum lorem ipsum" readonly>
                     </div>
 
                     <div class="row g-3 mb-3 align-items-end">
@@ -288,12 +339,24 @@
                         <label class="form-label fw-semibold small text-dark">Tenaga Kerja</label>
                         <div id="detailTenagaKerjaContainer">
                             <div class="input-group mb-2">
-                                <input type="text" class="form-control rounded-3" id="detailTenagaNama1" value="Lorem Ipsum" readonly>
-                                <input type="text" class="form-control rounded-3 ms-2" id="detailTenagaPosisi1" value="Arsitek" readonly>
+                                <input type="text" class="form-control rounded-3" id="detailTenaga1" readonly>
+                                <input type="text" class="form-control rounded-3 ms-2" id="detailPosisi1" readonly>
                             </div>
                             <div class="input-group mb-2">
-                                <input type="text" class="form-control rounded-3" id="detailTenagaNama2" value="Lorem Ipsum" readonly>
-                                <input type="text" class="form-control rounded-3 ms-2" id="detailTenagaPosisi2" value="Interior" readonly>
+                                <input type="text" class="form-control rounded-3" id="detailTenaga2" readonly>
+                                <input type="text" class="form-control rounded-3 ms-2" id="detailPosisi2" readonly>
+                            </div>
+                            <div class="input-group mb-2">
+                                <input type="text" class="form-control rounded-3" id="detailTenaga3" readonly>
+                                <input type="text" class="form-control rounded-3 ms-2" id="detailPosisi3" readonly>
+                            </div>
+                            <div class="input-group mb-2">
+                                <input type="text" class="form-control rounded-3" id="detailTenaga4" readonly>
+                                <input type="text" class="form-control rounded-3 ms-2" id="detailPosisi4" readonly>
+                            </div>
+                            <div class="input-group mb-2">
+                                <input type="text" class="form-control rounded-3" id="detailTenaga5" readonly>
+                                <input type="text" class="form-control rounded-3 ms-2" id="detailPosisi5" readonly>
                             </div>
                         </div>
                     </div>
@@ -310,7 +373,7 @@
 </div>
 
 
-{{-- MODAL EDIT BANNER --}}
+{{-- MODAL EDIT data program --}}
 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 shadow-lg">
@@ -320,110 +383,110 @@
             </div>
 
             <div class="modal-body p-4">
-                <form id="editBannerForm">
+                <form id="editDataProgramForm" method="POST">
+                    @csrf
+                    @method('PUT')
 
+                    {{-- JUDUL --}}
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Judul</label>
-                        <input type="text" id="editJudul" class="form-control rounded-3" placeholder="Masukkan Judul Data & Program...">
+                        <input type="text" id="editJudul" name="judul" class="form-control rounded-3" placeholder="Masukkan Judul Data & Program...">
                     </div>
 
+                    {{-- KATEGORI --}}
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Kategori</label>
-                        <select id="editKategori" class="form-select rounded-3">
+                        <select id="editKategori" name="kategori_id" class="form-select rounded-3">
                             <option selected disabled>Pilih Kategori Data & Program</option>
-                            <option value="jalan-lingkungan">Jalan Lingkungan</option>
-                            <option value="drainase-lingkungan">Drainase Lingkungan</option>
-                            <option value="jembatan-lingkungan">Jembatan Lingkungan</option>
-                            <option value="rumah-taklayak">Rumah Tidak Layak Huni</option>
-                            <option value="perumahan">Perumahan</option>
+                            @foreach ($categories as $kategori)
+                                <option value="{{ $kategori->id }}">{{ $kategori->name }}</option>
+                            @endforeach
                         </select>
                     </div>
 
+                    {{-- SUB JUDUL --}}
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Sub Judul</label>
-                        <input type="text" id="editSubJudul" class="form-control rounded-3" placeholder="Masukkan Sub Judul Data & Program...">
+                        <input type="text" id="editSubJudul" name="sub_judul" class="form-control rounded-3" placeholder="Masukkan Sub Judul Data & Program...">
                     </div>
 
+                    {{-- DESKRIPSI --}}
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Deskripsi Kategori Program</label>
-                        <input type="text" id="editDeskripsi" class="form-control rounded-3" placeholder="Masukkan Deskripsi Kategori Program...">
+                        <input type="text" id="editDeskripsi" name="deskripsi" class="form-control rounded-3" placeholder="Masukkan Deskripsi Kategori Program...">
                     </div>
 
+                    {{-- STATUS --}}
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Status</label>
-                        <select id="editStatus" class="form-select rounded-3">
+                        <select id="editStatus" name="status_proyek" class="form-select rounded-3">
                             <option selected disabled>Pilih Status Data & Program</option>
                             <option value="tuntas">Tuntas</option>
                             <option value="berjalan">Sedang Berjalan</option>
                             <option value="dihentikan">Dihentikan</option>
+                            <option value="ditunda">Ditunda</option>
                         </select>
                     </div>
 
+                    {{-- WAKTU --}}
                     <div class="row g-3 mb-3 align-items-end">
                         <div class="col-md-4">
                             <label class="form-label fw-semibold small text-dark">Waktu Mulai</label>
-                            <input type="date" id="editWaktuMulai" class="form-control rounded-3">
+                            <input type="date" id="editWaktuMulai" name="waktu_mulai" class="form-control rounded-3">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label fw-semibold small text-dark">Waktu Selesai</label>
-                            <input type="date" id="editWaktuSelesai" class="form-control rounded-3">
+                            <input type="date" id="editWaktuSelesai" name="waktu_selesai" class="form-control rounded-3">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label fw-semibold small text-dark">Tahun Anggaran</label>
-                            <input type="text" id="editTahunAnggaran" class="form-control rounded-3" placeholder="Tambah Tahun Anggaran" inputmode="numeric" pattern="[0-9]*" maxlength="4">
+                            <input type="text" id="editTahunAnggaran" name="tahun_anggaran" class="form-control rounded-3" placeholder="Tambah Tahun Anggaran" inputmode="numeric" pattern="[0-9]*" maxlength="4">
                         </div>
                     </div>
 
+                    {{-- KECAMATAN --}}
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Kecamatan</label>
-                        <input type="text" id="editKecamatan" class="form-control rounded-3" placeholder="Masukkan Kecamatan Data & Program...">
+                        <input type="text" id="editKecamatan" name="kecamatan" class="form-control rounded-3" placeholder="Masukkan Kecamatan Data & Program...">
                     </div>
 
+                    {{-- LOKASI --}}
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Lokasi</label>
-                        <input type="text" id="editLokasi" class="form-control rounded-3" placeholder="Masukkan Lokasi Data & Program...">
+                        <input type="text" id="editLokasi" name="lokasi" class="form-control rounded-3" placeholder="Masukkan Lokasi Data & Program...">
                     </div>
 
+                    {{-- DOKUMENTASI --}}
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Dokumentasi</label>
-                        <input type="text" id="editDokumentasi" class="form-control rounded-3" placeholder="Masukkan Link Dokumentasi Data & Program...">
+                        <input type="text" id="editDokumentasi" name="dokumentasi" class="form-control rounded-3" placeholder="Masukkan Link Dokumentasi Data & Program...">
                     </div>
 
+                    {{-- TENAGA KERJA DINAMIS --}}
                     <div class="mb-3">
-    <label class="form-label fw-semibold small text-dark">Tenaga Kerja</label>
+                        <label class="form-label fw-semibold small text-dark">Tenaga Kerja</label>
 
-    <div class="tenaga-container">
-        <div class="input-group mb-2 program-item">
+                        <div class="tenaga-container">
+                            <div class="input-group mb-2 program-item">
+                                <input type="text" class="form-control rounded-3" id="editTenagaNama1" name="tenaga_kerja_1" placeholder="Masukkan Nama...">
+                                <input type="text" class="form-control rounded-3 ms-2" id="editTenagaPosisi1" name="posisi_1" placeholder="Masukkan Posisi...">
+                                <button type="button" class="btn btn-outline-secondary rounded-3 ms-2 remove-program-btn d-none">
+                                    <i class="bi bi-x"></i>
+                                </button>
+                            </div>
+                        </div>
 
-            <!-- Nama -->
-            <input type="text"
-                   class="form-control rounded-3"
-                   placeholder="Masukkan Nama..."
-                   id="editTenagaNama1">
+                        <button type="button" class="btn btn-outline-secondary rounded-3 px-3 mt-2 add-tenaga-btn">
+                            <i class="bi bi-plus me-1"></i>Tambah Tenaga Kerja
+                        </button>
+                    </div>
 
-            <!-- Posisi -->
-            <input type="text"
-                   class="form-control rounded-3 ms-2"
-                   placeholder="Masukkan Posisi..."
-                   id="editTenagaPosisi1">
-
-            <!-- Tombol hapus -->
-            <button type="button" class="btn btn-outline-secondary rounded-3 ms-2 remove-program-btn d-none">
-                <i class="bi bi-x"></i>
-            </button>
-        </div>
-    </div>
-
-    <button type="button" class="btn btn-outline-secondary rounded-3 px-3 mt-2 add-tenaga-btn">
-        <i class="bi bi-plus me-1"></i>Tambah Tenaga Kerja
-    </button>
-</div>
-
-
+                    {{-- BUTTON --}}
                     <div class="d-flex justify-content-end mt-4 gap-2">
                         <button type="button" class="btn btn-outline-danger rounded-pill px-4 fw-semibold" data-bs-dismiss="modal">Batal</button>
                         <button type="submit" class="btn btn-outline-primary rounded-pill px-4 fw-semibold">Ubah</button>
                     </div>
+
                 </form>
             </div>
         </div>

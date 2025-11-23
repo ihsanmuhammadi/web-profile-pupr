@@ -22,9 +22,8 @@ class GuidanceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nama' => 'required|string|max:255',
-            'email' => 'nullable|string|max:255',
-            'pesan' => 'required|string|max:255',
+            'link' => 'required|string|max:255',
+            'kategori' => 'required|string',
         ];
     }
 }

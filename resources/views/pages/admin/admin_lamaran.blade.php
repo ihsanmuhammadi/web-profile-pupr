@@ -62,10 +62,10 @@
                                 {{ e($a->nama) }}
                             </td>
                             <td style="max-width:120px;">
-                                {{ e($a->work->posisi) }}
+                                {{ e($a->work->posisi ?? '-') }}
                             </td>
                             <td style="max-width:120px;">
-                                {{ e($a->work->dataProgram->judul) }}
+                                {{ e($a->work->dataProgram->judul ?? '-') }}
                             </td>
                             <td style="max-width:120px;">
                                 {{ e($a->email) }}
@@ -75,17 +75,23 @@
                             </td>
 
                             <td class="text-center">
-                                <button class="btn btn-sm btn-see btn-primary rounded-2 me-1" data-id="{{ $a->id }}">
+                                <button class="btn btn-sm btn-see-applications btn-primary rounded-2 me-1" data-id="{{ $a->id }}">
                                     <i class="bi bi-eye"></i>
                                 </button>
+                                <button type="button"
+                                    class="btn btn-sm btn-delete btn-danger rounded-2"
+                                    data-id="{{ $a->id }}">
+                                    <i class="bi bi-trash"></i>
+                                </button>
 
-                                <form action="{{ route('applications.destroy', $a->id) }}" method="POST" style="display: inline-block;">
+                                <form id="delete-form-{{ $a->id }}"
+                                    action="{{ route('applications.destroy', $a->id) }}"
+                                    method="POST"
+                                    style="display: none;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-delete btn-danger rounded-2" onclick="return confirm('Are you sure?')">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
                                 </form>
+
                             </td>
                         </tr>
                     @empty
@@ -198,7 +204,7 @@
     </div>
 </div> --}}
 
-{{--MODAL DETAIL BANNER--}}
+{{--MODAL DETAIL LAMARAN--}}
 <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 shadow-lg">
@@ -227,7 +233,7 @@
                         </div>
                         <div class="col-md-5">
                             <label class="form-label fw-semibold small text-dark mb-1">Nomor Telepon</label>
-                            <input type="text" class="form-control rounded-3" id="detailTelepon" value="081********" readonly>
+                            <input type="text" class="form-control rounded-3" id="detailNoTelepon" value="081********" readonly>
                         </div>
                     </div>
                     <div class="row mb-3 align-items-end">

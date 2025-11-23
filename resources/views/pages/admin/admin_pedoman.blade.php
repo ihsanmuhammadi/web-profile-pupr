@@ -66,19 +66,26 @@
                                 {{ e($g->created_at) }}
                             </td>
                             <td class="text-center">
-                                <button class="btn btn-sm btn-see btn-primary rounded-2 me-1" data-id="{{ $g->id }}">
+                                <button class="btn btn-sm btn-see-guidance btn-primary rounded-2 me-1" data-id="{{ $g->id }}">
                                     <i class="bi bi-eye"></i>
                                 </button>
-                                <button class="btn btn-sm btn-edit-pedoman btn-warning rounded-2 me-1" data-id="{{ $g->id }}" data-link="{{ $g->link }}" data-kategori="{{ $g->kategori }}">
+                                <button class="btn btn-sm btn-edit-guidance btn-warning rounded-2 me-1" data-id="{{ $g->id }}" data-link="{{ $g->link }}" data-kategori="{{ $g->kategori }}">
                                     <i class="bi bi-pencil"></i>
                                 </button>
-                                <form action="{{ route('guidances.destroy', $g->id) }}" method="POST" style="display: inline-block;">
+                                <button type="button"
+                                    class="btn btn-sm btn-delete btn-danger rounded-2"
+                                    data-id="{{ $g->id }}">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+
+                                <form id="delete-form-{{ $g->id }}"
+                                    action="{{ route('guidances.destroy', $g->id) }}"
+                                    method="POST"
+                                    style="display:none;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-delete btn-danger rounded-2" onclick="return confirm('Are you sure?')">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
                                 </form>
+
                             </td>
                         </tr>
                     @empty
@@ -117,31 +124,34 @@
     });
 </script>
 
-{{-- MODAL TAMBAH --}}
+{{-- MODAL TAMBAH PEDOMAN --}}
 <div class="modal fade" id="tambahModal" tabindex="-1" aria-labelledby="tambahModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 shadow-lg">
+
             <div class="modal-header" style="background-color: #4A7097;">
                 <h5 class="modal-title text-white fw-semibold" id="tambahModalLabel">Tambah Pedoman</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <div class="modal-body p-4">
-                <form>
+                <form action="{{ route('guidances.store') }}" method="POST">
+                    @csrf
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Link Youtube</label>
-                        <input type="text" class="form-control rounded-3" placeholder="Masukkan Link Pedoman...">
+                        <input type="text" name="link"
+                               class="form-control rounded-3"
+                               value="{{ old('link') }}"
+                               placeholder="Masukkan Link Pedoman...">
                     </div>
-
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Kategori</label>
-                        <select class="form-select rounded-3">
+                        <select name="kategori" class="form-select rounded-3">
                             <option selected disabled>Pilih Kategori Pedoman</option>
-                            <option value="spesifikasi-teknis">Pedoman Spesifikasi Teknis</option>
-                            <option value="spesifikasi-daerah">Pedoman Spesifikasi Daerah</option>
+                            <option value="Spesifikasi Teknis">Pedoman Spesifikasi Teknis</option>
+                            <option value="Spesifikasi Daerah">Pedoman Spesifikasi Daerah</option>
                         </select>
                     </div>
-
                     <div class="d-flex justify-content-end mt-4 gap-2">
                         <button type="button" class="btn btn-outline-danger rounded-pill px-4 fw-semibold" data-bs-dismiss="modal">Batal</button>
                         <button type="submit" class="btn btn-outline-primary rounded-pill px-4 fw-semibold">Simpan</button>
@@ -167,12 +177,12 @@
 
                         <div class="mb-3">
                             <label class="form-label fw-semibold small text-dark mb-1">Link Youtube</label>
-                            <input type="text" class="form-control rounded-3" id="linkYoutube"
+                            <input type="text" class="form-control rounded-3" id="detailLink"
                                    value="Lorem ipsum lorem ipsum lorem ipsum" readonly>
                         </div>
                         <div class="mb-3">
                             <label class="form-label fw-semibold small text-dark mb-1">Kategori</label>
-                            <input type="text" class="form-control rounded-3" id="kategori"
+                            <input type="text" class="form-control rounded-3" id="detailKategori"
                                    value="Lorem ipsum lorem ipsum lorem ipsum" readonly>
                         </div>
                         <div class="mb-3">
@@ -196,7 +206,7 @@
     </div>
 </div>
 
-{{-- MODAL EDIT--}}
+{{-- MODAL EDIT pedoman--}}
 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 shadow-lg">
@@ -206,18 +216,23 @@
             </div>
 
             <div class="modal-body p-4">
-                <form id="editBannerForm">
+                <form id="editPedomanForm" method="POST">
+                    @csrf
+                    @method('PUT')
+
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Link Youtube</label>
-                        <input type="text" id="editLinkyt" class="form-control rounded-3" placeholder="Masukkan Link Youtube...">
+                        <input type="text" name="link" id="editLinkyt"
+                               class="form-control rounded-3"
+                               placeholder="Masukkan Link Youtube...">
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Kategori</label>
-                        <select id="editKategori" class="form-select rounded-3">
+                        <select name="kategori" id="editKategori" class="form-select rounded-3">
                             <option selected disabled>Pilih Kategori Pedoman</option>
-                            <option value="spesifikasi-teknis">Pedoman Spesifikasi Teknis</option>
-                            <option value="spesifikasi-daerah">Pedoman Spesifikasi Daerah</option>
+                            <option value="Spesifikasi Teknis">Spesifikasi Teknis</option>
+                            <option value="Spesifikasi Daerah">Spesifikasi Daerah</option>
                         </select>
                     </div>
 
@@ -230,6 +245,7 @@
         </div>
     </div>
 </div>
+
 
 {{-- MODAL HAPUS --}}
 <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">

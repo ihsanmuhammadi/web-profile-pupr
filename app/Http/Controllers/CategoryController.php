@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use App\Services\CategoryService;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
@@ -33,13 +34,31 @@ class CategoryController extends Controller
 
     public function store(CategoryRequest $request)
     {
-        $this->service->create($request->validated());
-        return redirect()->route('categories.index')->with('success', 'categories created successfully.');
+        try {
+            $this->service->create($request->validated());
+
+            return redirect()->route('admin.kategori')
+                ->with('success', 'Data berhasil ditambahkan!');
+        } catch (Exception $e) {
+
+            return redirect()->route('admin.kategori')
+                ->with('error', 'Data gagal ditambahkan!');
+        }
     }
 
     public function show(Category $category)
     {
-        return view('dummyviews.categories.show', compact('category'));
+        $category = Category::findOrFail($category->id);
+
+        return response()->json([
+
+            'name' => $category->name,
+            'description' => $category->description,
+            'tujuan' => $category->tujuan,
+            'contoh_program_1' => $category->contoh_program_1,
+            'contoh_program_2' => $category->contoh_program_2,
+            'contoh_program_3' => $category->contoh_program_3,
+        ]);
     }
 
     public function edit(Category $category)
@@ -49,13 +68,48 @@ class CategoryController extends Controller
 
     public function update(CategoryRequest $request, Category $category)
     {
-        $this->service->update($category, $request->validated());
-        return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
+        try {
+
+            // Reset value contoh program
+            $category->contoh_program_1 = null;
+            $category->contoh_program_2 = null;
+            $category->contoh_program_3 = null;
+
+            // Update field utama
+            $category->name = $request->name;
+            $category->description = $request->description;
+            $category->tujuan = $request->tujuan;
+
+            // Isi kembali contoh program jika ada
+            foreach (range(1, 3) as $i) {
+                $field = "contoh_program_" . $i;
+                if ($request->has($field)) {
+                    $category->$field = $request->$field;
+                }
+            }
+
+            $category->save();
+
+            return redirect()->route('admin.kategori')
+                ->with('success', 'Data telah berhasil diperbarui!');
+        } catch (Exception $e) {
+
+            return redirect()->route('admin.kategori')
+                ->with('error', 'Data gagal diperbarui!');
+        }
     }
 
     public function destroy(Category $category)
     {
-        $this->service->delete($category);
-        return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
+        try {
+            $this->service->delete($category);
+
+            return redirect()->route('admin.kategori')
+                ->with('success', 'Data telah berhasil dihapus!');
+        } catch (Exception $e) {
+
+            return redirect()->route('admin.kategori')
+                ->with('error', 'Data gagal dihapus!');
+        }
     }
 }

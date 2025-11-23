@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ApplicationRequest;
 use App\Models\Application;
 use App\Services\ApplicationService;
+use Exception;
 
 class ApplicationController extends Controller
 {
@@ -42,8 +43,21 @@ class ApplicationController extends Controller
 
     public function show(Application $application)
     {
-        $work = $this->service->getWork();
-        return view('dummyviews.applications.show', compact('application', 'work'));
+        $application = Application::findOrFail($application->id);
+
+        return response()->json([
+
+            'nama' => $application->nama,
+            'worj_id' => $application->work_id,
+            'work_id' => $application->work_id,
+            'email' => $application->email,
+            'nomor_telepon' => $application->nomor_telepon,
+            'lokasi' => $application->lokasi,
+            'pendidikan' => $application->pendidikan,
+            'jurusan' => $application->jurusan,
+            'cv' => $application->cv,
+            'portofolio' => $application->portofolio,
+        ]);
     }
 
     public function edit(Application $application)
@@ -60,7 +74,15 @@ class ApplicationController extends Controller
 
     public function destroy(Application $application)
     {
-        $this->service->delete($application);
-        return redirect()->route('applications.index')->with('success', 'Application deleted successfully.');
+        try {
+            $this->service->delete($application);
+
+            return redirect()->route('admin.lamaran')
+                ->with('success', 'Data telah berhasil dihapus!');
+        } catch (Exception $e) {
+
+            return redirect()->route('admin.lamaran')
+                ->with('error', 'Data gagal dihapus!');
+        }
     }
 }

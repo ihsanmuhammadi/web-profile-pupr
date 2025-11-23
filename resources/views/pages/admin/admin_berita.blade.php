@@ -61,25 +61,31 @@
                             <td class="text-truncate" style="max-width:400px;">{{ e($n->judul) }}</td>
                             <td class="text-center">
                                 @if ($n->gambar)
-                                    <img src="{{ asset('storage/' . $n->gambar) }}" alt="News Image" style="max-width: 100px;">
+                                    <img src="{{ asset('storage/' . $n->gambar) }}" alt="News Image" style="max-height: 70px;">
                                 @else
                                     <em>No image</em>
                                 @endif
                             </td>
                             {{-- step keempat -> tambah route untuk button --}}
                             <td class="text-center">
-                                <button class="btn btn-sm btn-see btn-primary rounded-2 me-1" data-id="{{ $n->id }}">
+                                <button class="btn btn-sm btn-see-news btn-primary rounded-2 me-1" data-id="{{ $n->id }}">
                                     <i class="bi bi-eye"></i>
                                 </button>
                                 <button class="btn btn-sm btn-edit-banner btn-warning rounded-2 me-1" data-id="{{ $n->id }}" data-judul="{{ $n->judul }}" data-gambar="{{ $n->gambar }}">
                                     <i class="bi bi-pencil"></i>
                                 </button>
-                                <form action="{{ route('news.destroy', $n->id) }}" method="POST" style="display: inline-block;">
+                                <button type="button"
+                                        class="btn btn-sm btn-delete btn-danger rounded-2"
+                                        data-id="{{ $n->id }}">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+
+                                <form id="delete-form-{{ $n->id }}"
+                                    action="{{ route('news.destroy', $n->id) }}"
+                                    method="POST"
+                                    style="display: none;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-delete btn-danger rounded-2" onclick="return confirm('Are you sure?')">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
                                 </form>
                             </td>
                         </tr>

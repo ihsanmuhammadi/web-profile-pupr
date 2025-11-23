@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ComplaintRequest;
 use App\Models\Complaint;
 use App\Services\ComplaintService;
+use Exception;
 
 class ComplaintController extends Controller
 {
@@ -40,7 +41,14 @@ class ComplaintController extends Controller
 
     public function show(Complaint $complaint)
     {
-        return view('dummyviews.complaints.show', compact('complaint'));
+        $complaint = Complaint::findOrFail($complaint->id);
+
+        return response()->json([
+
+            'nama' => $complaint->nama,
+            'email' => $complaint->email,
+            'pesan' => $complaint->pesan,
+        ]);
     }
 
     public function edit(Complaint $complaint)
@@ -56,7 +64,15 @@ class ComplaintController extends Controller
 
     public function destroy(Complaint $complaint)
     {
-        $this->service->delete($complaint);
-        return redirect()->route('complaints.index')->with('success', 'Complaint deleted successfully.');
+        try {
+            $this->service->delete($complaint);
+
+            return redirect()->route('admin.aduan')
+                ->with('success', 'Data telah berhasil dihapus!');
+        } catch (Exception $e) {
+
+            return redirect()->route('admin.aduan')
+                ->with('error', 'Data gagal dihapus!');
+        }
     }
 }
