@@ -16,6 +16,7 @@ class Work extends Model
 
     protected $fillable = [
         'posisi',
+        'level',
         'jenis',
         'tipe',
         'lokasi',

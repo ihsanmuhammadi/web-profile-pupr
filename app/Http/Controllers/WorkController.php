@@ -55,6 +55,7 @@ class WorkController extends Controller
 
             'posisi' => $work->posisi,
             'proyek' => $work->dataProgram ? $work->dataProgram->judul : '-',
+            'level' => $work->level,
             'jenis' => $work->jenis,
             'tipe' => $work->tipe,
             'lokasi' => $work->lokasi,

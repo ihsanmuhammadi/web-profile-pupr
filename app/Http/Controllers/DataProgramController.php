@@ -49,7 +49,7 @@ class DataProgramController extends Controller
         }
     }
 
-    public function show($categoryName, $id)
+    public function show(DataProgram $dataProgram)
     {
         $dataProgram = DataProgram::findOrFail($dataProgram->id);
 

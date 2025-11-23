@@ -85,18 +85,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // add inputan tenaga kerja
 document.addEventListener("DOMContentLoaded", function () {
+
+    function updateAddButtonStatus(container, button) {
+        const total = container.querySelectorAll(".program-item").length;
+        if (total >= 5) {
+            button.setAttribute("disabled", "true");
+            button.classList.add("disabled");
+        } else {
+            button.removeAttribute("disabled");
+            button.classList.remove("disabled");
+        }
+    }
+
     function setupTambahTenagaKerja() {
         const addButtons = document.querySelectorAll(".add-tenaga-btn");
 
         addButtons.forEach(button => {
+            const modal = button.closest(".modal");
+            const container = modal.querySelector(".tenaga-container");
+
+            updateAddButtonStatus(container, button);
+
             button.addEventListener("click", function () {
 
-                const modal = button.closest(".modal");
-                const container = modal.querySelector(".tenaga-container");
-
+                // Cek total item saat ini
                 let total = container.querySelectorAll(".program-item").length;
                 if (total >= 5) {
-                    alert("Maksimal hanya 5 tenaga kerja.");
                     return;
                 }
 
@@ -114,9 +128,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 `;
 
                 container.appendChild(newItem);
-
+                updateAddButtonStatus(container, button);
                 newItem.querySelector(".remove-program-btn")
-                      .addEventListener("click", () => newItem.remove());
+                    .addEventListener("click", function () {
+                        newItem.remove();
+                        updateAddButtonStatus(container, button);
+                    });
             });
         });
     }
@@ -214,11 +231,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function formatTanggal(tanggal) {
         if (!tanggal) return "-";
-
         const date = new Date(tanggal);
-
         const options = { day: "2-digit", month: "long", year: "numeric" };
-
         return date.toLocaleDateString("id-ID", options);
     }
 
@@ -289,6 +303,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     document.getElementById("detailPosisi").value = data.posisi;
                     document.getElementById("detailProyek").value = data.proyek;
+                    document.getElementById("detailLevel").value = data.level;
                     document.getElementById("detailJenis").value = data.jenis;
                     document.getElementById("detailTipe").value = data.tipe;
                     document.getElementById("detailLokasi").value = data.lokasi;
@@ -545,6 +560,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const id = this.dataset.id;
             const posisi = this.dataset.posisi;
             const proyek = this.dataset.data_program_id;
+            const level = this.dataset.level;
             const jenis = this.dataset.jenis;
             const tipe = this.dataset.tipe;
             const lokasi = this.dataset.lokasi;
@@ -554,6 +570,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             document.getElementById("editPosisi").value = posisi || "";
             document.getElementById("editProyek").value = proyek || "";
+            document.getElementById("editLevel").value = level || "";
             document.getElementById("editJenis").value = jenis || "";
             document.getElementById("editTipe").value = tipe || "";
             document.getElementById("editLokasi").value = lokasi || "";
