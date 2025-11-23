@@ -63,7 +63,7 @@
                                 {{ e($w->dataProgram->judul ?? '-') }}
                             </td>
                             <td style="max-width:250px;">
-                                {{ e($w->kualifikasi) }}
+                                {{ e($w->level) }}
                             </td>
                             <td class="text-center">
                                 <button class="btn btn-sm btn-see-works btn-primary rounded-2 me-1" data-id="{{ $w->id }}">
@@ -73,6 +73,7 @@
                                         data-id="{{ $w->id }}"
                                         data-posisi="{{ $w->posisi }}"
                                         data-data_program_id="{{ $w->data_program_id }}"
+                                        data-level="{{ $w->level }}"
                                         data-jenis="{{ $w->jenis }}"
                                         data-tipe="{{ $w->tipe }}"
                                         data-lokasi="{{ $w->lokasi }}"
@@ -163,6 +164,18 @@
                             @foreach ($dataProgram as $program)
                                 <option value="{{ $program->id }}">{{ $program->judul }}</option>
                             @endforeach
+                        </select>
+                    </div>
+
+                    {{-- level --}}
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small text-dark">Level Pendidikan</label>
+                        <select name="level" class="form-select rounded-3" required>
+                            <option selected disabled>Pilih Level Pendidikan</option>
+                            <option value="sma/smk">SMA/SMK</option>
+                            <option value="d3">D3</option>
+                            <option value="s1">S1</option>
+                            <option value="s2">S2</option>
                         </select>
                     </div>
 
@@ -261,6 +274,12 @@
                         <input type="text" class="form-control rounded-3" id="detailProyek" value="Lorem ipsum lorem ipsum lorem ipsum" readonly>
                     </div>
 
+                    <!-- Level pendidikan -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small text-dark mb-1">Level Pendidikan</label>
+                        <input type="text" class="form-control rounded-3" id="detailLevel" value="Lorem ipsum lorem ipsum lorem ipsum" readonly>
+                    </div>
+
                     <!-- Jenis Pekerjaan -->
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark mb-1">Jenis Pekerjaan</label>
@@ -329,6 +348,18 @@
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Posisi</label>
                         <input type="text" id="editPosisi" name="posisi" class="form-control rounded-3" required>
+                    </div>
+
+                    {{-- level --}}
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small text-dark">Level Pendidikan</label>
+                        <select id="editLevel" name="level" class="form-select rounded-3">
+                            <option selected disabled>Pilih Level Pendidikan</option>
+                            <option value="sma/smk">SMA/SMK</option>
+                            <option value="d3">D3</option>
+                            <option value="s1">S1</option>
+                            <option value="s2">S2</option>
+                        </select>
                     </div>
 
                     {{-- PROYEK --}}

@@ -23,6 +23,7 @@ class WorkRequest extends FormRequest
     {
         return [
             'posisi' => 'required|string|max:255',
+            'level' => 'required|string|max:255',
             'jenis' => 'required|string|max:255',
             'tipe' => 'required|string|max:255',
             'lokasi' => 'required|string|max:255',
