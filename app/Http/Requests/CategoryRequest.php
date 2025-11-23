@@ -26,8 +26,8 @@ class CategoryRequest extends FormRequest
             'description' => 'required|nullable|string',
             'tujuan' => 'required|nullable|string',
             'contoh_program_1' => 'required|nullable|string',
-            'contoh_program_2' => 'required|nullable|string',
-            'contoh_program_3' => 'required|nullable|string',
+            'contoh_program_2' => 'nullable|nullable|string',
+            'contoh_program_3' => 'nullable|nullable|string',
         ];
     }
 }

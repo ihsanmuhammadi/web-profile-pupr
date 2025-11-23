@@ -21,31 +21,93 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// add contoh program
+// add inputan contoh program
 document.addEventListener("DOMContentLoaded", function () {
 
-    // Fungsi umum untuk menambah input dinamis
-    function setupDynamicInput(addBtnSelector, containerSelector, placeholderText, extraField = false) {
-        const addButtons = document.querySelectorAll(addBtnSelector);
+    const MAX_PROGRAM = 3;
+
+    function updateLimit(modal) {
+        const container = modal.querySelector(".program-container");
+        const addBtn = modal.querySelector(".add-program-btn");
+        const items = container.querySelectorAll(".program-item");
+
+        // matikan tombol jika sudah 3 input
+        addBtn.disabled = items.length >= MAX_PROGRAM;
+
+        // atur tombol remove (baris pertama tidak bisa dihapus)
+        items.forEach((item, index) => {
+            const btn = item.querySelector(".remove-program-btn");
+            if (index === 0) btn.classList.add("d-none");
+            else btn.classList.remove("d-none");
+
+            // mapping name sesuai urutan input
+            const input = item.querySelector("input");
+            if (input) input.name = "contoh_program_" + (index + 1);
+        });
+    }
+    // Tambah program
+    document.addEventListener("click", function (e) {
+        if (e.target.closest(".add-program-btn")) {
+            const modal = e.target.closest(".modal");
+            const container = modal.querySelector(".program-container");
+
+            const newItem = document.createElement("div");
+            newItem.classList.add("input-group", "mb-2", "program-item");
+
+            newItem.innerHTML = `
+                <input type="text" class="form-control rounded-3" placeholder="Masukkan Contoh Program Kategori Program...">
+                <button type="button" class="btn btn-outline-secondary rounded-3 ms-2 remove-program-btn">
+                    <i class="bi bi-x"></i>
+                </button>
+            `;
+
+            container.appendChild(newItem);
+            updateLimit(modal);
+        }
+    });
+    // Remove program
+    document.addEventListener("click", function (e) {
+        if (e.target.closest(".remove-program-btn")) {
+            const modal = e.target.closest(".modal");
+            const item = e.target.closest(".program-item");
+            item.remove();
+            updateLimit(modal);
+        }
+    });
+    // Saat modal dibuka, reset status
+    document.querySelectorAll(".modal").forEach(modal => {
+        modal.addEventListener("shown.bs.modal", function () {
+            updateLimit(modal);
+        });
+    });
+
+});
+
+// add inputan tenaga kerja
+document.addEventListener("DOMContentLoaded", function () {
+    function setupTambahTenagaKerja() {
+        const addButtons = document.querySelectorAll(".add-tenaga-btn");
 
         addButtons.forEach(button => {
             button.addEventListener("click", function () {
-                const modal = button.closest(".modal") || document;
-                const container = modal.querySelector(containerSelector);
-                if (!container) return;
 
-                // Elemen input baru
+                const modal = button.closest(".modal");
+                const container = modal.querySelector(".tenaga-container");
+
+                let total = container.querySelectorAll(".program-item").length;
+                if (total >= 5) {
+                    alert("Maksimal hanya 5 tenaga kerja.");
+                    return;
+                }
+
+                let index = total + 1;
+
                 const newItem = document.createElement("div");
                 newItem.classList.add("input-group", "mb-2", "program-item");
 
-                // Template dinamis
                 newItem.innerHTML = `
-                    <input type="text" class="form-control rounded-3" placeholder="${placeholderText}">
-                    ${
-                        extraField
-                            ? `<input type="text" class="form-control rounded-3 ms-2" placeholder="Masukkan Posisi...">`
-                            : ``
-                    }
+                    <input type="text" name="tenaga_kerja_${index}" class="form-control rounded-3" placeholder="Masukkan Nama...">
+                    <input type="text" name="posisi_${index}" class="form-control rounded-3 ms-2" placeholder="Masukkan Posisi...">
                     <button type="button" class="btn btn-outline-secondary rounded-3 ms-2 remove-program-btn">
                         <i class="bi bi-x"></i>
                     </button>
@@ -53,35 +115,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 container.appendChild(newItem);
 
-                // Event hapus
-                const removeBtn = newItem.querySelector(".remove-program-btn");
-                removeBtn.addEventListener("click", () => newItem.remove());
+                newItem.querySelector(".remove-program-btn")
+                      .addEventListener("click", () => newItem.remove());
             });
         });
     }
 
-    // Inisialisasi modul "Tambah Program"
-    setupDynamicInput(
-        ".add-program-btn",
-        ".program-container",
-        "Masukkan Contoh Program Kategori Program..."
-    );
-
-    // Inisialisasi modul "Tambah Tenaga Kerja" + field posisi
-    setupDynamicInput(
-        ".add-tenaga-btn",
-        ".tenaga-container",
-        "Masukkan Nama...",
-        true // parameter tambahan untuk menyalakan field posisi
-    );
-
-    // Tambahkan event listener ke semua tombol remove bawaan
-    document.querySelectorAll(".remove-program-btn").forEach(btn => {
-        btn.addEventListener("click", function () {
-            const item = btn.closest(".program-item");
-            if (item) item.remove();
-        });
-    });
+    setupTambahTenagaKerja();
 });
 
 
@@ -105,7 +145,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // detail banner
 document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".btn-see").forEach(button => {
+    document.querySelectorAll(".btn-see-news").forEach(button => {
         button.addEventListener("click", function () {
             const id = this.getAttribute("data-id");
 
@@ -117,6 +157,196 @@ document.addEventListener("DOMContentLoaded", function () {
                     document.getElementById("detailJudul").value = data.judul;
                     document.getElementById("detailCreatedAt").value = data.created_at;
                     document.getElementById("detailUpdatedAt").value = data.updated_at;
+
+                    const modal = new bootstrap.Modal(document.getElementById("detailModal"));
+                    modal.show();
+                });
+        });
+    });
+});
+// detail guidance
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".btn-see-guidance").forEach(button => {
+        button.addEventListener("click", function () {
+
+            const id = this.getAttribute("data-id");
+
+            fetch(`/guidances/${id}`)
+                .then(response => response.json())
+                .then(data => {
+
+                    document.getElementById("detailLink").value = data.link;
+                    document.getElementById("detailKategori").value = data.kategori;
+                    document.getElementById("detailCreatedAt").value = data.created_at;
+                    document.getElementById("detailUpdatedAt").value = data.updated_at;
+
+                    const modal = new bootstrap.Modal(document.getElementById("detailModal"));
+                    modal.show();
+                });
+        });
+    });
+});
+// detail category
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".btn-see-category").forEach(button => {
+        button.addEventListener("click", function () {
+
+            const id = this.getAttribute("data-id");
+
+            fetch(`/categories/${id}`)
+                .then(response => response.json())
+                .then(data => {
+
+                    document.getElementById("detailName").value = data.name;
+                    document.getElementById("detailDescription").value = data.description;
+                    document.getElementById("detailTujuan").value = data.tujuan;
+                    document.getElementById("contohProgram").value =
+                    `${data.contoh_program_1 ?? ""}\n${data.contoh_program_2 ?? ""}\n${data.contoh_program_3 ?? ""}`;
+
+                    const modal = new bootstrap.Modal(document.getElementById("detailModal"));
+                    modal.show();
+                });
+        });
+    });
+});
+// detail data program
+document.addEventListener("DOMContentLoaded", function () {
+
+    function formatTanggal(tanggal) {
+        if (!tanggal) return "-";
+
+        const date = new Date(tanggal);
+
+        const options = { day: "2-digit", month: "long", year: "numeric" };
+
+        return date.toLocaleDateString("id-ID", options);
+    }
+
+    document.querySelectorAll(".btn-see-dataprogram").forEach(button => {
+
+        function formatTanggal(tanggal) {
+            if (!tanggal) return "-";
+            const date = new Date(tanggal);
+            const day = String(date.getDate()).padStart(2, "0");
+            const month = String(date.getMonth() + 1).padStart(2, "0");
+            const year = date.getFullYear();
+            return `${day}-${month}-${year}`;
+        }
+        button.addEventListener("click", function () {
+
+            const id = this.getAttribute("data-id");
+
+            fetch(`/data-programs/${id}`)
+                .then(response => response.json())
+                .then(data => {
+
+                    document.getElementById("detailJudul").value = data.judul;
+                    document.getElementById("detailKategori").value = data.kategori;
+                    document.getElementById("detailSubJudul").value = data.sub_judul;
+                    document.getElementById("detailDeskripsi").value = data.deskripsi;
+                    document.getElementById("detailStatusProyek").value = data.status_proyek;
+                    document.getElementById("detailWaktuMulai").value = formatTanggal(data.waktu_mulai);
+                    document.getElementById("detailWaktuSelesai").value = formatTanggal(data.waktu_selesai);
+                    document.getElementById("detailTahunAnggaran").value = data.tahun_anggaran;
+                    document.getElementById("detailKecamatan").value = data.kecamatan;
+                    document.getElementById("detailLokasi").value = data.lokasi;
+                    document.getElementById("detailDokumentasi").value = data.dokumentasi;
+
+                    for (let i = 1; i <= 5; i++) {
+                        const tenaga = data[`tenaga_kerja_${i}`];
+                        const posisi = data[`posisi_${i}`];
+
+                        const tenagaInput = document.getElementById(`detailTenaga${i}`);
+                        const posisiInput = document.getElementById(`detailPosisi${i}`);
+                        const groupDiv = tenagaInput.closest(".input-group");
+
+                        if (tenaga || posisi) {
+                            groupDiv.style.display = "flex";
+
+                            tenagaInput.value = tenaga ?? "-";
+                            posisiInput.value = posisi ?? "-";
+                        } else {
+                            groupDiv.style.display = "none";
+                        }
+                    }
+
+                    const modal = new bootstrap.Modal(document.getElementById("detailModal"));
+                    modal.show();
+                });
+        });
+    });
+});
+// detail works
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".btn-see-works").forEach(button => {
+        button.addEventListener("click", function () {
+
+            const id = this.getAttribute("data-id");
+
+            fetch(`/works/${id}`)
+                .then(response => response.json())
+                .then(data => {
+
+                    document.getElementById("detailPosisi").value = data.posisi;
+                    document.getElementById("detailProyek").value = data.proyek;
+                    document.getElementById("detailJenis").value = data.jenis;
+                    document.getElementById("detailTipe").value = data.tipe;
+                    document.getElementById("detailLokasi").value = data.lokasi;
+                    const gajiFormatted = data.gaji
+                        ? "Rp. " + data.gaji.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+                        : "-";
+                    document.getElementById("detailGaji").value = gajiFormatted;
+                    document.getElementById("detailDeskripsi").value = data.deskripsi;
+                    document.getElementById("detailKualifikasi").value = data.kualifikasi;
+
+                    const modal = new bootstrap.Modal(document.getElementById("detailModal"));
+                    modal.show();
+                });
+        });
+    });
+});
+// detail applications
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".btn-see-applications").forEach(button => {
+        button.addEventListener("click", function () {
+
+            const id = this.getAttribute("data-id");
+
+            fetch(`/applications/${id}`)
+                .then(response => response.json())
+                .then(data => {
+
+                    document.getElementById("detailNama").value = data.nama;
+                    document.getElementById("detailPosisi").value = data.work_id;
+                    document.getElementById("detailProyek").value = data.work_id;
+                    document.getElementById("detailEmail").value = data.email;
+                    document.getElementById("detailNoTelepon").value = data.nomor_telepon;
+                    document.getElementById("detailLokasi").value = data.lokasi;
+                    document.getElementById("detailPendidikan").value = data.pendidikan;
+                    document.getElementById("detailJurusan").value = data.jurusan;
+                    document.getElementById("detailCV").value = data.cv;
+                    document.getElementById("detailPortofolio").value = data.portofolio;
+
+                    const modal = new bootstrap.Modal(document.getElementById("detailModal"));
+                    modal.show();
+                });
+        });
+    });
+});
+// detail complaints
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".btn-see-complaints").forEach(button => {
+        button.addEventListener("click", function () {
+
+            const id = this.getAttribute("data-id");
+
+            fetch(`/complaints/${id}`)
+                .then(response => response.json())
+                .then(data => {
+
+                    document.getElementById("detailNama").value = data.nama;
+                    document.getElementById("detailEmail").value = data.email;
+                    document.getElementById("detailAduan").value = data.pesan;
 
                     const modal = new bootstrap.Modal(document.getElementById("detailModal"));
                     modal.show();
@@ -143,7 +373,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
-
+    // edit banner
     document.querySelectorAll(".btn-edit-banner").forEach(button => {
         button.addEventListener("click", function () {
             const modal = new bootstrap.Modal(document.getElementById("editModal"));
@@ -167,71 +397,235 @@ document.addEventListener("DOMContentLoaded", function () {
             form.action = `/news/${id}`;
         });
     });
-
-    // === edit pedoman ===
-    document.querySelectorAll(".btn-edit-pedoman").forEach(button => {
+    //edit guidance
+    document.querySelectorAll(".btn-edit-guidance").forEach(button => {
         button.addEventListener("click", function () {
             const modal = new bootstrap.Modal(document.getElementById("editModal"));
             modal.show();
 
-            const editLinkyt = document.getElementById("editLinkyt");
-            const kategoriSelect = document.querySelector("#editModal select");
+            const id = this.dataset.id;
+            const link = this.dataset.link;
+            const kategori = this.dataset.kategori;
 
-            if (editLinkyt) editLinkyt.value = "https://www.youtube.com/watch?v=contoh";
-            if (kategoriSelect) kategoriSelect.value = "spesifikasi-teknis";
+            // ISI VALUE
+            document.getElementById("editLinkyt").value = link;
+            document.getElementById("editKategori").value = kategori;
+
+            // PASANG ACTION FORM
+            const form = document.getElementById("editPedomanForm");
+            form.action = `/guidances/${id}`;
+        });
+    });
+    //edit category
+    document.querySelectorAll(".btn-edit-category").forEach(button => {
+        button.addEventListener("click", function () {
+            const modalElement = document.getElementById("editKategoriModal");
+            const modal = new bootstrap.Modal(modalElement);
+            modal.show();
+
+            const id = this.dataset.id;
+            const name = this.dataset.name;
+            const description = this.dataset.description;
+            const tujuan = this.dataset.tujuan;
+
+            const contoh1 = this.dataset.contoh1;
+            const contoh2 = this.dataset.contoh2;
+            const contoh3 = this.dataset.contoh3;
+
+            document.getElementById("editName").value = name ?? "";
+            document.getElementById("editDescription").value = description ?? "";
+            document.getElementById("editTujuan").value = tujuan ?? "";
+
+            // input contoh program dinamis
+            const container = document.getElementById("editProgramContainer");
+            container.innerHTML = "";
+
+            let contohList = [contoh1, contoh2, contoh3].filter(v => v && v !== "null");
+
+            if (contohList.length === 0) contohList = [""];
+
+            contohList.forEach((value, index) => {
+                const item = document.createElement("div");
+                item.classList.add("input-group", "mb-2", "program-item");
+
+                item.innerHTML = `
+                    <input type="text" name="contoh_program_${index + 1}"
+                        value="${value}" class="form-control rounded-3">
+                    <button type="button"
+                        class="btn btn-outline-secondary rounded-3 ms-2 remove-program-btn ${index === 0 ? 'd-none' : ''}">
+                        <i class="bi bi-x"></i>
+                    </button>
+                `;
+
+                container.appendChild(item);
+            });
+
+            const form = document.getElementById("editKategoriForm");
+            form.action = `/categories/${id}`;
+        });
+    });
+    //edit data program
+    document.querySelectorAll(".btn-edit-dataprogram").forEach(button => {
+        button.addEventListener("click", function () {
+
+            const modalEl = document.getElementById("editModal");
+            const modal = new bootstrap.Modal(modalEl);
+            modal.show();
+
+            const id = this.dataset.id;
+            const judul = this.dataset.judul ?? "";
+            const kategori = this.dataset.kategori_id ?? "";
+            const subJudul = this.dataset.sub_judul ?? "";
+            const deskripsi = this.dataset.deskripsi ?? "";
+            const status = this.dataset.status_proyek ?? "";
+            const waktuMulai = this.dataset.waktu_mulai ?? "";
+            const waktuSelesai = this.dataset.waktu_selesai ?? "";
+            const tahunAnggaran = this.dataset.tahun_anggaran ?? "";
+            const kecamatan = this.dataset.kecamatan ?? "";
+            const lokasi = this.dataset.lokasi ?? "";
+            const dokumentasi = this.dataset.dokumentasi ?? "";
+
+            document.getElementById("editJudul").value = this.dataset.judul ?? "";
+            document.getElementById("editKategori").value = this.dataset.kategori ?? "";
+            document.getElementById("editSubJudul").value = this.dataset.sub_judul ?? "";
+            document.getElementById("editDeskripsi").value = this.dataset.deskripsi ?? "";
+            document.getElementById("editStatus").value = this.dataset.status_proyek ?? "";
+            document.getElementById("editWaktuMulai").value = this.dataset.waktu_mulai ?? "";
+            document.getElementById("editWaktuSelesai").value = this.dataset.waktu_selesai ?? "";
+            document.getElementById("editTahunAnggaran").value = this.dataset.tahun_anggaran ?? "";
+            document.getElementById("editKecamatan").value = this.dataset.kecamatan ?? "";
+            document.getElementById("editLokasi").value = this.dataset.lokasi ?? "";
+            document.getElementById("editDokumentasi").value = this.dataset.dokumentasi ?? "";
+
+            // === TENAGA KERJA DINAMIS ===
+            const container = document.querySelector("#editModal .tenaga-container");
+            container.innerHTML = "";
+
+            const tenaga = [];
+            const posisi = [];
+
+            for (let i = 1; i <= 5; i++) {
+
+                const nama = this.dataset[`tenaga_kerja_${i}`] ?? "";
+                const posisi = this.dataset[`posisi_${i}`] ?? "";
+
+                if (!nama && !posisi && i > 1) continue;
+
+                const item = document.createElement("div");
+                item.classList.add("input-group", "mb-2", "program-item");
+
+                item.innerHTML = `
+                    <input type="text" name="tenaga_kerja_${i}" class="form-control rounded-3"
+                        placeholder="Masukkan Nama..." value="${nama}">
+
+                    <input type="text" name="posisi_${i}" class="form-control rounded-3 ms-2"
+                        placeholder="Masukkan Posisi..." value="${posisi}">
+
+                    <button type="button" class="btn btn-outline-secondary rounded-3 ms-2 remove-program-btn ${i === 1 ? "d-none" : ""}">
+                        <i class="bi bi-x"></i>
+                    </button>
+                `;
+
+                item.querySelector(".remove-program-btn")?.addEventListener("click", () => item.remove());
+
+                container.appendChild(item);
+            }
+
+            const form = document.getElementById("editDataProgramForm");
+            form.action = `/data-programs/${id}`;
+        });
+    });
+    //edit works
+    document.querySelectorAll(".btn-edit-works").forEach(button => {
+        button.addEventListener("click", function () {
+
+            const modal = new bootstrap.Modal(document.getElementById("editWorkModal"));
+            modal.show();
+
+            const id = this.dataset.id;
+            const posisi = this.dataset.posisi;
+            const proyek = this.dataset.data_program_id;
+            const jenis = this.dataset.jenis;
+            const tipe = this.dataset.tipe;
+            const lokasi = this.dataset.lokasi;
+            const gaji = this.dataset.gaji;
+            const deskripsi = this.dataset.deskripsi;
+            const kualifikasi = this.dataset.kualifikasi;
+
+            document.getElementById("editPosisi").value = posisi || "";
+            document.getElementById("editProyek").value = proyek || "";
+            document.getElementById("editJenis").value = jenis || "";
+            document.getElementById("editTipe").value = tipe || "";
+            document.getElementById("editLokasi").value = lokasi || "";
+            document.getElementById("editGaji").value = gaji || "";
+            document.getElementById("editDeskripsi").value = deskripsi || "";
+            document.getElementById("editKualifikasi").value = kualifikasi || "";
+
+            const form = document.getElementById("editPeluangKerjaForm");
+            form.action = `/works/${id}`;
         });
     });
 });
 
-//delete banner
+//modal delete
 document.addEventListener("DOMContentLoaded", function () {
 
-    let deleteId = null;
+    let deleteId = null; // untuk simpan ID yang mau dihapus
 
-    document.querySelectorAll(".btn-delete").forEach((button, index) => {
+    // Ketika tombol delete ditekan → tampilkan modal
+    document.querySelectorAll(".btn-delete").forEach(button => {
         button.addEventListener("click", function () {
-            deleteId = index + 1;
-            const modal = new bootstrap.Modal(document.getElementById("confirmDeleteModal"));
+
+            deleteId = this.dataset.id; // SIMPAN ID DARI DATA-ID
+
+            const modal = new bootstrap.Modal(
+                document.getElementById("confirmDeleteModal")
+            );
             modal.show();
         });
     });
 
+    // Ketika tombol HAPUS di modal ditekan → submit form delete
     document.getElementById("confirmDeleteBtn").addEventListener("click", function () {
 
-        console.log("Data dengan ID", deleteId, "dihapus");
-
-        const modal = bootstrap.Modal.getInstance(document.getElementById("confirmDeleteModal"));
-        modal.hide();
+        if (deleteId) {
+            document.getElementById("delete-form-" + deleteId).submit();
+        }
     });
+
 });
 
 
-// data program
+
+// Inputan tgl mulai, selesai & tahun anggaran (tambah + edit)
 document.addEventListener("DOMContentLoaded", function () {
-    const waktuMulai = document.getElementById("waktuMulai");
-    const waktuSelesai = document.getElementById("waktuSelesai");
-    const tahunAnggaran = document.getElementById("tahunAnggaran");
 
-    // --- Validasi range tanggal (otomatis menyesuaikan) ---
-    waktuMulai.addEventListener("change", () => {
-        if (waktuSelesai.value && waktuMulai.value > waktuSelesai.value) {
-            waktuSelesai.value = ""; // reset jika user pilih mundur
-        }
-        waktuSelesai.min = waktuMulai.value; // tanggal selesai tidak bisa sebelum mulai
-    });
+    function setupTanggal(mulaiId, selesaiId, tahunId) {
+        const mulai = document.getElementById(mulaiId);
+        const selesai = document.getElementById(selesaiId);
+        const tahun = document.getElementById(tahunId);
 
-    waktuSelesai.addEventListener("change", () => {
-        if (waktuMulai.value && waktuSelesai.value < waktuMulai.value) {
-            waktuMulai.value = ""; // reset jika salah pilih
-        }
-        waktuMulai.max = waktuSelesai.value; // tanggal mulai tidak bisa setelah selesai
-    });
-
-    // --- Validasi agar input tahun hanya angka ---
-    tahunAnggaran.addEventListener("input", () => {
-        tahunAnggaran.value = tahunAnggaran.value.replace(/\D/g, "").slice(0, 4);
-    });
+        if (!mulai || !selesai || !tahun) return;
+        mulai.addEventListener("change", () => {
+            if (selesai.value && mulai.value > selesai.value) {
+                selesai.value = "";
+            }
+            selesai.min = mulai.value;
+        });
+        selesai.addEventListener("change", () => {
+            if (mulai.value && selesai.value < mulai.value) {
+                mulai.value = "";
+            }
+            mulai.max = selesai.value;
+        });
+        tahun.addEventListener("input", () => {
+            tahun.value = tahun.value.replace(/\D/g, "").slice(0, 4);
+        });
+    }
+    setupTanggal("waktuMulai", "waktuSelesai", "tahunAnggaran");
+    setupTanggal("editWaktuMulai", "editWaktuSelesai", "editTahunAnggaran");
 });
+
 
 document.addEventListener("DOMContentLoaded", function () {
     const rows = document.querySelectorAll("tbody tr"); // semua baris tabel
@@ -337,5 +731,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+// format inputan gaji Rp
+// TAMBAH
+const tambahGajiInput = document.getElementById("gajiInput");
+if (tambahGajiInput) {
+    tambahGajiInput.addEventListener("input", function () {
+        let angka = this.value.replace(/[^0-9]/g, "");
+        this.value = angka.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    });
+
+    document.querySelector('#tambahModal form')?.addEventListener("submit", function () {
+        tambahGajiInput.value = tambahGajiInput.value.replace(/\./g, "");
+    });
+}
+// EDIT
+const editGajiInput = document.getElementById("editGaji");
+if (editGajiInput) {
+    editGajiInput.addEventListener("input", function () {
+        let angka = this.value.replace(/[^0-9]/g, "");
+        this.value = angka.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    });
+
+    document.getElementById("editPeluangKerjaForm")?.addEventListener("submit", function () {
+        editGajiInput.value = editGajiInput.value.replace(/\./g, "");
+    });
+}
 
 

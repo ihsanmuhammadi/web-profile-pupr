@@ -66,17 +66,23 @@
                             </td>
 
                             <td class="text-center">
-                                <button class="btn btn-sm btn-see btn-primary rounded-2 me-1" data-id="{{ $c->id }}">
+                                <button class="btn btn-sm btn-see-complaints btn-primary rounded-2 me-1" data-id="{{ $c->id }}">
                                     <i class="bi bi-eye"></i>
                                 </button>
+                                <button type="button"
+                                    class="btn btn-sm btn-delete btn-danger rounded-2"
+                                    data-id="{{ $c->id }}">
+                                    <i class="bi bi-trash"></i>
+                                </button>
 
-                                <form action="{{ route('complaints.destroy', $c->id) }}" method="POST" style="display: inline-block;">
+                                <form id="delete-form-{{ $c->id }}"
+                                    action="{{ route('complaints.destroy', $c->id) }}"
+                                    method="POST"
+                                    style="display: none;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-delete btn-danger rounded-2" onclick="return confirm('Are you sure?')">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
                                 </form>
+
                             </td>
                         </tr>
                     @empty
@@ -155,7 +161,7 @@
     </div>
 </div> --}}
 
-{{--MODAL DETAIL BANNER--}}
+{{--MODAL DETAIL ADUAN--}}
 <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 shadow-lg">
@@ -173,11 +179,11 @@
                     </div>
                     <div class="mb-1">
                         <label class="form-label fw-semibold small text-dark mb-1">Email</label>
-                        <input type="text" class="form-control rounded-3" id="detailPosisi" value="Lorem ipsum lorem ipsum lorem ipsum" readonly>
+                        <input type="text" class="form-control rounded-3" id="detailEmail" value="Lorem ipsum lorem ipsum lorem ipsum" readonly>
                     </div>
                     <div class="mb-1">
                         <label class="form-label fw-semibold small text-dark mb-1">Aduan</label>
-                        <textarea class="form-control rounded-3" id="detailDeskripsi" rows="5" readonly>Lorem ipsum lorem ipsum lorem ipsum ipsum lorem ipsum lorem ipsum ipsum lorem ipsum lorem ipsum</textarea>
+                        <textarea class="form-control rounded-3" id="detailAduan" rows="5" readonly>Lorem ipsum lorem ipsum lorem ipsum ipsum lorem ipsum lorem ipsum ipsum lorem ipsum lorem ipsum</textarea>
                     </div>
                 </div>
                 <div class="d-flex justify-content-end mt-4">

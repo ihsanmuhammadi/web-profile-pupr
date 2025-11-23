@@ -66,19 +66,35 @@
                                 {{ e($c->tujuan) }}
                             </td>
                             <td class="text-center">
-                                <button class="btn btn-sm btn-see btn-primary rounded-2 me-1" data-id="{{ $c->id }}">
+                                <button class="btn btn-sm btn-see-category btn-primary rounded-2 me-1" data-id="{{ $c->id }}">
                                     <i class="bi bi-eye"></i>
                                 </button>
-                                <button class="btn btn-sm btn-edit-pedoman btn-warning rounded-2 me-1" data-id="{{ $c->id }}" data-name="{{ $c->name }}" data-description="{{ $c->description }}" data-tujuan="{{ $c->tujuan }}">
+                                <button
+                                    class="btn btn-sm btn-edit-category btn-warning rounded-2 me-1"
+                                    data-id="{{ $c->id }}"
+                                    data-name="{{ $c->name }}"
+                                    data-description="{{ $c->description }}"
+                                    data-tujuan="{{ $c->tujuan }}"
+                                    data-contoh1="{{ $c->contoh_program_1 }}"
+                                    data-contoh2="{{ $c->contoh_program_2 }}"
+                                    data-contoh3="{{ $c->contoh_program_3 }}"
+                                >
                                     <i class="bi bi-pencil"></i>
                                 </button>
-                                <form action="{{ route('categories.destroy', $c->id) }}" method="POST" style="display: inline-block;">
+                                <button type="button"
+                                    class="btn btn-sm btn-delete btn-danger rounded-2"
+                                    data-id="{{ $c->id }}">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+
+                                <form id="delete-form-{{ $c->id }}"
+                                    action="{{ route('categories.destroy', $c->id) }}"
+                                    method="POST"
+                                    style="display: none;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-delete btn-danger rounded-2" onclick="return confirm('Are you sure?')">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
                                 </form>
+
                             </td>
                         </tr>
                     @empty
@@ -117,38 +133,49 @@
     });
 </script>
 
-{{-- MODAL TAMBAH BANNER --}}
-<div class="modal fade" id="tambahModal" tabindex="-1" aria-labelledby="tambahKategoriModalLabel" aria-hidden="true">
+{{-- MODAL TAMBAH KATEGORI --}}
+<div class="modal fade" id="tambahModal" tabindex="-1" aria-labelledby="tambahKategoriLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 shadow-lg">
+
             <div class="modal-header" style="background-color: #4A7097;">
-                <h5 class="modal-title text-white fw-semibold" id="tambahKategoriModalLabel">Tambah Kategori Program</h5>
+                <h5 class="modal-title text-white fw-semibold" id="tambahKategoriLabel">Tambah Kategori Program</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+
             <div class="modal-body p-4">
-                <form id="formTambahKategori">
+                <form action="{{ route('categories.store') }}" method="POST">
+                    @csrf
+
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Judul Kategori Program</label>
-                        <input type="text" class="form-control rounded-3" placeholder="Masukkan Judul Kategori Program...">
+                        <input type="text" name="name" class="form-control rounded-3" placeholder="Masukkan Judul Kategori Program...">
                     </div>
+
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Deskripsi Kategori Program</label>
-                        <textarea class="form-control rounded-3" placeholder="Masukkan Deskripsi Kategori Program..."></textarea>
+                        <textarea name="description" class="form-control rounded-3" placeholder="Masukkan Deskripsi Kategori Program..."></textarea>
                     </div>
+
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Tujuan dan Manfaat Kategori Program</label>
-                        <textarea class="form-control rounded-3" placeholder="Masukkan Tujuan dan Manfaat Kategori Program..."></textarea>
+                        <textarea name="tujuan" class="form-control rounded-3" placeholder="Masukkan Tujuan dan Manfaat Kategori Program..."></textarea>
                     </div>
+
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Contoh Program Kategori Program</label>
+
                         <div class="program-container">
+
                             <div class="input-group mb-2 program-item">
-                                <input type="text" class="form-control rounded-3" placeholder="Masukkan Contoh Program Kategori Program...">
+                                <input type="text" name="contoh_program_1" class="form-control rounded-3" placeholder="Masukkan Contoh Program Kategori Program...">
                                 <button type="button" class="btn btn-outline-secondary rounded-3 ms-2 remove-program-btn d-none">
                                     <i class="bi bi-x"></i>
                                 </button>
                             </div>
+
                         </div>
+
                         <button type="button" class="btn btn-outline-secondary rounded-3 px-3 mt-2 add-program-btn">
                             <i class="bi bi-plus me-1"></i>Tambah Program
                         </button>
@@ -158,13 +185,15 @@
                         <button type="button" class="btn btn-outline-danger rounded-pill px-4 fw-semibold" data-bs-dismiss="modal">Batal</button>
                         <button type="submit" class="btn btn-outline-primary rounded-pill px-4 fw-semibold">Simpan</button>
                     </div>
+
                 </form>
             </div>
         </div>
     </div>
 </div>
 
-{{--MODAL DETAIL BANNER--}}
+
+{{--MODAL DETAIL--}}
 <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 shadow-lg">
@@ -178,18 +207,18 @@
                 <div class="row g-3">
                     <div class="col-12">
                         <label class="form-label fw-semibold text-dark mb-1">Judul Kategori Program</label>
-                        <input type="text" class="form-control rounded-3" id="judulKategoriProgram"
+                        <input type="text" class="form-control rounded-3" id="detailName"
                                value="Lorem ipsum lorem ipsum lorem ipsum" readonly>
                     </div>
                     <div class="col-12">
                         <label class="form-label fw-semibold text-dark mb-1">Deskripsi</label>
-                        <textarea class="form-control rounded-3" id="deskripsi" rows="3" readonly>
+                        <textarea class="form-control rounded-3" id="detailDescription" rows="3" readonly>
 Lorem ipsum lorem ipsum lorem ipsum Lorem ipsum lorem ipsum lorem ipsum lorem ipsum Lorem ipsum lorem ipsum lorem ipsum lorem ipsum Lorem ipsum lorem ipsum lorem ipsum lorem ipsum Lorem ipsum lorem ipsum lorem ipsum lorem ipsum Lorem ipsum lorem ipsum lorem ipsum lorem ipsum Lorem ipsum lorem ipsum lorem ipsum lorem ipsum Lorem ipsum lorem ipsum lorem ipsum lorem ipsum
                         </textarea>
                     </div>
                     <div class="col-12">
                         <label class="form-label fw-semibold text-dark mb-1">Tujuan dan Manfaat</label>
-                        <textarea class="form-control rounded-3" id="tujuanManfaat" rows="4" readonly>
+                        <textarea class="form-control rounded-3" id="detailTujuan" rows="4" readonly>
 Lorem ipsum lorem ipsum lorem ipsum lorem ipsum Lorem ipsum lorem ipsum lorem ipsum lorem ipsum Lorem ipsum lorem ipsum lorem ipsum lorem ipsum Lorem ipsum lorem ipsum lorem ipsum lorem ipsum Lorem ipsum lorem ipsum lorem ipsum lorem ipsum Lorem ipsum lorem ipsum lorem ipsum lorem ipsum Lorem ipsum lorem ipsum lorem ipsum lorem ipsum
                         </textarea>
                     </div>
@@ -212,59 +241,56 @@ Lorem ipsum lorem ipsum lorem ipsum Lorem ipsum lorem ipsum lorem ipsum lorem ip
 </div>
 
 
-{{-- MODAL EDIT BANNER --}}
-<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+{{-- MODAL EDIT KATEGORI --}}
+<div class="modal fade" id="editKategoriModal" tabindex="-1" aria-labelledby="editKategoriLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 shadow-lg">
             <div class="modal-header" style="background-color: #4A7097;">
-                <h5 class="modal-title text-white fw-semibold" id="editModalLabel">Edit Kategori Program</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title text-white fw-semibold" id="editKategoriLabel">Edit Kategori Program</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
 
             <div class="modal-body p-4">
-                <form id="editBannerForm">
+                <form id="editKategoriForm" method="POST">
+                    @csrf
+                    @method('PUT')
+
                     <div class="mb-3">
-                        <label class="form-label fw-semibold small text-dark">Judul Banner</label>
-                        <input type="text" id="editJudul" class="form-control rounded-3" placeholder="Masukkan Judul Banner...">
+                        <label class="form-label fw-semibold small">Judul Kategori Program</label>
+                        <input type="text" name="name" id="editName" class="form-control rounded-3">
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label fw-semibold small text-dark">Judul Kategori Program</label>
-                        <input type="text" class="form-control rounded-3" placeholder="Masukkan Judul Kategori Program...">
+                        <label class="form-label fw-semibold small">Deskripsi Kategori Program</label>
+                        <textarea name="description" id="editDescription" class="form-control rounded-3"></textarea>
                     </div>
+
                     <div class="mb-3">
-                        <label class="form-label fw-semibold small text-dark">Deskripsi Kategori Program</label>
-                        <textarea class="form-control rounded-3" placeholder="Masukkan Deskripsi Kategori Program..."></textarea>
+                        <label class="form-label fw-semibold small">Tujuan dan Manfaat Kategori Program</label>
+                        <textarea name="tujuan" id="editTujuan" class="form-control rounded-3"></textarea>
                     </div>
+
                     <div class="mb-3">
-                        <label class="form-label fw-semibold small text-dark">Tujuan dan Manfaat Kategori Program</label>
-                        <textarea class="form-control rounded-3" placeholder="Masukkan Tujuan dan Manfaat Kategori Program..."></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold small text-dark">Contoh Program Kategori Program</label>
-                        <div class="program-container">
-                            <div class="input-group mb-2 program-item">
-                                <input type="text" class="form-control rounded-3" placeholder="Masukkan Contoh Program Kategori Program...">
-                                <button type="button" class="btn btn-outline-secondary rounded-3 ms-2 remove-program-btn d-none">
-                                    <i class="bi bi-x"></i>
-                                </button>
-                            </div>
+                        <label class="form-label fw-semibold small">Contoh Program Kategori Program</label>
+
+                        <div class="program-container" id="editProgramContainer">
                         </div>
+
                         <button type="button" class="btn btn-outline-secondary rounded-3 px-3 mt-2 add-program-btn">
                             <i class="bi bi-plus me-1"></i>Tambah Program
                         </button>
                     </div>
 
-
                     <div class="d-flex justify-content-end mt-4 gap-2">
-                        <button type="button" class="btn btn-outline-danger rounded-pill px-4 fw-semibold" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-outline-primary rounded-pill px-4 fw-semibold">Ubah</button>
+                        <button type="button" class="btn btn-outline-danger rounded-pill" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-outline-primary rounded-pill">Ubah</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
 
 {{-- MODAL HAPUS --}}
 <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">

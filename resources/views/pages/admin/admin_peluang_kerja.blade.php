@@ -60,25 +60,41 @@
                                 {{ e($w->posisi) }}
                             </td>
                             <td style="max-width:250px;">
-                                {{ e($w->dataProgram->judul) }}
+                                {{ e($w->dataProgram->judul ?? '-') }}
                             </td>
                             <td style="max-width:250px;">
                                 {{ e($w->kualifikasi) }}
                             </td>
                             <td class="text-center">
-                                <button class="btn btn-sm btn-see btn-primary rounded-2 me-1" data-id="{{ $w->id }}">
+                                <button class="btn btn-sm btn-see-works btn-primary rounded-2 me-1" data-id="{{ $w->id }}">
                                     <i class="bi bi-eye"></i>
                                 </button>
-                                <button class="btn btn-sm btn-edit-pedoman btn-warning rounded-2 me-1" data-id="{{ $w->id }}" data-posisi="{{ $w->posisi }}" data-data_program_id="{{ $w->data_program_id }}" data-kualifikasi="{{ $w->kualifikasi }}">
+                                <button class="btn btn-sm btn-edit-works btn-warning"
+                                        data-id="{{ $w->id }}"
+                                        data-posisi="{{ $w->posisi }}"
+                                        data-data_program_id="{{ $w->data_program_id }}"
+                                        data-jenis="{{ $w->jenis }}"
+                                        data-tipe="{{ $w->tipe }}"
+                                        data-lokasi="{{ $w->lokasi }}"
+                                        data-gaji="{{ $w->gaji }}"
+                                        data-deskripsi="{{ $w->deskripsi }}"
+                                        data-kualifikasi="{{ $w->kualifikasi }}">
                                     <i class="bi bi-pencil"></i>
                                 </button>
-                                <form action="{{ route('works.destroy', $w->id) }}" method="POST" style="display: inline-block;">
+                                <button type="button"
+                                    class="btn btn-sm btn-delete btn-danger rounded-2"
+                                    data-id="{{ $w->id }}">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+
+                                <form id="delete-form-{{ $w->id }}"
+                                    action="{{ route('works.destroy', $w->id) }}"
+                                    method="POST"
+                                    style="display: none;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-delete btn-danger rounded-2" onclick="return confirm('Are you sure?')">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
                                 </form>
+
                             </td>
                         </tr>
                     @empty
@@ -117,73 +133,102 @@
     });
 </script>
 
-{{-- MODAL TAMBAH BANNER --}}
-<div class="modal fade" id="tambahModal" tabindex="-1" aria-labelledby="tambahModalLabel" aria-hidden="true">
+{{-- MODAL TAMBAH peluang kerja --}}
+<div class="modal fade" id="tambahModal" tabindex="-1" aria-labelledby="tambahWorkModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 shadow-lg">
+
             <div class="modal-header" style="background-color: #4A7097;">
-                <h5 class="modal-title text-white fw-semibold" id="tambahModalLabel">Tambah Peluang Kerja & Magang</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title text-white fw-semibold" id="tambahWorkModalLabel">Tambah Peluang Kerja & Magang</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
 
             <div class="modal-body p-4">
-                <form id="formTambahKategori">
+
+                <form action="{{ route('works.store') }}" method="POST">
+                    @csrf
+
+                    {{-- POSISI --}}
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Posisi</label>
-                        <input type="text" class="form-control rounded-3" placeholder="Masukkan Posisi...">
+                        <input type="text" name="posisi" class="form-control rounded-3"
+                               placeholder="Masukkan Posisi..." required>
                     </div>
+
+                    {{-- PROYEK / DATA PROGRAM --}}
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Proyek</label>
-                        <select class="form-select rounded-3">
-                            <option selected disabled>Tambah Proyek</option>
-                            <option value="a">Proyek A</option>
-                            <option value="b">Proyek A</option>
-                            <option value="c">Proyek A</option>
-                            <option value="d">Proyek A</option>
-                            <option value="e">Proyek A</option>
+                        <select name="data_program_id" class="form-select rounded-3" required>
+                            <option selected disabled>Pilih Proyek</option>
+                            @foreach ($dataProgram as $program)
+                                <option value="{{ $program->id }}">{{ $program->judul }}</option>
+                            @endforeach
                         </select>
                     </div>
+
+                    {{-- JENIS --}}
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Jenis Pekerjaan</label>
-                        <select class="form-select rounded-3">
-                            <option selected disabled>Tambah Jenis Pekerjaan</option>
+                        <select name="jenis" class="form-select rounded-3" required>
+                            <option selected disabled>Pilih Jenis</option>
                             <option value="fulltime">Full Time</option>
                             <option value="parttime">Part Time</option>
                             <option value="kontrak">Kontrak</option>
                             <option value="magang">Magang</option>
                         </select>
                     </div>
+
+                    {{-- TIPE --}}
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Tipe Pekerjaan</label>
-                        <select class="form-select rounded-3">
-                            <option selected disabled>Tambah Tipe Pekerjaan</option>
+                        <select name="tipe" class="form-select rounded-3" required>
+                            <option selected disabled>Pilih Tipe</option>
                             <option value="wfo">WFO</option>
                             <option value="wfh">WFH</option>
                             <option value="remote">Remote</option>
                         </select>
                     </div>
+
+                    {{-- LOKASI & GAJI --}}
                     <div class="row g-3 mb-3 align-items-end">
                         <div class="col-md-6">
                             <label class="form-label fw-semibold small text-dark">Lokasi</label>
-                            <input type="text" class="form-control rounded-3" placeholder="Masukkan Lokasi...">
+                            <input type="text" name="lokasi" class="form-control rounded-3"
+                                   placeholder="Masukkan Lokasi..." required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-semibold small text-dark">Gaji</label>
-                            <input type="text" class="form-control rounded-3" placeholder="Masukkan Gaji...">
+                            <div class="input-group">
+                                <span class="input-group-text">Rp.</span>
+                                <input type="text" name="gaji" id="gajiInput" class="form-control rounded-3"
+                                    placeholder="Masukkan Gaji..." required>
+                            </div>
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold small text-dark">Deskripsi</label>
-                        <textarea class="form-control rounded-3" placeholder="Masukkan Deskripsi..."></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold small text-dark">Kualifikasi</label>
-                        <textarea class="form-control rounded-3" placeholder="Masukkan Kualifikasi..."></textarea>
+
                     </div>
 
+                    {{-- DESKRIPSI --}}
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small text-dark">Deskripsi</label>
+                        <textarea name="deskripsi" class="form-control rounded-3"
+                                  placeholder="Masukkan Deskripsi..." rows="3" required></textarea>
+                    </div>
+
+                    {{-- KUALIFIKASI --}}
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small text-dark">Kualifikasi</label>
+                        <textarea name="kualifikasi" class="form-control rounded-3"
+                                  placeholder="Masukkan Kualifikasi..." rows="3" required></textarea>
+                    </div>
+
+                    {{-- BUTTON --}}
                     <div class="d-flex justify-content-end mt-4 gap-2">
-                        <button type="button" class="btn btn-outline-danger rounded-pill px-4 fw-semibold" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-outline-primary rounded-pill px-4 fw-semibold">Simpan</button>
+                        <button type="button" class="btn btn-outline-danger rounded-pill px-4 fw-semibold"
+                                data-bs-dismiss="modal">Batal</button>
+
+                        <button type="submit" class="btn btn-outline-primary rounded-pill px-4 fw-semibold">
+                            Simpan
+                        </button>
                     </div>
                 </form>
             </div>
@@ -191,7 +236,7 @@
     </div>
 </div>
 
-{{--MODAL DETAIL BANNER--}}
+{{--MODAL DETAIL PELUANG KERJA--}}
 <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 shadow-lg">
@@ -265,43 +310,43 @@
 </div>
 
 
-{{-- MODAL EDIT BANNER --}}
-<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+{{-- MODAL EDIT peluang kerja --}}
+<div class="modal fade" id="editWorkModal" tabindex="-1" aria-labelledby="editWorkModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 shadow-lg">
 
-            <!-- Header -->
             <div class="modal-header" style="background-color: #4A7097;">
-                <h5 class="modal-title text-white fw-semibold" id="editModalLabel">Edit Peluang Kerja & Magang</h5>
+                <h5 class="modal-title text-white fw-semibold" id="editWorkModalLabel">Edit Peluang Kerja & Magang</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <!-- Body -->
             <div class="modal-body p-4">
-                <form id="editBannerForm">
+                <form id="editPeluangKerjaForm" method="POST">
+                    @csrf
+                    @method('PUT')
 
-                    <!-- Posisi -->
+                    {{-- POSISI --}}
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Posisi</label>
-                        <input type="text" id="editPosisi" class="form-control rounded-3" placeholder="Masukkan Posisi...">
+                        <input type="text" id="editPosisi" name="posisi" class="form-control rounded-3">
                     </div>
 
-                    <!-- Proyek -->
+                    {{-- PROYEK --}}
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Proyek</label>
-                        <select id="editProyek" class="form-select rounded-3">
-                            <option selected disabled>Tambah Proyek</option>
-                            <option value="proyek-a">Proyek A</option>
-                            <option value="proyek-b">Proyek B</option>
-                            <option value="proyek-c">Proyek C</option>
+                        <select id="editProyek" name="data_program_id" class="form-select rounded-3">
+                            <option selected disabled>Pilih Proyek</option>
+                            @foreach ($dataProgram as $p)
+                                <option value="{{ $p->id }}">{{ $p->judul }}</option>
+                            @endforeach
                         </select>
                     </div>
 
-                    <!-- Jenis Pekerjaan -->
+                    {{-- JENIS --}}
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Jenis Pekerjaan</label>
-                        <select id="editJenis" class="form-select rounded-3">
-                            <option selected disabled>Tambah Jenis Pekerjaan</option>
+                        <select id="editJenis" name="jenis" class="form-select rounded-3">
+                            <option selected disabled>Pilih Jenis</option>
                             <option value="fulltime">Full Time</option>
                             <option value="parttime">Part Time</option>
                             <option value="kontrak">Kontrak</option>
@@ -309,49 +354,51 @@
                         </select>
                     </div>
 
-                    <!-- Tipe Pekerjaan -->
+                    {{-- TIPE --}}
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Tipe Pekerjaan</label>
-                        <select id="editTipe" class="form-select rounded-3">
-                            <option selected disabled>Tambah Tipe Pekerjaan</option>
+                        <select id="editTipe" name="tipe" class="form-select rounded-3">
+                            <option selected disabled>Pilih Tipe</option>
                             <option value="wfo">WFO</option>
                             <option value="wfh">WFH</option>
                             <option value="remote">Remote</option>
                         </select>
                     </div>
 
-                    <!-- Lokasi & Gaji -->
+                    {{-- LOKASI & GAJI --}}
                     <div class="row g-3 mb-3 align-items-end">
                         <div class="col-md-6">
                             <label class="form-label fw-semibold small text-dark">Lokasi</label>
-                            <input type="text" id="editLokasi" class="form-control rounded-3" placeholder="Masukkan Lokasi...">
+                            <input type="text" id="editLokasi" name="lokasi" class="form-control rounded-3">
                         </div>
+
                         <div class="col-md-6">
                             <label class="form-label fw-semibold small text-dark">Gaji</label>
-                            <input type="text" id="editGaji" class="form-control rounded-3" placeholder="Masukkan Gaji...">
+                            <div class="input-group">
+                                <span class="input-group-text">Rp.</span>
+                                <input type="text" id="editGaji" name="gaji" class="form-control rounded-3"
+                                    placeholder="Masukkan Gaji...">
+                            </div>
                         </div>
+
                     </div>
 
-                    <!-- Deskripsi -->
+                    {{-- DESKRIPSI --}}
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Deskripsi</label>
-                        <textarea id="editDeskripsi" class="form-control rounded-3" placeholder="Masukkan Deskripsi..."></textarea>
+                        <textarea id="editDeskripsi" name="deskripsi" class="form-control rounded-3" rows="3"></textarea>
                     </div>
 
-                    <!-- Kualifikasi -->
+                    {{-- KUALIFIKASI --}}
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark">Kualifikasi</label>
-                        <textarea id="editKualifikasi" class="form-control rounded-3" placeholder="Masukkan Kualifikasi..."></textarea>
+                        <textarea id="editKualifikasi" name="kualifikasi" class="form-control rounded-3" rows="3"></textarea>
                     </div>
 
-                    <!-- Tombol -->
+                    {{-- BUTTON --}}
                     <div class="d-flex justify-content-end mt-4 gap-2">
-                        <button type="button" class="btn btn-outline-danger rounded-pill px-4 fw-semibold" data-bs-dismiss="modal">
-                            Batal
-                        </button>
-                        <button type="submit" class="btn btn-outline-primary rounded-pill px-4 fw-semibold">
-                            Ubah
-                        </button>
+                        <button type="button" class="btn btn-outline-danger rounded-pill px-4 fw-semibold" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-outline-primary rounded-pill px-4 fw-semibold">Ubah</button>
                     </div>
 
                 </form>

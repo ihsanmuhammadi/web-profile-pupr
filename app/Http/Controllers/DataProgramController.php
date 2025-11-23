@@ -7,6 +7,7 @@ use App\Http\Requests\DataProgramRequest;
 use App\Models\DataProgram;
 use App\Models\Work;
 use App\Services\DataProgramService;
+use Exception;
 use App\Helpers\YouTubeHelper;
 
 class DataProgramController extends Controller
@@ -22,9 +23,10 @@ class DataProgramController extends Controller
     {
         $perPage = $request->input('per_page', 10);
         $search  = $request->input('search');
+        $categories = $this->service->getCategories();
 
         $dataPrograms = $this->service->getAll($perPage, $search);
-        return view('pages.admin.admin_dataprogram', compact('dataPrograms'));
+        return view('pages.admin.admin_dataprogram', compact('dataPrograms', 'categories'));
     }
 
     public function create()
@@ -35,36 +37,48 @@ class DataProgramController extends Controller
 
     public function store(DataProgramRequest $request)
     {
-        $validated = $request->validated();
+        try {
+            $this->service->create($request->validated());
 
-        $this->service->create($validated);
+            return redirect()->route('admin.dataprogram')
+                ->with('success', 'Data berhasil ditambahkan!');
+        } catch (Exception $e) {
 
-        return redirect()->route('data-programs.index')->with('success', 'Data Program created successfully.');
+            return redirect()->route('admin.dataprogram')
+                ->with('error', 'Data gagal ditambahkan!');
+        }
     }
 
     public function show($categoryName, $id)
     {
-        $category = match ($categoryName) {
-            'jalan-lingkungan' => 'Jalan Lingkungan',
-            'drainase-lingkungan' => 'Drainase Lingkungan',
-            'jembatan-lingkungan' => 'Jembatan Lingkungan',
-            'perumahan' => 'Perumahan',
-            'rumah-tidak-layak-huni' => 'Rumah Tidak Layak Huni',
-            default => 'Jalan Lingkungan'
-        };
+        $dataProgram = DataProgram::findOrFail($dataProgram->id);
 
-        $dataProgram = DataProgram::findOrFail($id);
+        return response()->json([
 
-        // Hitung total work per kategori
-        $totalWorkByKategori = Work::whereHas('dataProgram', function($query) use ($dataProgram) {
-            $query->where('judul', $dataProgram->judul);
-        })->count();
+        'judul' => $dataProgram->judul,
+        'kategori' => $dataProgram->kategori ? $dataProgram->kategori->name : '-',
+        'sub_judul' => $dataProgram->sub_judul,
+        'deskripsi' => $dataProgram->deskripsi,
+        'status_proyek' => $dataProgram->status_proyek,
+        'waktu_mulai' => $dataProgram->waktu_mulai,
+        'waktu_selesai' => $dataProgram->waktu_selesai,
+        'tahun_anggaran' => $dataProgram->tahun_anggaran,
+        'kecamatan' => $dataProgram->kecamatan,
+        'lokasi' => $dataProgram->lokasi,
+        'dokumentasi' => $dataProgram->dokumentasi,
 
-        // Convert link youtube menjadi embed
-        $videoId = YouTubeHelper::extractVideoId($dataProgram->dokumentasi);
-        $embedUrl = $videoId ? "https://www.youtube.com/embed/" . $videoId : null;
-
-        return view('pages.detail_program', compact('dataProgram', 'totalWorkByKategori', 'categoryName', 'embedUrl'));
+        // Tenaga kerja & posisi
+        'tenaga_kerja_1' => $dataProgram->tenaga_kerja_1,
+        'posisi_1' => $dataProgram->posisi_1,
+        'tenaga_kerja_2' => $dataProgram->tenaga_kerja_2,
+        'posisi_2' => $dataProgram->posisi_2,
+        'tenaga_kerja_3' => $dataProgram->tenaga_kerja_3,
+        'posisi_3' => $dataProgram->posisi_3,
+        'tenaga_kerja_4' => $dataProgram->tenaga_kerja_4,
+        'posisi_4' => $dataProgram->posisi_4,
+        'tenaga_kerja_5' => $dataProgram->tenaga_kerja_5,
+        'posisi_5' => $dataProgram->posisi_5,
+        ]);
     }
 
     public function edit(DataProgram $dataProgram)
@@ -75,13 +89,29 @@ class DataProgramController extends Controller
 
     public function update(DataProgramRequest $request, DataProgram $dataProgram)
     {
-        $this->service->update($dataProgram, $request->validated());
-        return redirect()->route('data-programs.index')->with('success', 'Data Program updated successfully.');
+        try {
+            $this->service->update($dataProgram, $request->validated());
+
+            return redirect()->route('admin.dataprogram')
+                ->with('success', 'Data telah berhasil diperbarui!');
+        } catch (Exception $e) {
+
+            return redirect()->route('admin.dataprogram')
+                ->with('error', 'Data gagal diperbarui!');
+        }
     }
 
     public function destroy(DataProgram $dataProgram)
     {
-        $this->service->delete($dataProgram);
-        return redirect()->route('data-programs.index')->with('success', 'Data Program deleted successfully.');
+        try {
+            $this->service->delete($dataProgram);
+
+            return redirect()->route('admin.dataprogram')
+                ->with('success', 'Data telah berhasil dihapus!');
+        } catch (Exception $e) {
+
+            return redirect()->route('admin.dataprogram')
+                ->with('error', 'Data gagal dihapus!');
+        }
     }
 }
