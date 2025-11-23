@@ -10,8 +10,8 @@
         <nav aria-label="breadcrumb" class="mb-4">
             <ol class="breadcrumb small mb-0 breadcrumb-custom" style="background: none; padding: 0;">
                 <li class="breadcrumb-item">
-                <a id="breadcrumbPrev" href="/jalan-lingkungan" class="text-decoration-none text-muted">
-                    Jalan Lingkungan
+                <a id="breadcrumbPrev" href="{{ route('dataprogram.category', ['categoryName' => $categoryName]) }}" class="text-decoration-none text-muted">
+                    {{$dataProgram->kategori->name}}
                 </a>
                 </li>
                 <span class="breadcrumb-separator material-symbols-outlined mx-1">
@@ -23,15 +23,15 @@
 
         <div class="title-program text-center mb-5">
             <span class="badge program-category-badge rounded-1 px-3 py-2 fw-normal text-white mb-4" style="font-size: 1rem">
-                Jalan Lingkungan
+                {{$dataProgram->kategori->name}}
             </span>
-            <h1 class="fw-bold display-5 mb-0">Judul Program Kerja</h1>
+            <h1 class="fw-bold display-5 mb-0">{{$dataProgram->judul}}</h1>
         </div>
 
         <div class="col-lg-8 mx-auto mt-4">
             <div class="ratio ratio-16x9">
                 <iframe
-                    src="https://www.youtube.com/embed/DgSyV_eqeFU?si=-S_5gn3LbGEJUuLU"
+                    src={{ $embedUrl }}
                     title="Video Program Kerja"
                     allowfullscreen
                     class="shadow-sm">
@@ -47,42 +47,69 @@
                 <div class="d-flex flex-wrap align-items-center gap-5 mb-4 info-bar fs-5">
 
                     <div class="d-flex align-items-center text-dark fw-medium small">
-                        <span class="material-symbols-outlined me-2">schedule</span> Waktu Pelaksanaan
+                        <span class="material-symbols-outlined me-2">schedule</span> {{ \Carbon\Carbon::parse($dataProgram->waktu_mulai)->format('d M Y') }}
                     </div>
 
                     <div class="d-flex align-items-center text-dark fw-medium small">
-                        <span class="material-symbols-outlined me-2">calendar_month</span> Tahun Anggaran
+                        <span class="material-symbols-outlined me-2">calendar_month</span> {{$dataProgram->tahun_anggaran}}
                     </div>
 
                     <div>
-                        <span class="badge d-flex align-items-center bg-warning text-light rounded-1 px-2 py-1 fw-medium">
-                            <span class="material-symbols-outlined me-2">pause_circle</span> Ditunda
-                        </span>
+                        @if ($dataProgram->status_proyek == 'Ditunda')
+                            <span class="badge d-flex align-items-center bg-warning text-light rounded-1 px-2 py-1 fw-medium">
+                                <span class="material-symbols-outlined me-2">pause_circle</span>
+                                Ditunda
+                            </span>
+
+                        @elseif ($dataProgram->status_proyek == 'Sedang Berjalan')
+                            <span class="badge d-flex align-items-center bg-primary text-light rounded-1 px-2 py-1 fw-medium">
+                                <span class="material-symbols-outlined me-2">manufacturing</span>
+                                Sedang Berjalan
+                            </span>
+
+                        @elseif ($dataProgram->status_proyek == 'Dihentikan')
+                            <span class="badge d-flex align-items-center bg-danger text-light rounded-1 px-2 py-1 fw-medium">
+                                <span class="material-symbols-outlined me-2">cancel</span>
+                                Dihentikan
+                            </span>
+
+                        @elseif ($dataProgram->status_proyek == 'Tuntas')
+                            <span class="badge d-flex align-items-center bg-success text-light rounded-1 px-2 py-1 fw-medium">
+                                <span class="material-symbols-outlined me-2">check_circle</span>
+                                Tuntas
+                            </span>
+
+                        @else
+                            <span class="badge d-flex align-items-center bg-secondary text-light rounded-1 px-2 py-1 fw-medium">
+                                <span class="material-symbols-outlined me-2">help</span>
+                                Tidak Diketahui
+                            </span>
+                        @endif
                     </div>
                 </div>
 
                 <div class="d-flex align-items-center text-dark fw-medium small mb-5 fs-5">
-                    <span class="material-symbols-outlined me-2">location_on</span> Lokasi
+                    <span class="material-symbols-outlined me-2">location_on</span> {{$dataProgram->lokasi}}
                 </div>
 
                 <div class="mb-4">
-                    <h2 class="h3 fw-bold mb-2">Sub Judul Program Kerja</h2>
+                    <h2 class="h3 fw-bold mb-2">{{$dataProgram->sub_judul}}</h2>
                 </div>
 
                 <div class="mb-5">
                     <p class="text-dark fs-5">
-                        Deskripsi singkat lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum ipsum lorem ipsum lorem ipsum lorem ipsum ipsum lorem ipsum lorem ipsum lorem ipsum.
+                        {{$dataProgram->deskripsi}}
                     </p>
                 </div>
 
                 <div class="mb-4">
                     <h2 class="h3 fw-bold mb-4">Tim yang Terlibat</h2>
                     <div class="text-dark fs-5" style="line-height: 1;">
-                        <p>Andi Pratama - Project Manager</p>
-                        <p>Andi Pratama - Project Manager</p>
-                        <p>Andi Pratama - Project Manager</p>
-                        <p>Andi Pratama - Project Manager</p>
-                        <p>Andi Pratama - Project Manager</p>
+                        <p>{{$dataProgram->tenaga_kerja_1}} - {{$dataProgram->posisi_1}}</p>
+                        <p>{{$dataProgram->tenaga_kerja_2}} - {{$dataProgram->posisi_2}}</p>
+                        <p>{{$dataProgram->tenaga_kerja_3}} - {{$dataProgram->posisi_3}}</p>
+                        <p>{{$dataProgram->tenaga_kerja_4}} - {{$dataProgram->posisi_4}}</p>
+                        <p>{{$dataProgram->tenaga_kerja_5}} - {{$dataProgram->posisi_5}}</p>
                     </div>
                 </div>
 
@@ -94,7 +121,7 @@
                         Lihat Peluang Pekerjaan dan Magang
                     </a>
                     <p class="text-muted small mt-2 text-lg-start ms-2 fs-6">
-                        Tersedia: 10
+                        Tersedia: {{ $totalWorkByKategori }}
                     </p>
                 </div>
             </div>

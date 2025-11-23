@@ -21,9 +21,9 @@ Route::get('/', [DashboardController::class, 'getHomepageData'])->name('home');
 Route::get('/visi-misi', [PageController::class, 'visiMisi'])->name('visi.misi');
 Route::get('/struktur-dinas', [PageController::class, 'strukturDinas'])->name('struktur.dinas');
 Route::get('/struktur-bidang', [PageController::class, 'strukturBidang'])->name('struktur.bidang');
-Route::get('/pedoman-teknis', [PageController::class, 'pedomanTeknis'])->name('pedoman.teknis');
-Route::get('/pedoman-daerah', [PageController::class, 'pedomanDaerah'])->name('pedoman.daerah');
-Route::get('/jalan-lingkungan', [PageController::class, 'jalanLingkungan'])->name('jalan.lingkungan');
+Route::get('/pedoman-teknis', [DashboardController::class, 'getAllPedoman'])->name('pedoman.teknis');
+Route::get('/pedoman-daerah', [DashboardController::class, 'getAllPedoman'])->name('pedoman.daerah');
+Route::get('/data-program/{categoryName}', [DashboardController::class, 'getAllDataProgramByCategory'])->name('dataprogram.category');
 Route::get('/drainase-lingkungan', [PageController::class, 'drainaseLingkungan'])->name('drainase.lingkungan');
 Route::get('/jembatan-lingkungan', [PageController::class, 'jembatanLingkungan'])->name('jembatan.lingkungan');
 Route::get('/rumah-taklayak', [PageController::class, 'rumahTaklayak'])->name('rumah.taklayak');
@@ -44,6 +44,16 @@ Route::get('/admin/admin-pedoman', [GuidanceController::class, 'index'])->name('
 Route::get('/admin/admin-peluang-kerja', [WorkController::class, 'index'])->name('admin.peluang.kerja');
 
 Route::get('/admin/admin-login', [AdminController::class, 'adminLogin'])->name('admin.login');
+
+Route::post('/applications/store', [ApplicationController::class, 'store'])->name('applications.store');
+
+Route::post('/complaints', [ComplaintController::class, 'store'])->name('complaints.store');
+
+Route::get('/data-programs/{categoryName}/{id}', [DataProgramController::class, 'show'])
+    ->whereUuid('id')
+    ->name('dataprograms.show');
+
+// Route::get('/data-programs/{{categoryName}}/{data_program}', [DataProgramController::class, 'show'])->name('data-programs.show');
 
 // Backend
 Route::get('/dashboard', function () {
@@ -97,19 +107,17 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/complaints', [ComplaintController::class, 'index'])->name('complaints.index');
     Route::get('/complaints/create', [ComplaintController::class, 'create'])->name('complaints.create');
-    Route::post('/complaints', [ComplaintController::class, 'store'])->name('complaints.store');
     Route::get('/complaints/{complaint}', [ComplaintController::class, 'show'])->name('complaints.show');
     Route::get('/complaints/{complaint}/edit', [ComplaintController::class, 'edit'])->name('complaints.edit');
     Route::put('/complaints/{complaint}', [ComplaintController::class, 'update'])->name('complaints.update');
     Route::delete('/complaints/{complaint}', [ComplaintController::class, 'destroy'])->name('complaints.destroy');
 
-    Route::get('applications', [ApplicationController::class, 'index'])->name('applications.index');
-    Route::get('applications/create', [ApplicationController::class, 'create'])->name('applications.create');
-    Route::post('applications/store', [ApplicationController::class, 'store'])->name('applications.store');
-    Route::get('applications/{application}', [ApplicationController::class, 'show'])->name('applications.show');
-    Route::get('applications/{application}/edit', [ApplicationController::class, 'edit'])->name('applications.edit');
-    Route::put('applications/{application}', [ApplicationController::class, 'update'])->name('applications.update');
-    Route::delete('applications/{application}', [ApplicationController::class, 'destroy'])->name('applications.destroy');
+    Route::get('/applications', [ApplicationController::class, 'index'])->name('applications.index');
+    Route::get('/applications/create', [ApplicationController::class, 'create'])->name('applications.create');
+    Route::get('/applications/{application}', [ApplicationController::class, 'show'])->name('applications.show');
+    Route::get('/applications/{application}/edit', [ApplicationController::class, 'edit'])->name('applications.edit');
+    Route::put('/applications/{application}', [ApplicationController::class, 'update'])->name('applications.update');
+    Route::delete('/applications/{application}', [ApplicationController::class, 'destroy'])->name('applications.destroy');
 });
 
 require __DIR__.'/auth.php';

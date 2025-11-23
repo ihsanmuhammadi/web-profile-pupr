@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\DataProgramRequest;
 use App\Models\DataProgram;
+use App\Models\Work;
 use App\Services\DataProgramService;
 use Exception;
+use App\Helpers\YouTubeHelper;
 
 class DataProgramController extends Controller
 {
@@ -47,7 +49,7 @@ class DataProgramController extends Controller
         }
     }
 
-    public function show(DataProgram $dataProgram)
+    public function show($categoryName, $id)
     {
         $dataProgram = DataProgram::findOrFail($dataProgram->id);
 

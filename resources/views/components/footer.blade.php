@@ -22,13 +22,13 @@
       </div>
 
       <div class="col-lg-2 col-md-4 col-6">
-        <h6 class="footer-heading">Data & Diagram</h6>
+        <h6 class="footer-heading">Data & Program</h6>
         <ul class="list-unstyled">
-          <li><a href="{{ route('jalan.lingkungan') }}">Jalan Lingkungan</a></li>
-          <li><a href="{{ route('drainase.lingkungan') }}">Drainase Lingkungan</a></li>
-          <li><a href="{{ route('jembatan.lingkungan') }}">Jembatan Lingkungan</a></li>
-          <li><a href="{{ route('rumah.taklayak') }}">Rumah Tidak Layak Huni</a></li>
-          <li><a href="{{ route('perumahan') }}">Perumahan</a></li>
+          <li><a href="{{ route('dataprogram.category', ['categoryName' => 'jalan-lingkungan']) }}">Jalan Lingkungan</a></li>
+          <li><a href="{{ route('dataprogram.category', ['categoryName' => 'drainase-lingkungan']) }}">Drainase Lingkungan</a></li>
+          <li><a href="{{ route('dataprogram.category', ['categoryName' => 'jembatan-lingkungan']) }}">Jembatan Lingkungan</a></li>
+          <li><a href="{{ route('dataprogram.category', ['categoryName' => 'rumah-tidak-layak-huni']) }}">Rumah Tidak Layak Huni</a></li>
+          <li><a href="{{ route('dataprogram.category', ['categoryName' => 'perumahan']) }}">Perumahan</a></li>
           <li><a href="#">Satu Peta</a></li>
         </ul>
       </div>

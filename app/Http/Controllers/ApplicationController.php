@@ -38,7 +38,7 @@ class ApplicationController extends Controller
         $validated = $request->validated();
         $this->service->create($validated);
 
-        return redirect()->route('applications.index')->with('success', 'Application created successfully.');
+        return redirect()->back()->with('success', true);
     }
 
     public function show(Application $application)

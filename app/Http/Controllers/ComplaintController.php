@@ -36,7 +36,9 @@ class ComplaintController extends Controller
         $validated = $request->validated();
         $this->service->create($validated);
 
-        return redirect()->route('aduan')->with('success', 'Complaint created successfully.');
+        return redirect()
+            ->back()
+            ->with('success', true);
     }
 
     public function show(Complaint $complaint)
