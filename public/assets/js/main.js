@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
             currentWorkId = card.dataset.id;
             const posisi = card.dataset.posisi;
             const program = card.dataset.program;
-            const kualifikasi = card.dataset.kualifikasi;
+            const level = card.dataset.level;
             const jenis = card.dataset.jenis;
             const bidang = card.dataset.bidang;
             const tipe = card.dataset.tipe;
@@ -138,20 +138,21 @@ document.addEventListener('DOMContentLoaded', () => {
             const gaji = card.dataset.gaji;
             const tenggat = card.dataset.tenggat;
             const deskripsi = card.dataset.deskripsi;
-            const kualifikasiDetail = card.dataset.kualifikasiDetail;
             const logo = card.dataset.logo;
+            const kualifikasi = card.dataset.kualifikasi;
 
             // Update overlay detail content
             document.getElementById('detailLogo').src = logo;
             document.getElementById('detailPosisi').textContent = posisi;
             document.getElementById('detailProgram').textContent = program;
             document.getElementById('detailTenggat').textContent = tenggat;
-            document.getElementById('detailKualifikasi').textContent = kualifikasi;
+            document.getElementById('detailLevel').textContent = level;
             document.getElementById('detailJenis').textContent = jenis;
             document.getElementById('detailBidang').textContent = bidang || '-';
             document.getElementById('detailTipe').textContent = tipe;
             document.getElementById('detailLokasi').textContent = lokasi;
             document.getElementById('detailGaji').textContent = gaji;
+            document.getElementById('detailKualifikasi').textContent = kualifikasi;
 
             // Parse deskripsi
             if (deskripsi) {
@@ -163,13 +164,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Parse kualifikasi detail
-            if (kualifikasiDetail) {
-                const kualList = kualifikasiDetail.split('\n').filter(item => item.trim() !== '');
-                const kualHTML = '<ul class="small mb-0">' +
-                    kualList.map(item => `<li>${item}</li>`).join('') +
-                    '</ul>';
-                document.getElementById('detailKualifikasiDetail').innerHTML = kualHTML;
-            }
+            // if (kualifikasi) {
+            //     const kualList = kualifikasi.split('\n').filter(item => item.trim() !== '');
+            //     const kualHTML = '<ul class="small mb-0">' +
+            //         kualList.map(item => `<li>${item}</li>`).join('') +
+            //         '</ul>';
+            //     document.getElementById('detailKualifikasi').innerHTML = kualHTML;
+            // }
 
             // Show overlay
             jobOverlay.classList.add('show');

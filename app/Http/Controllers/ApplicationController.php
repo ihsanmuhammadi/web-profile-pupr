@@ -43,13 +43,13 @@ class ApplicationController extends Controller
 
     public function show(Application $application)
     {
-        $application = Application::findOrFail($application->id);
+        $application = Application::with('work')->findOrFail($application->id);
 
         return response()->json([
 
             'nama' => $application->nama,
-            'worj_id' => $application->work_id,
-            'work_id' => $application->work_id,
+            'posisi' => $application->work->posisi,
+            'proyek' => $application->work->dataProgram->judul,
             'email' => $application->email,
             'nomor_telepon' => $application->nomor_telepon,
             'lokasi' => $application->lokasi,

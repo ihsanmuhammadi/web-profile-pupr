@@ -103,9 +103,20 @@
                         </button>
                         <ul class="dropdown-menu p-2 mt-3 ps-3" style="width: 180px;">
                             <label class="form-label fw-bold ms-2 text-dark">Lokasi</label>
-                            <input type="text" name="lokasi" class="form-control form-control-sm mb-2"
-                                placeholder="Cari lokasi"
-                                value="{{ request('lokasi') }}">
+                            <li><input type="search" id="searchLocation" class="form-control form-control-sm mb-2" placeholder="Cari Lokasi"></li>
+                            @php
+                                $locations = $works->pluck('lokasi')->unique()->sort();
+                            @endphp
+                            @foreach ($locations as $t)
+                                <li>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input filter-check"
+                                            name="tipe[]" value="{{ $t }}"
+                                            {{ in_array($t, request()->lokasi ?? []) ? 'checked' : '' }}>
+                                        <label class="form-check-label">{{ $t }}</label>
+                                    </div>
+                                </li>
+                            @endforeach
                         </ul>
                     </div>
 
@@ -145,15 +156,15 @@
                 data-id="{{ $work->id }}"
                 data-posisi="{{ $work->posisi }}"
                 data-program="{{ $work->dataProgram->judul }}"
+                data-level="{{ $work->level }}"
                 data-kualifikasi="{{ $work->kualifikasi }}"
                 data-jenis="{{ $work->jenis }}"
-                data-bidang="{{ $work->bidang }}"
+                data-bidang="{{ $work->dataProgram->kategori->name }}"
                 data-tipe="{{ $work->tipe }}"
                 data-lokasi="{{ $work->lokasi }}"
                 data-gaji="{{ $work->gaji }}"
                 data-tenggat="{{ \Carbon\Carbon::parse($work->tenggat_waktu)->format('d M Y') }}"
                 data-deskripsi="{{ $work->deskripsi }}"
-                data-kualifikasi-detail="{{ $work->kualifikasi_detail }}"
                 data-logo="{{ $work->logo ? asset('storage/' . $work->logo) : asset('assets/images/logo_kuburaya.png') }}">
 
                 <div class="d-flex align-items-start mb-3">
@@ -167,7 +178,7 @@
                 </div>
 
                 <ul class="list-unstyled small mb-0">
-                    <li class="mb-1"><i class="bi bi-mortarboard me-2"></i>{{ $work->kualifikasi }}</li>
+                    <li class="mb-1"><i class="bi bi-mortarboard me-2"></i>{{ $work->level }}</li>
                     <li class="mb-1"><i class="bi bi-briefcase me-2"></i>{{ $work->jenis }}</li>
                     <li class="mb-1"><i class="bi bi-file-earmark-text me-2"></i>{{ $work->tipe }}</li>
                     <li class="mb-1"><i class="bi bi-geo-alt me-2"></i>{{ $work->lokasi }}</li>
@@ -206,7 +217,7 @@
         <span class="text-danger small ms-auto" id="detailTenggat">Tenggat Waktu</span>
       </div>
       <ul class="list-unstyled text-muted mb-3 small">
-        <li class="mb-2"><i class="bi bi-mortarboard me-2"></i><span id="detailKualifikasi">Level Pekerjaan</span></li>
+        <li class="mb-2"><i class="bi bi-mortarboard me-2"></i><span id="detailLevel">Level Pekerjaan</span></li>
         <li class="mb-2"><i class="bi bi-briefcase me-2"></i><span id="detailJenis">Jenis Pekerjaan</span></li>
         <li class="mb-2"><i class="bi bi-file-earmark-text me-2"></i><span id="detailBidang">Bidang Pekerjaan</span></li>
         <li class="mb-2"><i class="bi bi-geo-alt me-2"></i><span id="detailTipe">Tipe Pekerjaan</span> • <span id="detailLokasi">Lokasi</span></li>
@@ -225,7 +236,7 @@
         </div>
 
         <h6 class="fw-bold">Kualifikasi Minimum</h6>
-        <div id="detailKualifikasiDetail" class="small mb-0">
+        <div id="detailKualifikasi" class="small mb-0">
           <p>Kualifikasi akan muncul di sini</p>
         </div>
       </div>
@@ -378,10 +389,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Get filter elements
     const searchInput = document.querySelector('input[name="search"]');
-    const lokasiInput = document.querySelector('input[name="lokasi"]');
+    const lokasiInput = document.querySelector('input[name="lokasi[]"]');
     const levelCheckboxes = document.querySelectorAll('input[name="level[]"]');
     const jenisCheckboxes = document.querySelectorAll('input[name="jenis[]"]');
     const tipeCheckboxes = document.querySelectorAll('input[name="tipe[]"]');
+    const searchLocation = document.getElementById('searchLocation');
     const sortButtons = document.querySelectorAll('[onclick^="applySort"]');
 
     // Prevent form submission
@@ -399,7 +411,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function filterAndSort() {
         // Get current filter values
         const searchTerm = normalizeText(searchInput.value);
-        const lokasiTerm = normalizeText(lokasiInput.value);
+        // const lokasiTerm = normalizeText(lokasiInput.value);
 
         const selectedLevels = Array.from(levelCheckboxes)
             .filter(cb => cb.checked)
@@ -432,7 +444,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Level filter
             if (selectedLevels.length > 0) {
-                const cardLevel = normalizeText(card.dataset.kualifikasi);
+                const cardLevel = normalizeText(card.dataset.level);
                 if (!selectedLevels.includes(cardLevel)) {
                     return false;
                 }
@@ -464,6 +476,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
             return true;
         });
+
+         // Search within location dropdown
+        if (searchLocation) {
+            searchLocation.addEventListener('input', function() {
+                const term = normalizeText(this.value);
+                locationCheckboxes.forEach(cb => {
+                    const matches = normalizeText(cb.value).includes(term);
+                    cb.closest('li').style.display = matches ? 'block' : 'none';
+                });
+            });
+        }
 
         // Sort cards
         filteredCards.sort((a, b) => {
@@ -631,26 +654,26 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Lokasi input with debounce
-    let lokasiTimeout;
-    lokasiInput.addEventListener('input', function() {
-        clearTimeout(lokasiTimeout);
-        lokasiTimeout = setTimeout(() => {
-            filterAndSort();
-        }, 300);
-    });
+    // // Lokasi input with debounce
+    // let lokasiTimeout;
+    // lokasiInput.addEventListener('input', function() {
+    //     clearTimeout(lokasiTimeout);
+    //     lokasiTimeout = setTimeout(() => {
+    //         filterAndSort();
+    //     }, 300);
+    // });
 
-    // Lokasi on Enter
-    lokasiInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            clearTimeout(lokasiTimeout);
-            filterAndSort();
-        }
-    });
+    // // Lokasi on Enter
+    // lokasiInput.addEventListener('keypress', function(e) {
+    //     if (e.key === 'Enter') {
+    //         e.preventDefault();
+    //         clearTimeout(lokasiTimeout);
+    //         filterAndSort();
+    //     }
+    // });
 
     // Checkbox filters - instant
-    [...levelCheckboxes, ...jenisCheckboxes, ...tipeCheckboxes].forEach(checkbox => {
+    [...levelCheckboxes, ...jenisCheckboxes, ...tipeCheckboxes, ...lokasiInput].forEach(checkbox => {
         checkbox.addEventListener('change', filterAndSort);
     });
 

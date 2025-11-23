@@ -332,8 +332,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then(data => {
 
                     document.getElementById("detailNama").value = data.nama;
-                    document.getElementById("detailPosisi").value = data.work_id;
-                    document.getElementById("detailProyek").value = data.work_id;
+                    document.getElementById("detailPosisi").value = data.posisi;
+                    document.getElementById("detailProyek").value = data.proyek;
                     document.getElementById("detailEmail").value = data.email;
                     document.getElementById("detailNoTelepon").value = data.nomor_telepon;
                     document.getElementById("detailLokasi").value = data.lokasi;

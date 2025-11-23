@@ -172,10 +172,10 @@
                         <label class="form-label fw-semibold small text-dark">Level Pendidikan</label>
                         <select name="level" class="form-select rounded-3" required>
                             <option selected disabled>Pilih Level Pendidikan</option>
-                            <option value="sma/smk">SMA/SMK</option>
-                            <option value="d3">D3</option>
-                            <option value="s1">S1</option>
-                            <option value="s2">S2</option>
+                            <option value="SMA/SMK">SMA/SMK</option>
+                            <option value="D3">D3</option>
+                            <option value="S1">S1</option>
+                            <option value="S2">S2</option>
                         </select>
                     </div>
 
@@ -184,10 +184,10 @@
                         <label class="form-label fw-semibold small text-dark">Jenis Pekerjaan</label>
                         <select name="jenis" class="form-select rounded-3" required>
                             <option selected disabled>Pilih Jenis</option>
-                            <option value="fulltime">Full Time</option>
-                            <option value="parttime">Part Time</option>
-                            <option value="kontrak">Kontrak</option>
-                            <option value="magang">Magang</option>
+                            <option value="Full Time">Full Time</option>
+                            <option value="Part Time">Part Time</option>
+                            <option value="Kontrak">Kontrak</option>
+                            <option value="Magang">Magang</option>
                         </select>
                     </div>
 
@@ -196,9 +196,9 @@
                         <label class="form-label fw-semibold small text-dark">Tipe Pekerjaan</label>
                         <select name="tipe" class="form-select rounded-3" required>
                             <option selected disabled>Pilih Tipe</option>
-                            <option value="wfo">WFO</option>
-                            <option value="wfh">WFH</option>
-                            <option value="remote">Remote</option>
+                            <option value="WFO">WFO</option>
+                            <option value="WFH">WFH</option>
+                            <option value="Remote">Remote</option>
                         </select>
                     </div>
 
@@ -356,9 +356,9 @@
                         <select id="editLevel" name="level" class="form-select rounded-3">
                             <option selected disabled>Pilih Level Pendidikan</option>
                             <option value="sma/smk">SMA/SMK</option>
-                            <option value="d3">D3</option>
-                            <option value="s1">S1</option>
-                            <option value="s2">S2</option>
+                            <option value="D3">D3</option>
+                            <option value="S1">S1</option>
+                            <option value="S2">S2</option>
                         </select>
                     </div>
 
@@ -378,10 +378,10 @@
                         <label class="form-label fw-semibold small text-dark">Jenis Pekerjaan</label>
                         <select id="editJenis" name="jenis" class="form-select rounded-3" required>
                             <option selected disabled>Pilih Jenis</option>
-                            <option value="fulltime">Full Time</option>
-                            <option value="parttime">Part Time</option>
-                            <option value="kontrak">Kontrak</option>
-                            <option value="magang">Magang</option>
+                            <option value="Full Time">Full Time</option>
+                            <option value="Part Time">Part Time</option>
+                            <option value="Kontrak">Kontrak</option>
+                            <option value="Magang">Magang</option>
                         </select>
                     </div>
 
@@ -390,9 +390,9 @@
                         <label class="form-label fw-semibold small text-dark">Tipe Pekerjaan</label>
                         <select id="editTipe" name="tipe" class="form-select rounded-3" required>
                             <option selected disabled>Pilih Tipe</option>
-                            <option value="wfo">WFO</option>
-                            <option value="wfh">WFH</option>
-                            <option value="remote">Remote</option>
+                            <option value="WFO">WFO</option>
+                            <option value="WFH">WFH</option>
+                            <option value="Remote">Remote</option>
                         </select>
                     </div>
 

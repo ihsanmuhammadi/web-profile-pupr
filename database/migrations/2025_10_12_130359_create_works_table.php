@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('works', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('posisi');
+            $table->string('level');
             $table->string('jenis');
             $table->string('tipe');
             $table->string('lokasi');

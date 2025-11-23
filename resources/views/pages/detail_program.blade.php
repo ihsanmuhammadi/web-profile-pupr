@@ -105,14 +105,17 @@
                 <div class="mb-4">
                     <h2 class="h3 fw-bold mb-4">Tim yang Terlibat</h2>
                     <div class="text-dark fs-5" style="line-height: 1;">
-                        <p>{{$dataProgram->tenaga_kerja_1}} - {{$dataProgram->posisi_1}}</p>
-                        <p>{{$dataProgram->tenaga_kerja_2}} - {{$dataProgram->posisi_2}}</p>
-                        <p>{{$dataProgram->tenaga_kerja_3}} - {{$dataProgram->posisi_3}}</p>
-                        <p>{{$dataProgram->tenaga_kerja_4}} - {{$dataProgram->posisi_4}}</p>
-                        <p>{{$dataProgram->tenaga_kerja_5}} - {{$dataProgram->posisi_5}}</p>
+                        @for($i = 1; $i <= 5; $i++)
+                           @php
+                                $tenaga = "tenaga_kerja_$i";
+                                $posisi = "posisi_$i";
+                            @endphp
+                            @if($dataProgram->$tenaga && $dataProgram->$posisi)
+                                <p>{{ $dataProgram->$tenaga }} - {{ $dataProgram->$posisi }}</p>
+                            @endif
+                        @endfor
                     </div>
                 </div>
-
             </div>
 
             <div class="col-lg-4 d-flex justify-content-lg-end">

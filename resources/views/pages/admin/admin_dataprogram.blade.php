@@ -195,10 +195,10 @@
                         <label class="form-label fw-semibold small text-dark">Status</label>
                         <select name="status_proyek" class="form-select rounded-3">
                             <option selected disabled required>Pilih Status Data & Program</option>
-                            <option value="tuntas">Tuntas</option>
-                            <option value="berjalan">Sedang Berjalan</option>
-                            <option value="dihentikan">Dihentikan</option>
-                            <option value="ditunda">Ditunda</option>
+                            <option value="Tuntas">Tuntas</option>
+                            <option value="Sedang Berjalan">Sedang Berjalan</option>
+                            <option value="Dihentikan">Dihentikan</option>
+                            <option value="Ditunda">Ditunda</option>
                         </select>
                     </div>
 
@@ -421,10 +421,10 @@
                         <label class="form-label fw-semibold small text-dark">Status</label>
                         <select id="editStatus" name="status_proyek" class="form-select rounded-3" required>
                             <option selected disabled>Pilih Status Data & Program</option>
-                            <option value="tuntas">Tuntas</option>
-                            <option value="berjalan">Sedang Berjalan</option>
-                            <option value="dihentikan">Dihentikan</option>
-                            <option value="ditunda">Ditunda</option>
+                            <option value="Tuntas">Tuntas</option>
+                            <option value="Sedang Berjalan">Sedang Berjalan</option>
+                            <option value="Dihentikan">Dihentikan</option>
+                            <option value="Ditunda">Ditunda</option>
                         </select>
                     </div>
 
