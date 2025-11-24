@@ -95,7 +95,7 @@
         </div>
       </div>
       <div class="col-md-5 text-center">
-        <img src="{{ asset('assets/images/jalan.png') }}" class="img-fluid rounded-4 shadow-sm" alt="Jalan Lingkungan">
+        <img src="{{ asset('assets/images/jalan-lingkungan.png') }}" class="img-fluid rounded-4 shadow-sm" alt="Jalan Lingkungan">
       </div>
     </div>
 
@@ -120,7 +120,7 @@
         </div>
       </div>
       <div class="col-md-5 text-center">
-        <img src="{{ asset('assets/images/jalan.png') }}" class="img-fluid rounded-4 shadow-sm" alt="Drainase Lingkungan">
+        <img src="{{ asset('assets/images/drainase-lingkungan.png') }}" class="img-fluid rounded-4 shadow-sm" alt="Drainase Lingkungan">
       </div>
     </div>
 
@@ -145,7 +145,7 @@
         </div>
       </div>
       <div class="col-md-5 text-center">
-        <img src="{{ asset('assets/images/jalan.png') }}" class="img-fluid rounded-4 shadow-sm" alt="Jembatan Lingkungan">
+        <img src="{{ asset('assets/images/jembatan-lingkungan.png') }}" class="img-fluid rounded-4 shadow-sm" alt="Jembatan Lingkungan">
       </div>
     </div>
 
@@ -174,7 +174,7 @@
             </a>
       </div>
       <div class="col-md-5 text-center">
-        <img src="{{ asset('assets/images/jalan.png') }}" class="img-fluid rounded-4 shadow-sm" alt="RTLH">
+        <img src="{{ asset('assets/images/rumah-tidak-layak-huni.png') }}" class="img-fluid rounded-4 shadow-sm" alt="RTLH">
       </div>
     </div>
 
@@ -203,7 +203,7 @@
             </a>
       </div>
       <div class="col-md-5 text-center">
-        <img src="{{ asset('assets/images/jalan.png') }}" class="img-fluid rounded-4 shadow-sm" alt="Perumahan">
+        <img src="{{ asset('assets/images/perumahan.png') }}" class="img-fluid rounded-4 shadow-sm" alt="Perumahan">
       </div>
     </div>
 
