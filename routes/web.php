@@ -43,7 +43,7 @@ Route::get('/admin/admin-lamaran', [ApplicationController::class, 'index'])->nam
 Route::get('/admin/admin-pedoman', [GuidanceController::class, 'index'])->name('admin.pedoman');
 Route::get('/admin/admin-peluang-kerja', [WorkController::class, 'index'])->name('admin.peluang.kerja');
 
-Route::get('/admin/admin-login', [AdminController::class, 'adminLogin'])->name('admin.login');
+Route::get('/login', [AdminController::class, 'adminLogin'])->name('login');
 
 Route::post('/applications/store', [ApplicationController::class, 'store'])->name('applications.store');
 
@@ -61,6 +61,14 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/admin/admin-berita', [NewsController::class, 'index'])->name('admin.berita');
+    Route::get('/admin/admin-aduan', [ComplaintController::class, 'index'])->name('admin.aduan');
+    Route::get('/admin/admin-dataprogram', [DataProgramController::class, 'index'])->name('admin.dataprogram');
+    Route::get('/admin/admin-kategori', [CategoryController::class, 'index'])->name('admin.kategori');
+    Route::get('/admin/admin-lamaran', [ApplicationController::class, 'index'])->name('admin.lamaran');
+    Route::get('/admin/admin-pedoman', [GuidanceController::class, 'index'])->name('admin.pedoman');
+    Route::get('/admin/admin-peluang-kerja', [WorkController::class, 'index'])->name('admin.peluang.kerja');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

@@ -23,7 +23,7 @@
         Struktur organisasi ini menggambarkan peran dan tanggung jawab setiap bagian di lingkungan Dinas Kubu Raya untuk mendukung visi dan misi serta meningkatkan kualitas pelayanan kepada masyarakat.
     </p>
     <div class="struktur-image" data-aos="zoom-in-up">
-      <img src="{{ asset('assets/images/struktur_dinas.png') }}" alt="Struktur Organisasi Dinas" class="img-fluid">
+      <img src="{{ asset('assets/images/Struktur Organisasi Dinas.png') }}" alt="Struktur Organisasi Dinas" class="img-fluid">
     </div>
   </div>
 </section>

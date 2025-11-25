@@ -20,9 +20,15 @@
         <div class="mb-4 d-flex align-items-center flex-wrap info-program">
             <div class="me-5">
                 <p class="h4 text-success mb-0">Jumlah Program</p>
-                <p class="h2 text-success mb-0" id="total-projects">{{ $dataPrograms->count() }}</p>
+                <p class="h2 text-success mb-0">{{ $jumlahProgram }}</p>
             </div>
-
+            {{-- Tampilkan jumlah kecamatan jika kategorinya tertentu --}}
+            @if ($categoryData->name === 'Perumahan' || $categoryData->name === 'Rumah Tidak Layak Huni')
+                <div class="me-5">
+                    <p class="h4 text-success mb-0">Jumlah Kecamatan</p>
+                    <p class="h2 text-success mb-0">{{ $jumlahKecamatan }}</p>
+                </div>
+            @endif
         </div>
 
         <hr class="mb-4">
@@ -127,6 +133,7 @@
         </div>
 
         {{-- Project List --}}
+        {{-- Project List --}}
         <div class="row g-3 project-list" id="projectList">
             @foreach($dataPrograms as $program)
             <div class="col-12 project-item"
@@ -134,7 +141,7 @@
                 data-status="{{ $program->status_proyek }}"
                 data-tahun="{{ $program->tahun_anggaran }}"
                 data-lokasi="{{ strtolower($program->lokasi) }}"
-                data-created="{{ $program->created_at }}">
+                data-created="{{ $program->created_at->format('Y-m-d H:i:s') }}">
 
                 <div class="card mb-3 shadow-sm border-0">
                     <div class="row g-0">
@@ -216,9 +223,9 @@
             <div class="modal-header text-white">
                 <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body p-4">
+            <div class="modal-body p-4 modal-info-size">
                 <h5 class="fw-bold mb-2">{{ $categoryData->name ?? '' }}</h5>
-                <p>{{ $categoryData->description ?? '' }}</p>
+                <p>{!! nl2br(e($categoryData->description ?? '')) !!}</p>
                 <h6 class="fw-bold mt-4 mb-2">Tujuan & Manfaat</h6>
                 <h7 class="mt-4 mb-2">{{ $categoryData->tujuan ?? '' }}</h6>
                 <h6 class="fw-bold mt-4 mb-2">Contoh Program</h6>
@@ -244,6 +251,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Get all project items
     const allItems = Array.from(document.querySelectorAll('.project-item'));
+    const projectListContainer = document.getElementById('projectList');
     console.log('Total project items found:', allItems.length);
 
     if (allItems.length > 0) {
@@ -251,7 +259,8 @@ document.addEventListener('DOMContentLoaded', function() {
             judul: allItems[0].dataset.judul,
             status: allItems[0].dataset.status,
             tahun: allItems[0].dataset.tahun,
-            lokasi: allItems[0].dataset.lokasi
+            lokasi: allItems[0].dataset.lokasi,
+            created: allItems[0].dataset.created
         });
     }
 
@@ -264,15 +273,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchYear = document.getElementById('searchYear');
     const searchLocation = document.getElementById('searchLocation');
     const sortOptions = document.querySelectorAll('.sort-option');
-
-    console.log('Filter elements found:', {
-        searchInput: !!searchInput,
-        searchButton: !!searchButton,
-        statusCheckboxes: statusCheckboxes.length,
-        yearCheckboxes: yearCheckboxes.length,
-        locationCheckboxes: locationCheckboxes.length,
-        sortOptions: sortOptions.length
-    });
 
     function normalizeText(text) {
         return String(text || '').toLowerCase().trim();
@@ -344,18 +344,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Sort items
         filteredItems.sort((a, b) => {
-            const dateA = new Date(a.dataset.created);
-            const dateB = new Date(b.dataset.created);
-
             if (sortBy === 'oldest') {
+                // Oldest first - ascending by date
+                const dateA = new Date(a.dataset.created);
+                const dateB = new Date(b.dataset.created);
                 return dateA - dateB;
             } else if (sortBy === 'latest') {
+                // Latest first - descending by date
+                const dateA = new Date(a.dataset.created);
+                const dateB = new Date(b.dataset.created);
                 return dateB - dateA;
-            } else {
+            } else if (sortBy === 'relevant') {
                 // Relevant - alphabetical by title
-                return normalizeText(a.dataset.judul).localeCompare(normalizeText(b.dataset.judul));
+                const judulA = normalizeText(a.dataset.judul);
+                const judulB = normalizeText(b.dataset.judul);
+                return judulA.localeCompare(judulB);
             }
+            return 0;
         });
+
+        console.log('After sorting, first 3 items:', filteredItems.slice(0, 3).map(item => ({
+            judul: item.dataset.judul,
+            created: item.dataset.created
+        })));
+
+        // IMPORTANT: Reorder DOM elements to match sorted array
+        reorderDOMElements();
 
         // Reset to page 1
         currentPage = 1;
@@ -363,6 +377,22 @@ document.addEventListener('DOMContentLoaded', function() {
         // Update display
         showPage(1);
         console.log('=== FILTERING END ===');
+    }
+
+    function reorderDOMElements() {
+        console.log('=== REORDERING DOM ===');
+
+        // Remove all items from DOM
+        allItems.forEach(item => {
+            item.remove();
+        });
+
+        // Append sorted items back to container
+        filteredItems.forEach(item => {
+            projectListContainer.appendChild(item);
+        });
+
+        console.log('DOM reordered successfully');
     }
 
     function showPage(page) {
@@ -398,9 +428,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const showingEnd = end;
         document.getElementById('showing-count').textContent = totalItems > 0 ? `${showingStart}-${showingEnd}` : '0';
         document.getElementById('total-count').textContent = totalItems;
-
-        // Update stats in header
-        document.getElementById('total-projects').textContent = totalItems;
 
         // Update pagination
         renderPagination(totalPages);
@@ -549,9 +576,21 @@ document.addEventListener('DOMContentLoaded', function() {
         option.addEventListener('click', function(e) {
             e.preventDefault();
             const sortValue = this.dataset.sort;
-            console.log('Sort changed to:', sortValue);
+            console.log('Sort option clicked:', sortValue);
+
+            // Update hidden input
             document.getElementById('sortInput').value = sortValue;
-            document.getElementById('sortButton').textContent = this.textContent;
+
+            // Update button text
+            const sortLabels = {
+                'latest': 'Terbaru',
+                'oldest': 'Terlama',
+                'relevant': 'Paling Relevan'
+            };
+
+            document.getElementById('sortButton').textContent = sortLabels[sortValue] || 'Terbaru';
+
+            // Trigger filter and sort
             filterAndSort();
         });
     });
@@ -578,9 +617,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Initialize
+    // Initialize - show all items sorted by latest
     filteredItems = [...allItems];
-    showPage(1);
+    filterAndSort();
 
     console.log('=== FILTER SYSTEM INITIALIZED ===');
 });

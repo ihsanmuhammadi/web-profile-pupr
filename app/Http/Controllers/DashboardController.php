@@ -81,11 +81,11 @@ class DashboardController extends Controller
         \Log::info('Current route name:', ['route' => $currentRoute]);
 
         if ($currentRoute === 'pedoman.daerah') {
-            $categoryName = 'Pedoman Spesifikasi Daerah';
+            $categoryName = 'Spesifikasi Daerah';
             $view = 'pages.pedoman_daerah';
 
         } elseif ($currentRoute === 'pedoman.teknis') {
-            $categoryName = 'Pedoman Spesifikasi Teknis';
+            $categoryName = 'Spesifikasi Teknis';
             $view = 'pages.pedoman_teknis';
         }
 
@@ -249,13 +249,17 @@ class DashboardController extends Controller
         $dataPrograms = $this->service->getAllDataProgram($filters);
         $categoryData = $this->service->findByName($category);
 
+        $jumlahProgram = $dataPrograms->count();
+        $jumlahKecamatan = $dataPrograms->pluck('kecamatan')->unique()->count();
+
+
         // Handle AJAX requests
         if ($request->ajax() || $request->wantsJson()) {
             return response()->json([
                 'success' => true,
                 'data' => $dataPrograms,
                 'count' => $dataPrograms->count(),
-                'locations_count' => $dataPrograms->pluck('lokasi')->unique()->count()
+                'locations_count' => $dataPrograms->pluck('lokasi')->unique()->count(),
             ]);
         }
 
@@ -273,7 +277,7 @@ class DashboardController extends Controller
 
         \Log::info('View Selected', ['view' => $view]);
 
-        return view($view, compact('dataPrograms', 'categoryName', 'categoryData'));
+        return view($view, compact('dataPrograms', 'categoryName', 'categoryData', 'jumlahProgram', 'jumlahKecamatan'));
     }
 
 

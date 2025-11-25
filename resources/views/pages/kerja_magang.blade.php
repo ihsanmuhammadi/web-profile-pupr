@@ -107,13 +107,13 @@
                             @php
                                 $locations = $works->pluck('lokasi')->unique()->sort();
                             @endphp
-                            @foreach ($locations as $t)
+                            @foreach ($locations as $location)
                                 <li>
                                     <div class="form-check">
-                                        <input type="checkbox" class="form-check-input filter-check"
-                                            name="tipe[]" value="{{ $t }}"
-                                            {{ in_array($t, request()->lokasi ?? []) ? 'checked' : '' }}>
-                                        <label class="form-check-label">{{ $t }}</label>
+                                        <input type="checkbox" class="form-check-input filter-location"
+                                            name="lokasi[]" value="{{ $location }}"
+                                            {{ in_array($location, request()->lokasi ?? []) ? 'checked' : '' }}>
+                                        <label class="form-check-label">{{ $location }}</label>
                                     </div>
                                 </li>
                             @endforeach
@@ -125,7 +125,7 @@
                         <label class="form-label mb-0 me-2 small text-muted">Urut Berdasarkan:</label>
                         <div class="dropdown flex-grow-1">
                             <button class="btn btn-outline-secondary dropdown-toggle w-100"
-                                type="button" data-bs-toggle="dropdown">
+                                type="button" data-bs-toggle="dropdown" id="sortButton">
                                 {{ request('sort_by') == 'oldest' ? 'Terlama' : 'Terbaru' }}
                             </button>
                             <ul class="dropdown-menu p-2 mt-3" style="width: 210px;">
@@ -199,7 +199,6 @@
         <ul class="pagination mb-0"></ul>
       </nav>
     </div>
-  </div>
   </div>
 </section>
 
@@ -379,6 +378,13 @@ document.getElementById('closeSuccess')?.addEventListener('click', function () {
 @endsection
 
 <script>
+function applySort(value) {
+    document.getElementById('sortInput').value = value;
+    document.getElementById('filterForm').submit();
+}
+</script>
+
+<script>
 document.addEventListener('DOMContentLoaded', function() {
     const itemsPerPage = 9;
     let currentPage = 1;
@@ -386,15 +392,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Get all job cards
     const allCards = Array.from(document.querySelectorAll('.job-card'));
+    console.log('Total cards found:', allCards.length);
 
     // Get filter elements
     const searchInput = document.querySelector('input[name="search"]');
-    const lokasiInput = document.querySelector('input[name="lokasi[]"]');
     const levelCheckboxes = document.querySelectorAll('input[name="level[]"]');
     const jenisCheckboxes = document.querySelectorAll('input[name="jenis[]"]');
     const tipeCheckboxes = document.querySelectorAll('input[name="tipe[]"]');
+    const lokasiCheckboxes = document.querySelectorAll('input[name="lokasi[]"]'); // FIXED
     const searchLocation = document.getElementById('searchLocation');
-    const sortButtons = document.querySelectorAll('[onclick^="applySort"]');
 
     // Prevent form submission
     const filterForm = document.getElementById('filterForm');
@@ -405,13 +411,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function normalizeText(text) {
-        return text.toLowerCase().trim();
+        return String(text || '').toLowerCase().trim();
     }
 
     function filterAndSort() {
+        console.log('Filtering...');
+
         // Get current filter values
         const searchTerm = normalizeText(searchInput.value);
-        // const lokasiTerm = normalizeText(lokasiInput.value);
 
         const selectedLevels = Array.from(levelCheckboxes)
             .filter(cb => cb.checked)
@@ -425,7 +432,20 @@ document.addEventListener('DOMContentLoaded', function() {
             .filter(cb => cb.checked)
             .map(cb => normalizeText(cb.value));
 
+        const selectedLokasi = Array.from(lokasiCheckboxes)
+            .filter(cb => cb.checked)
+            .map(cb => normalizeText(cb.value));
+
         const sortBy = document.getElementById('sortInput').value;
+
+        console.log('Filters:', {
+            searchTerm,
+            selectedLevels,
+            selectedJenis,
+            selectedTipe,
+            selectedLokasi,
+            sortBy
+        });
 
         // Filter cards
         filteredCards = allCards.filter(card => {
@@ -467,9 +487,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             // Lokasi filter
-            if (lokasiTerm) {
+            if (selectedLokasi.length > 0) {
                 const cardLokasi = normalizeText(card.dataset.lokasi);
-                if (!cardLokasi.includes(lokasiTerm)) {
+                if (!selectedLokasi.includes(cardLokasi)) {
                     return false;
                 }
             }
@@ -477,16 +497,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return true;
         });
 
-         // Search within location dropdown
-        if (searchLocation) {
-            searchLocation.addEventListener('input', function() {
-                const term = normalizeText(this.value);
-                locationCheckboxes.forEach(cb => {
-                    const matches = normalizeText(cb.value).includes(term);
-                    cb.closest('li').style.display = matches ? 'block' : 'none';
-                });
-            });
-        }
+        console.log('Filtered cards:', filteredCards.length);
 
         // Sort cards
         filteredCards.sort((a, b) => {
@@ -523,7 +534,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!noDataDiv) {
                 noDataDiv = document.createElement('div');
                 noDataDiv.className = 'col-12 no-data-message';
-                // noDataDiv.innerHTML = '<div class="text-center text-muted py-5">Tidak ada pekerjaan ditemukan.</div>';
+                noDataDiv.innerHTML = '<div class="text-center text-muted py-5"><i class="bi bi-search fs-1 d-block mb-3"></i><p>Tidak ada pekerjaan ditemukan.</p></div>';
                 document.querySelector('.project-list').appendChild(noDataDiv);
             }
             noDataDiv.style.display = 'block';
@@ -654,58 +665,110 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // // Lokasi input with debounce
-    // let lokasiTimeout;
-    // lokasiInput.addEventListener('input', function() {
-    //     clearTimeout(lokasiTimeout);
-    //     lokasiTimeout = setTimeout(() => {
-    //         filterAndSort();
-    //     }, 300);
-    // });
-
-    // // Lokasi on Enter
-    // lokasiInput.addEventListener('keypress', function(e) {
-    //     if (e.key === 'Enter') {
-    //         e.preventDefault();
-    //         clearTimeout(lokasiTimeout);
-    //         filterAndSort();
-    //     }
-    // });
-
     // Checkbox filters - instant
-    [...levelCheckboxes, ...jenisCheckboxes, ...tipeCheckboxes, ...lokasiInput].forEach(checkbox => {
-        checkbox.addEventListener('change', filterAndSort);
+    [...levelCheckboxes, ...jenisCheckboxes, ...tipeCheckboxes, ...lokasiCheckboxes].forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            console.log('Checkbox changed:', this.value, this.checked);
+            filterAndSort();
+        });
     });
+
+    // Search within location dropdown
+    if (searchLocation) {
+        searchLocation.addEventListener('input', function() {
+            const term = normalizeText(this.value);
+            lokasiCheckboxes.forEach(cb => {
+                const matches = normalizeText(cb.value).includes(term);
+                cb.closest('li').style.display = matches ? 'block' : 'none';
+            });
+        });
+    }
 
     // Initialize
     filteredCards = [...allCards];
     showPage(1);
+
+    console.log('Filter system initialized');
 });
 
 // Replace applySort function
+// PERBAIKAN FUNGSI applySort
+
+// function applySort(value) {
+//     document.getElementById('sortInput').value = value;
+
+//     // Update button text - GUNAKAN ID SPESIFIK, BUKAN SELECTOR UMUM
+//     const sortButton = document.getElementById('sortButton');
+//     if (sortButton) {
+//         const sortLabels = {
+//             'latest': 'Terbaru',
+//             'oldest': 'Terlama',
+//             'relevant': 'Paling Relevan'
+//         };
+//         sortButton.textContent = sortLabels[value] || 'Terbaru';
+//     }
+
+//     // Manual trigger filter
+//     setTimeout(() => {
+//         const searchInput = document.querySelector('input[name="search"]');
+//         if (searchInput) {
+//             searchInput.dispatchEvent(new Event('input'));
+//         }
+//     }, 50);
+// }
+
 function applySort(value) {
     document.getElementById('sortInput').value = value;
 
-    // Update button text
-    const sortButton = document.querySelector('[data-bs-toggle="dropdown"]');
-    const buttonParent = sortButton.closest('.d-flex.align-items-center');
-    if (buttonParent) {
-        const btn = buttonParent.querySelector('.dropdown-toggle');
-        btn.textContent = value === 'oldest' ? 'Terlama' : 'Terbaru';
+    const sortButton = document.getElementById('sortButton');
+    if (sortButton) {
+        const sortLabels = {
+            'latest': 'Terbaru',
+            'oldest': 'Terlama',
+            'relevant': 'Paling Relevan'
+        };
+        sortButton.textContent = sortLabels[value] || 'Terbaru';
     }
 
-    // Trigger filter
-    const event = new Event('change');
-    document.getElementById('sortInput').dispatchEvent(event);
-
-    // Re-filter and sort
-    const filterEvent = new CustomEvent('filterchange');
-    document.dispatchEvent(filterEvent);
-
-    // Manual trigger
-    setTimeout(() => {
-        const searchInput = document.querySelector('input[name="search"]');
-        searchInput.dispatchEvent(new Event('input'));
-    }, 50);
+    // Trigger filter tanpa reload
+    filterAndSort();
 }
+
+
+// Event listener untuk sort options
+const sortOptions = document.querySelectorAll('.sort-option');
+sortOptions.forEach(option => {
+    option.addEventListener('click', function(e) {
+        e.preventDefault();
+        const sortValue = this.dataset.sort;
+        applySort(sortValue);
+        filterAndSort(); // jika ada fungsi ini
+    });
+});
+
+
+// ===== PASTIKAN DI HTML =====
+// Tombol Sort HARUS punya ID:
+// <button class="btn btn-outline-secondary dropdown-toggle w-100"
+//         type="button" data-bs-toggle="dropdown" id="sortButton">
+//     Terbaru
+// </button>
+
+// Tombol Level juga sebaiknya diberi ID:
+// <button class="btn btn-outline-secondary dropdown-toggle w-100"
+//         type="button" data-bs-toggle="dropdown" id="levelButton">
+//     Level
+// </button>
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    // --- SORT FUNCTION ---
+    window.applySort = function (sortBy) {
+        document.getElementById('sortInput').value = sortBy;
+        document.getElementById('filterForm').submit();
+    };
+
+});
 </script>

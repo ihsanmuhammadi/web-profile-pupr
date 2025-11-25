@@ -211,6 +211,11 @@ html, body {
   line-height: 1;
 }
 
+.modal-info-size {
+    max-height: 80vh;   /* tinggi modal */
+    overflow-y: auto;   /* aktifkan scroll ketika konten berlebih */
+}
+
 .informasi-program img {
   width: 100%;
   max-width: 400px;

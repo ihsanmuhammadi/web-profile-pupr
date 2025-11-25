@@ -281,8 +281,7 @@ function validateForm() {
                             <p class="text-secondary small fw-semibold mb-0" id="editFileName"></p> {{-- Nama file --}}
                             <input id="editFileInput" name="gambar" type="file" accept="image/*"
                                    class="position-absolute top-0 start-0 w-100 h-100"
-                                   style="cursor: pointer; opacity: 0;"
-                                   required>
+                                   style="cursor: pointer; opacity: 0;">
                         </div>
                     </div>
 

@@ -24,7 +24,7 @@
         Bidang ini mengurus pembangunan perumahan serta penataan lingkungan permukiman agar masyarakat dapat tinggal di kawasan yang lebih layak, tertata, dan nyaman.
     </p>
     <div class="struktur-image" data-aos="zoom-in-up">
-      <img src="{{ asset('assets/images/struktur_bidang.png') }}" alt="Struktur Organisasi Bidang" class="img-fluid">
+      <img src="{{ asset('assets/images/Struktur Organisasi Dinas Bidang.png') }}" alt="Struktur Organisasi Bidang" class="img-fluid">
     </div>
   </div>
 </section>

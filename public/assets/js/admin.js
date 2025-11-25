@@ -21,6 +21,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+//enter for search
+document.getElementById("searchInput").addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+        e.preventDefault();
+        document.getElementById("searchBtn").click();
+    }
+});
+
 // add inputan contoh program
 document.addEventListener("DOMContentLoaded", function () {
 
