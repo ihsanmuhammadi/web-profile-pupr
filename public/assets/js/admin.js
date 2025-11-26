@@ -347,7 +347,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     document.getElementById("detailLokasi").value = data.lokasi;
                     document.getElementById("detailPendidikan").value = data.pendidikan;
                     document.getElementById("detailJurusan").value = data.jurusan;
-                    document.getElementById("detailCV").value = data.cv;
+                    document.getElementById("detailCV").textContent = data.cv;
+                    document.getElementById("detailCV").href = "/storage/" + data.cv;
                     document.getElementById("detailPortofolio").value = data.portofolio;
 
                     const modal = new bootstrap.Modal(document.getElementById("detailModal"));

@@ -155,7 +155,7 @@
             {{-- No Video Available --}}
             <div class="alert alert-warning text-center py-5">
                 <i class="bi bi-exclamation-triangle fs-1 d-block mb-3"></i>
-                <h5>Video belum tersedia</h5>
+                <h5>Video Pedoman Spesifikasi Daerah belum tersedia</h5>
                 <p class="mb-0 text-muted">Silakan hubungi administrator untuk menambahkan video pedoman.</p>
             </div>
         @endif
@@ -276,7 +276,7 @@ document.getElementById('closeSuccess')?.addEventListener('click', function () {
     <div id="copyToast" class="toast align-items-center text-bg-success border-0" role="alert">
         <div class="d-flex">
             <div class="toast-body">
-                ✅ Link berhasil disalin ke clipboard!
+                Link berhasil disalin ke clipboard!
             </div>
             <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
         </div>

@@ -171,19 +171,23 @@
                                                 {{ $program->lokasi }}
                                             </span>
                                         </div>
-                                        <div style="max-width: 160px">
+                                        <div>
                                             @php
                                                 $statusConfig = [
                                                     'Sedang Berjalan' => ['color' => 'primary', 'icon' => 'manufacturing'],
-                                                    'Perencanaan' => ['color' => 'info', 'icon' => 'schedule'],
-                                                    'Ditunda' => ['color' => 'warning', 'icon' => 'pause_circle'],
-                                                    'Tuntas' => ['color' => 'success', 'icon' => 'check_circle'],
-                                                    'Dihentikan' => ['color' => 'danger', 'icon' => 'cancel']
+                                                    'Perencanaan'     => ['color' => 'info', 'icon' => 'schedule'],
+                                                    'Ditunda'         => ['color' => 'warning', 'icon' => 'pause_circle'],
+                                                    'Tuntas'          => ['color' => 'success', 'icon' => 'check_circle'],
+                                                    'Dihentikan'      => ['color' => 'danger', 'icon' => 'cancel']
                                                 ];
                                                 $config = $statusConfig[$program->status_proyek] ?? ['color' => 'secondary', 'icon' => 'info'];
                                             @endphp
-                                            <span class="badge d-flex align-items-center bg-{{ $config['color'] }} text-light rounded-1 px-2 py-1 fw-medium">
-                                                <span class="material-symbols-outlined me-2" style="font-size: 18px;">{{ $config['icon'] }}</span>
+
+                                            <span class="badge d-inline-flex align-items-center bg-{{ $config['color'] }} text-light rounded-2 px-3 py-2 fw-semibold"
+                                                style="font-size: 13px;">
+                                                <span class="material-symbols-outlined me-2" style="font-size: 20px;">
+                                                    {{ $config['icon'] }}
+                                                </span>
                                                 {{ $program->status_proyek }}
                                             </span>
                                         </div>
@@ -227,7 +231,7 @@
                 <h5 class="fw-bold mb-2">{{ $categoryData->name ?? '' }}</h5>
                 <p>{!! nl2br(e($categoryData->description ?? '')) !!}</p>
                 <h6 class="fw-bold mt-4 mb-2">Tujuan & Manfaat</h6>
-                <h7 class="mt-4 mb-2">{{ $categoryData->tujuan ?? '' }}</h6>
+                <h7 class="mt-4 mb-2">{!! nl2br(e($categoryData->tujuan ?? '')) !!}</h6>
                 <h6 class="fw-bold mt-4 mb-2">Contoh Program</h6>
                 <ul>
                     <li>{{ $categoryData->contoh_program_1 ?? '' }}</li>

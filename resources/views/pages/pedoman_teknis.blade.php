@@ -152,7 +152,7 @@
             {{-- No Video Available --}}
             <div class="alert alert-warning text-center py-5">
                 <i class="bi bi-exclamation-triangle fs-1 d-block mb-3"></i>
-                <h5>Video belum tersedia</h5>
+                <h5>Video Pedoman Spesifikasi Teknis belum tersedia</h5>
                 <p class="mb-0 text-muted">Silakan hubungi administrator untuk menambahkan video pedoman.</p>
             </div>
         @endif
