@@ -20,6 +20,27 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+// logout
+document.addEventListener('DOMContentLoaded', function () {
+    const sidebarFooter = document.getElementById('sidebarFooter');
+    const logoutDropdown = document.getElementById('logoutDropdown');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    sidebarFooter.addEventListener('click', function (event) {
+        event.stopPropagation();
+        logoutDropdown.style.display =
+            logoutDropdown.style.display === 'block' ? 'none' : 'block';
+    });
+
+    document.addEventListener('click', function () {
+        logoutDropdown.style.display = 'none';
+    });
+
+    logoutBtn.addEventListener('click', function () {
+        const modal = new bootstrap.Modal(document.getElementById('logoutModal'));
+        modal.show();
+    });
+});
 
 //enter for search
 document.getElementById("searchInput").addEventListener("keypress", function (e) {
