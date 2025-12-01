@@ -601,19 +601,19 @@ margin-right: auto;
   border-radius: 10px;
 }
 
-.form-control::placeholder {
+.form-control-input::placeholder {
   font-size: 0.85rem;
 }
 
 .form-label {
   margin-bottom: 0.25rem;
 }
-form .form-control {
+form .form-style {
   background-color: #f2f2f2 !important;
   color: #333;
 }
 
-form .form-control::placeholder {
+form .form-style::placeholder {
   color: #aaa;
   opacity: 1;
 }

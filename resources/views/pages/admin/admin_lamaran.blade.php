@@ -252,8 +252,11 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark mb-1">CV</label>
-                        <input type="text" class="form-control rounded-3" id="detailCV" value="Lorem ipsum lorem ipsum lorem ipsum" readonly>
+                        <a id="detailCV" href="#" target="_blank" class="form-control rounded-3 d-block bg-light border text-decoration-none text-primary fw-semibold" style="padding: .375rem .75rem;">
+                        Nama file CV.pdf
+                        </a>
                     </div>
+
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-dark mb-1">Portofolio</label>
                         <input type="text" class="form-control rounded-3" id="detailPortofolio" value="Lorem ipsum lorem ipsum lorem ipsum" readonly>

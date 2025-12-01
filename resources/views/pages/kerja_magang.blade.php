@@ -182,7 +182,10 @@
                     <li class="mb-1"><i class="bi bi-briefcase me-2"></i>{{ $work->jenis }}</li>
                     <li class="mb-1"><i class="bi bi-file-earmark-text me-2"></i>{{ $work->tipe }}</li>
                     <li class="mb-1"><i class="bi bi-geo-alt me-2"></i>{{ $work->lokasi }}</li>
-                    <li><i class="bi bi-cash-stack me-2"></i>{{ $work->gaji }}</li>
+                    <li>
+                        <i class="bi bi-cash-stack me-2"></i>
+                        Rp. {{ number_format($work->gaji, 0, ',', '.') }}
+                    </li>
                 </ul>
             </div>
         </div>
@@ -277,7 +280,7 @@
 
       <div class="mb-2">
         <label class="form-label fw-semibold small text-dark">Nama Lengkap</label>
-        <input type="text" name="nama" value="{{ old('nama') }}" class="form-control form-control-sm bg-light border-0 rounded-3 @error('nama') is-invalid @enderror" placeholder="Masukkan Nama Lengkap Anda" required>
+        <input type="text" name="nama" value="{{ old('nama') }}" class="form-control form-style form-control-sm bg-light border-0 rounded-3 @error('nama') is-invalid @enderror" placeholder="Masukkan Nama Lengkap Anda" required>
         @error('nama')
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror
@@ -285,7 +288,7 @@
 
       <div class="mb-2">
         <label class="form-label fw-semibold small text-dark">No. Telepon</label>
-        <input type="tel" name="nomor_telepon" value="{{ old('nomor_telepon') }}" class="form-control form-control-sm bg-light border-0 rounded-3 @error('nomor_telepon') is-invalid @enderror" placeholder="Masukkan Nomor Telepon" required>
+        <input type="tel" name="nomor_telepon" value="{{ old('nomor_telepon') }}" class="form-control form-style form-control-sm bg-light border-0 rounded-3 @error('nomor_telepon') is-invalid @enderror" placeholder="Masukkan Nomor Telepon" required>
         @error('nomor_telepon')
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror
@@ -293,7 +296,7 @@
 
       <div class="mb-2">
         <label class="form-label fw-semibold small text-dark">Email</label>
-        <input type="email" name="email" value="{{ old('email') }}" class="form-control form-control-sm bg-light border-0 rounded-3 @error('email') is-invalid @enderror" placeholder="Masukkan Email Anda" required>
+        <input type="email" name="email" value="{{ old('email') }}" class="form-control form-style form-control-sm bg-light border-0 rounded-3 @error('email') is-invalid @enderror" placeholder="Masukkan Email Anda" required>
         @error('email')
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror
@@ -301,7 +304,7 @@
 
       <div class="mb-2">
         <label class="form-label fw-semibold small text-dark">Lokasi</label>
-        <input type="text" name="lokasi" value="{{ old('lokasi') }}" class="form-control form-control-sm bg-light border-0 rounded-3 @error('lokasi') is-invalid @enderror" placeholder="Masukkan Nama Kota/Kabupaten" required>
+        <input type="text" name="lokasi" value="{{ old('lokasi') }}" class="form-control form-style form-control-sm bg-light border-0 rounded-3 @error('lokasi') is-invalid @enderror" placeholder="Masukkan Nama Kota/Kabupaten" required>
         @error('lokasi')
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror
@@ -309,7 +312,7 @@
 
       <div class="mb-2">
         <label class="form-label fw-semibold small text-dark">Institusi Pendidikan Terakhir</label>
-        <input type="text" name="pendidikan" value="{{ old('pendidikan') }}" class="form-control form-control-sm bg-light border-0 rounded-3 @error('pendidikan') is-invalid @enderror" placeholder="Cth: Universitas Indonesia" required>
+        <input type="text" name="pendidikan" value="{{ old('pendidikan') }}" class="form-control form-style form-control-sm bg-light border-0 rounded-3 @error('pendidikan') is-invalid @enderror" placeholder="Cth: Universitas Indonesia" required>
         @error('pendidikan')
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror
@@ -317,7 +320,7 @@
 
       <div class="mb-2">
         <label class="form-label fw-semibold small text-dark">Jurusan</label>
-        <input type="text" name="jurusan" value="{{ old('jurusan') }}" class="form-control form-control-sm bg-light border-0 rounded-3 @error('jurusan') is-invalid @enderror" placeholder="Cth: Informatika, Teknik Industri" required>
+        <input type="text" name="jurusan" value="{{ old('jurusan') }}" class="form-control form-style form-control-sm bg-light border-0 rounded-3 @error('jurusan') is-invalid @enderror" placeholder="Cth: Informatika, Teknik Industri" required>
         @error('jurusan')
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror
@@ -325,7 +328,7 @@
 
       <div class="mb-2">
         <label class="form-label fw-semibold small text-dark">CV (PDF, max 5MB)</label>
-        <input type="file" name="cv" accept="application/pdf" class="form-control form-control-sm bg-light border-0 rounded-3 @error('cv') is-invalid @enderror" required>
+        <input type="file" name="cv" accept="application/pdf" class="form-control form-style form-control-sm bg-light border-0 rounded-3 @error('cv') is-invalid @enderror" required>
         @error('cv')
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror
@@ -334,7 +337,7 @@
       <div class="mb-3">
         <label class="form-label fw-semibold small text-dark">Portofolio</label>
         <div class="input-group input-group-sm">
-          <input type="url" name="portofolio" value="{{ old('portofolio') }}" class="form-control bg-light border-0 rounded-start-3 @error('portofolio') is-invalid @enderror" placeholder="https://" required>
+          <input type="url" name="portofolio" value="{{ old('portofolio') }}" class="form-control form-style bg-light border-0 rounded-start-3 @error('portofolio') is-invalid @enderror" placeholder="https://" required>
           <button id="clearPortofolio" class="btn btn-outline-secondary rounded-end-3 py-1 px-2" type="button">
             <i class="bi bi-trash"></i>
           </button>
@@ -370,6 +373,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
 document.getElementById('closeSuccess')?.addEventListener('click', function () {
     document.getElementById('successOverlay').classList.add('d-none');
+});
+
+function formatRupiah(angka) {
+    return 'Rp. ' + parseInt(angka).toLocaleString('id-ID');
+}
+
+// contoh saat card diklik
+$('.job-card').on('click', function() {
+    $('#detailGaji').text(formatRupiah($(this).data('gaji')));
 });
 
 </script>
