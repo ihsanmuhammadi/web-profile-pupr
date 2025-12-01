@@ -135,6 +135,32 @@ li.active > .sidebar-link {
     transition: transform 0.3s;
 }
 
+.logout-dropdown {
+    position: absolute;
+    bottom: 8px;
+    left: 100%;
+    background: #49769B;
+    padding: 5px 0;
+    min-width: 150px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    display: none;
+    z-index: 999;
+}
+
+.logout-dropdown .dropdown-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.logout-dropdown:hover {
+    background-color: white;
+}
+
+.logout-dropdown:hover {
+    color: rgb(255, 0, 0);
+}
+
 /* Content Wrapper */
 #content-wrapper {
     margin-left: var(--expanded-width);

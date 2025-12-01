@@ -61,15 +61,48 @@
             </ul>
         </div>
 
-        <div class="sidebar-footer">
+        <div class="sidebar-footer" id="sidebarFooter">
             <div class="user-profile">
                 <i class="fas fa-user-circle user-icon"></i>
                 <div class="user-info">
-                    <p class="user-name">Nama</p>
-                    <p class="user-email">Email</p>
+                    <p class="user-name">{{ Auth::user()->name }}</p>
+                    <p class="user-email">{{ Auth::user()->email }}</p>
                 </div>
             </div>
             <i class="fas fa-chevron-right user-arrow"></i>
         </div>
+        <div class="logout-dropdown" id="logoutDropdown">
+            <button class="dropdown-item " id="logoutBtn">
+                <i class="fas fa-sign-out-alt me-2"></i> Logout
+            </button>
+        </div>
     </nav>
+
+{{-- Modal Confirm Logout --}}
+<div class="modal fade" id="logoutModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+
+            <div class="modal-body text-center my-3">
+                <p class="mb-0 fs-6">Apakah Anda yakin ingin logout?</p>
+            </div>
+
+            <div class="modal-footer border-0 justify-content-center gap-2 mb-2">
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="btn btn-danger px-4">
+                        Logout
+                    </button>
+                </form>
+
+                <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
+                    Batal
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
 </div>
