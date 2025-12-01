@@ -10,13 +10,13 @@
             <h2 class="fw-bold" style="color:#4A7097;">Kategori Program</h2>
         </div>
 
-        <div class="mb-4">
+        {{-- <div class="mb-4">
             <button class="btn btn-outline-custom rounded-pill px-3 py-0 d-flex align-items-center gap-2"
                     data-bs-toggle="modal" data-bs-target="#tambahModal">
                 <i class="bi bi-plus fs-3"></i>
                 <span>Tambah Kategori</span>
             </button>
-        </div>
+        </div> --}}
 
         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
             <div class="display-data d-flex align-items-center gap-2 mb-2">
@@ -81,7 +81,7 @@
                                 >
                                     <i class="bi bi-pencil"></i>
                                 </button>
-                                <button type="button"
+                                {{-- <button type="button"
                                     class="btn btn-sm btn-delete btn-danger rounded-2"
                                     data-id="{{ $c->id }}">
                                     <i class="bi bi-trash"></i>
@@ -93,7 +93,7 @@
                                     style="display: none;">
                                     @csrf
                                     @method('DELETE')
-                                </form>
+                                </form> --}}
 
                             </td>
                         </tr>
@@ -257,7 +257,7 @@ Lorem ipsum lorem ipsum lorem ipsum Lorem ipsum lorem ipsum lorem ipsum lorem ip
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold small">Judul Kategori Program</label>
-                        <input type="text" name="name" id="editName" class="form-control rounded-3" required>
+                        <input type="text" name="name" id="editName" class="form-control rounded-3" readonly>
                     </div>
 
                     <div class="mb-3">

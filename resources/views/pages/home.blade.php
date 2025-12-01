@@ -217,27 +217,23 @@
       <div class="col-md-7">
         <h5 class="fw-bold">Kawasan Kumuh</h5>
         <p class="text-muted">
-          Data ini menampilkan jumlah dan persebaran kawasan kumuh di Kabupaten Kubu Raya berdasarkan tingkat kekumuhan di
-          setiap kecamatan. Informasi ini menjadi dasar penting dalam perencanaan program penataan permukiman untuk meningkatkan
-          kualitas lingkungan, mengurangi risiko kesehatan, serta menciptakan ruang hidup yang lebih tertata, aman, dan layak bagi masyarakat.
+          Data ini menampilkan jumlah dan persebaran kawasan kumuh di Kabupaten Kubu Raya berdasarkan tingkat kekumuhan di setiap
+          kecamatan. Informasi ini menjadi dasar penting dalam perencanaan program penataan permukiman untuk meningkatkan kualitas
+           lingkungan, mengurangi risiko kesehatan, serta menciptakan ruang hidup yang lebih tertata, aman, dan layak bagi masyarakat.
         </p>
-        <div class="d-flex gap-4">
+        <div class="d-flex align-items-center mt-3">
+          <h4 class="fw-bold angka mb-0 me-4">{{ $total_kawasan_kumuh }}</h4>
           <div>
-            <h4 class="fw-bold angka">{{ $total_kawasan_kumuh }}</h4>
-            <p class="text-muted mb-0">Total Kawasan Kumuh</p>
-          </div>
-          <div style="margin-left: 100px">
-            <h4 class="fw-bold angka">{{ $avg_kawasan_kumuh_per_kecamatan }}</h4>
-            <p class="text-muted mb-0">Rata-rata per Kecamatan</p>
-          </div>
-        </div>
-        <a href="{{ route('dataprogram.category', ['categoryName' => 'kawasan-kumuh']) }}"
+            <p class="text-muted mb-1">Total pekerjaan yang terdaftar</p>
+            <a href="{{ route('dataprogram.category', ['categoryName' => 'kawasan-kumuh']) }}"
                 class="fw-bold text-dark text-decoration-none">
                 Selengkapnya →
             </a>
+          </div>
+        </div>
       </div>
       <div class="col-md-5 text-center">
-        <img src="{{ asset('assets/images/kawasan-kumuh.png') }}" class="img-fluid rounded-4 shadow-sm" alt="RTLH">
+        <img src="{{ asset('assets/images/kawasan-kumuh.png') }}" class="img-fluid rounded-4 shadow-sm" alt="Drainase Lingkungan">
       </div>
     </div>
 
