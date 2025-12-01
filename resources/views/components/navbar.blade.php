@@ -38,6 +38,7 @@
             <li><a class="dropdown-item" href="{{ route('dataprogram.category', ['categoryName' => 'jembatan-lingkungan']) }}">Jembatan Lingkungan</a></li>
             <li><a class="dropdown-item" href="{{ route('dataprogram.category', ['categoryName' => 'rumah-tidak-layak-huni']) }}">Rumah Tidak Layak Huni</a></li>
             <li><a class="dropdown-item" href="{{ route('dataprogram.category', ['categoryName' => 'perumahan']) }}">Perumahan</a></li>
+            <li><a class="dropdown-item" href="{{ route('dataprogram.category', ['categoryName' => 'kawasan-kumuh']) }}">Kawasan Kumuh</a></li>
             <li><a class="dropdown-item" href="#">Satu Peta</a></li>
           </ul>
         </li>

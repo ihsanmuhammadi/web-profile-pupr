@@ -65,9 +65,13 @@
           <h3 class="fw-bold data-number">{{ $total_perumahan }}</h3>
           <p class="fw-semibold mb-0">Perumahan</p>
         </div>
-        <div class="col-6 col-md-2">
+         <div class="col-6 col-md-2 mb-4 mb-md-0">
           <h3 class="fw-bold data-number">{{ $total_rumah_tidak_layak }}</h3>
           <p class="fw-semibold mb-0">Rumah Tidak Layak Huni</p>
+        </div>
+        <div class="col-6 col-md-2">
+          <h3 class="fw-bold data-number">{{ $total_kawasan_kumuh }}</h3>
+          <p class="fw-semibold mb-0">Kawasan Kumuh</p>
         </div>
       </div>
     </div>

@@ -60,6 +60,10 @@ class DashboardController extends Controller
         ->get()
         ->avg('total');
 
+        $total_kawasan_kumuh = DataProgram::whereHas('kategori', function($query) {
+            $query->where('name', 'Kawasan Kumuh');
+        })->count();
+
         // News
         $news = News::latest()->take(5)->get();
 
@@ -71,6 +75,7 @@ class DashboardController extends Controller
             'avg_perumahan_per_kecamatan' => round($avg_perumahan_per_kecamatan, 2),
             'total_rumah_tidak_layak' => $total_rumah_tidak_layak,
             'avg_rumah_tidak_layak_per_kecamatan' => round($avg_rumah_tidak_layak_per_kecamatan, 2),
+            'total_kawasan_kumuh' => $total_kawasan_kumuh,
             'news' => $news,
         ]);
     }
@@ -229,6 +234,9 @@ class DashboardController extends Controller
                 break;
             case 'rumah-tidak-layak-huni':
                 $category = "Rumah Tidak Layak Huni";
+                break;
+            case 'kawasan-kumuh':
+                $category = "Kawasan Kumuh";
                 break;
             default:
                 $category = "Jalan Lingkungan";
